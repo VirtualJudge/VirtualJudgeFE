@@ -1,0 +1,33 @@
+import Vue from 'vue'
+import Router from 'vue-router'
+
+import Problems from '@/views/problem/Problems';
+import Problem from '@/views/problem/Problem';
+import Index from '@/views/Index';
+import Rank from '@/views/account/Rank'
+
+Vue.use(Router);
+
+export default new Router({
+  routes: [
+    {
+      path: '/',
+      name: 'index',
+      component: Index
+    },
+    {
+      path: '/problems',
+      name: 'problems',
+      component: Problems
+    },
+    {
+      path: '/problem/:remote_oj/:remote_id',
+      name: 'problem',
+      component: Problem
+    }, {
+      path: '/rank',
+      name: 'rank',
+      component: Rank
+    }
+  ]
+})
