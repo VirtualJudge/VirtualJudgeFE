@@ -38,6 +38,7 @@
           window.location.reload();
         }, res => {
           console.log(res);
+          this.$Message.error("账号或者密码不正确")
         })
       }
     }

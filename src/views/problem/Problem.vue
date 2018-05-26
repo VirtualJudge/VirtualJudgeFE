@@ -20,7 +20,7 @@
               </Select>
             </FormItem>
             <FormItem>
-              <Button type="primary">提交</Button>
+              <Button :loading="submit_loading" type="primary" @click="submitCode()">提交</Button>
             </FormItem>
           </Form>
           <codemirror v-model="formItem.code"></codemirror>
@@ -34,11 +34,21 @@
           基本信息
         </p>
         <ul>
-          <li>{{problem.memory_limit}}</li>
-          <li>{{problem.time_limit}}</li>
-          <li>{{problem.remote_oj}}</li>
-          <li>{{problem.remote_id}}</li>
-          <li>{{problem.update_time}}</li>
+          <li>源平台:
+            <Tag>{{problem.remote_oj}}</Tag>
+          </li>
+          <li>源编号:
+            <Tag>{{problem.remote_id}}</Tag>
+          </li>
+          <li>内存限制:
+            <Tag color="red">{{problem.memory_limit}}</Tag>
+          </li>
+          <li>时间限制:
+            <Tag color="green">{{problem.time_limit}}</Tag>
+          </li>
+          <li>更新时间:
+            <Tag>{{problem.update_time}}</Tag>
+          </li>
         </ul>
       </Card>
     </Col>
@@ -56,6 +66,7 @@
     data() {
       return {
         isAuthenticated: false,
+        submit_loading: false,
         loading: false,
         frame_url: '',
         remote_oj: '',
@@ -125,10 +136,13 @@
         }
       },
       submitCode() {
+        this.submit_loading = true;
         api.submitCode(this.remote_oj, this.remote_id, this.formItem.selected, this.formItem.code).then(res => {
-          console.log(res);
+          this.submit_loading = false;
+          this.$Message.success('提交成功')
         }, res => {
-          console.log(res);
+          this.submit_loading = false;
+          this.$Message.error('提交失败')
         })
       },
       getAuth() {
@@ -136,7 +150,6 @@
           this.isAuthenticated = true;
         }, res => {
           this.isAuthenticated = false;
-
         })
       }
     }

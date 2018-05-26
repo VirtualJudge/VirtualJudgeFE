@@ -1,5 +1,5 @@
 <template>
-  <Layout>
+  <Layout style="min-width: 900px">
     <NavBar></NavBar>
     <router-view></router-view>
     <Footer></Footer>

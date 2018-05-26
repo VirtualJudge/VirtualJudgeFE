@@ -1,0 +1,83 @@
+<template>
+  <Table :loading="loading_table" :columns="columns" :data="submissions" style="margin: 10px"></Table>
+
+</template>
+
+<script>
+  import api from '../../api'
+  import moment from 'moment'
+
+  export default {
+    name: "Submissions",
+    data() {
+      return {
+        loading_table: false,
+        columns: [{
+          title: '#',
+          key: 'id'
+        }, {
+          title: '用户',
+          key: 'user'
+        }, {
+          title: '源名称',
+          key: 'remote_oj'
+        }, {
+          title: '源编号',
+          key: 'remote_id'
+        }, {
+          title: '运行时间',
+          key: 'execute_time'
+        }, {
+          title: '运行内存',
+          key: 'execute_memory'
+        }, {
+          title: '语言',
+          key: 'language_name'
+        }, {
+          title: '执行结果',
+          // key: 'verdict',
+          render: (h, params) => {
+            return h('Tag', {
+              props: {
+                color: this.getVerdictColor(params.row.verdict_code)
+              }
+            }, params.row.verdict)
+          }
+        }, {
+          title: '创建时间',
+          key: 'create_time'
+        }
+        ],
+        submissions: [],
+      }
+    },
+    mounted() {
+      this.init();
+    },
+    methods: {
+      init() {
+        this.getSubmissions();
+      },
+      getVerdictColor(verdict_code) {
+        let color_list = ['black', 'green', 'yellow', 'red', 'pink'];
+        return color_list[verdict_code]
+      },
+      getSubmissions() {
+        this.loading_table = true;
+        return api.getSubmissions().then(res => {
+          this.loading_table = false;
+          this.submissions = res.data.data;
+          for (let i = 0; i < this.submissions.length; ++i) {
+            this.submissions[i].create_time = moment(this.submissions[i].create_time).calendar()
+          }
+        }, res => {
+          this.loading_table = false;
+        })
+      }
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>

@@ -3,9 +3,8 @@ import axios from 'axios';
 
 Vue.prototype.$http = 'axios';
 axios.default.baseURL = '/api';
-axios.default.xsrfHeaderName = 'X-CSRFToken';
-axios.default.xsrfCookieName = 'csrftoken';
-
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+axios.defaults.xsrfCookieName = 'csrftoken';
 
 export default {
   requestLogin(username, password) {
@@ -16,14 +15,32 @@ export default {
       }
     })
   },
+  register(username, email, password) {
+    return ajax('/api/register/', 'post', {
+      data: {
+        'username': username,
+        'email': email,
+        'password': password,
+      }
+    })
+  },
+  logout() {
+    return ajax('/api/auth/', 'delete')
+  },
   getProblems() {
     return ajax('/api/problems/', 'get')
+  },
+  getSupport() {
+    return ajax('/api/support/', 'get')
+  },
+  getSubmissions() {
+    return ajax('/api/submissions/', 'get')
   },
   getProblem(remote_oj, remote_id) {
     return ajax('/api/problem/' + remote_oj + '/' + remote_id + '/', 'get');
   },
   getLanguages(remote_oj) {
-    return ajax('/api/languages/' + remote_oj + '/', 'post');
+    return ajax('/api/languages/' + remote_oj + '/', 'get');
   },
   getRank() {
     return ajax('/api/rank/', 'get')

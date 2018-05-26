@@ -5,6 +5,7 @@ import Problems from '@/views/problem/Problems';
 import Problem from '@/views/problem/Problem';
 import Index from '@/views/Index';
 import Rank from '@/views/account/Rank'
+import Submissions from '@/views/status/Submissions'
 
 Vue.use(Router);
 
@@ -28,6 +29,10 @@ export default new Router({
       path: '/rank',
       name: 'rank',
       component: Rank
+    }, {
+      path: '/status',
+      name: 'status',
+      component: Submissions
     }
   ]
 })

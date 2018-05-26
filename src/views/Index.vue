@@ -1,9 +1,8 @@
 <template>
-  <Card>
+  <Card style="margin: 10px;">
     <div style="text-align:center">
-
-      <img src="../assets/logo.png">
-      <h3>A high quality UI Toolkit based on Vue.js</h3>
+      Virtual Judge is not a real online judge. It can grab problems from other regular online judges and simulate
+      submissions to other online judges. It aims to enable holding contests when you don't have the test data.
     </div>
   </Card>
 </template>
