@@ -12,7 +12,7 @@
       题目
     </MenuItem>
     <MenuItem name="/status">
-      <Icon type="paper-airplane"></Icon>
+      <Icon type="navigate"></Icon>
       提交
     </MenuItem>
     <MenuItem name="/contest">
