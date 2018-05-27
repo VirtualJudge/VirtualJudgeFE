@@ -139,7 +139,8 @@
         this.submit_loading = true;
         api.submitCode(this.remote_oj, this.remote_id, this.formItem.selected, this.formItem.code).then(res => {
           this.submit_loading = false;
-          this.$Message.success('提交成功')
+          this.$Message.success('提交成功');
+          this.$router.push('/status')
         }, res => {
           this.submit_loading = false;
           this.$Message.error('提交失败')

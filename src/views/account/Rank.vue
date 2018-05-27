@@ -21,10 +21,6 @@
             key: 'accepted'
           },
           {
-            title: '尝试数',
-            key: 'attempted'
-          },
-          {
             title: '提交数',
             key: 'submitted'
           }],

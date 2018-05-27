@@ -15,7 +15,7 @@
       <Icon type="navigate"></Icon>
       提交
     </MenuItem>
-    <MenuItem name="/contest">
+    <MenuItem name="/contests">
       <Icon type="flag"></Icon>
       题组
     </MenuItem>
@@ -37,14 +37,18 @@
     </template>
     <template v-else>
       <div class="right-item">
-        <Button type="ghost" shape="circle">
-          <Icon type="person"></Icon>
-          {{ username}}
-        </Button>
-        <Button type="ghost" shape="circle" @click="logout()">
-          <Icon type="log-out"></Icon>
-          登出
-        </Button>
+        <Submenu name="/profile">
+          <template slot="title">
+            <Icon type="stats-bars"></Icon>
+            {{ username}}
+          </template>
+          <MenuGroup title="基本操作">
+            <MenuItem name="3-1">个人资料</MenuItem>
+            <MenuItem name="3-2">设置</MenuItem>
+            <MenuItem name="/Logout">登出</MenuItem>
+          </MenuGroup>
+        </Submenu>
+
       </div>
     </template>
 
@@ -102,7 +106,6 @@
           this.isAuthenticated = true;
         }, res => {
           this.isAuthenticated = false;
-
         })
       }
     }

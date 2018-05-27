@@ -1,6 +1,21 @@
 <template>
-  <Table :loading="loading_table" :columns="columns" :data="submissions" style="margin: 10px"></Table>
-
+  <Row>
+    <Col>
+      <Card style="margin: 10px">
+        <div slot="title">
+          <Row type="flex" justify="end">
+            <Col>
+              <i-switch v-model="mine_contests" size="large" @on-change="switch_change">
+                <span slot="open">我的</span>
+                <span slot="close">全部</span>
+              </i-switch>
+            </Col>
+          </Row>
+        </div>
+        <Table :loading="loading_table" :columns="columns" :data="submissions"></Table>
+      </Card>
+    </Col>
+  </Row>
 </template>
 
 <script>
@@ -12,6 +27,8 @@
     data() {
       return {
         loading_table: false,
+        mine_contests: false,
+        login_user: '',
         columns: [{
           title: '#',
           key: 'id'
@@ -23,7 +40,24 @@
           key: 'remote_oj'
         }, {
           title: '源编号',
-          key: 'remote_id'
+          //key: 'remote_id',
+          render: (h, params) => {
+            return h('a', {
+              props: {
+                type: 'text',
+              },
+              on: {
+                click: () => {
+                  this.$router.push({
+                    name: 'problem', params: {
+                      remote_oj: params.row.remote_oj,
+                      remote_id: params.row.remote_id,
+                    }
+                  })
+                }
+              }
+            }, params.row.remote_id)
+          }
         }, {
           title: '运行时间',
           key: 'execute_time'
@@ -35,7 +69,6 @@
           key: 'language_name'
         }, {
           title: '执行结果',
-          // key: 'verdict',
           render: (h, params) => {
             return h('Tag', {
               props: {
@@ -57,22 +90,42 @@
     methods: {
       init() {
         this.getSubmissions();
+        this.getAuth();
       },
       getVerdictColor(verdict_code) {
         let color_list = ['black', 'green', 'yellow', 'red', 'pink'];
         return color_list[verdict_code]
       },
-      getSubmissions() {
+      getAuth() {
+        api.getAuth().then(res => {
+          this.login_user = res.data.data;
+        }, res => {
+          this.login_user = ''
+        })
+      },
+      getSubmissions(data) {
         this.loading_table = true;
-        return api.getSubmissions().then(res => {
+        return api.getSubmissions(data).then(res => {
           this.loading_table = false;
           this.submissions = res.data.data;
+          moment.locale('zh-CN');
           for (let i = 0; i < this.submissions.length; ++i) {
             this.submissions[i].create_time = moment(this.submissions[i].create_time).calendar()
           }
         }, res => {
           this.loading_table = false;
         })
+      },
+      switch_change(status) {
+        console.log(status);
+        if (status) {
+          let data = {
+            'user': this.login_user
+          };
+          this.getSubmissions(data);
+        } else {
+          this.getSubmissions();
+        }
       }
     }
   }

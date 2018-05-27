@@ -6,6 +6,9 @@ import Problem from '@/views/problem/Problem';
 import Index from '@/views/Index';
 import Rank from '@/views/account/Rank'
 import Submissions from '@/views/status/Submissions'
+import Contests from '@/views/contest/Contests'
+import Logout from '@/views/account/Logout'
+import NewContest from '@/views/contest/NewContest'
 
 Vue.use(Router);
 
@@ -33,6 +36,18 @@ export default new Router({
       path: '/status',
       name: 'status',
       component: Submissions
+    }, {
+      path: '/contests',
+      name: 'contests',
+      component: Contests
+    }, {
+      path: '/contests/new',
+      name: 'new_contest',
+      component: NewContest
+    }, {
+      path: '/logout',
+      name: 'logout',
+      component: Logout
     }
   ]
 })

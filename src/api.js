@@ -33,8 +33,10 @@ export default {
   getSupport() {
     return ajax('/api/support/', 'get')
   },
-  getSubmissions() {
-    return ajax('/api/submissions/', 'get')
+  getSubmissions(params) {
+    return ajax('/api/submissions/', 'get', {
+      params
+    })
   },
   getProblem(remote_oj, remote_id) {
     return ajax('/api/problem/' + remote_oj + '/' + remote_id + '/', 'get');

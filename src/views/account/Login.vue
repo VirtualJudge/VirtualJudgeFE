@@ -34,11 +34,10 @@
     methods: {
       loginRequest() {
         api.requestLogin(this.formItem.username, this.formItem.password).then(res => {
-          console.log(res);
+          this.$Message.success("登录成功");
           window.location.reload();
         }, res => {
-          console.log(res);
-          this.$Message.error("账号或者密码不正确")
+          this.$Message.error("账号或者密码不正确");
         })
       }
     }

@@ -2988,6 +2988,12 @@ isobject@^3.0.0, isobject@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
 
+iview-loader@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/iview-loader/-/iview-loader-1.1.0.tgz#53ee6e827193d8d9b20f761e6cbbea5d9f9a7802"
+  dependencies:
+    loader-utils "^1.1.0"
+
 iview@^2.14.0-rc.3:
   version "2.14.0-rc.3"
   resolved "https://registry.yarnpkg.com/iview/-/iview-2.14.0-rc.3.tgz#ffe019a442275868ff89d20c38a8b2467ebbc481"
