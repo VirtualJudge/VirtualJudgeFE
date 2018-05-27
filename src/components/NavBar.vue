@@ -1,27 +1,34 @@
 <template>
   <Menu mode="horizontal" @on-select="handleRoute" style="min-width: 900px">
     <div class="logo">
-      <span>Virtual Judge<sup><Tag color="green" style="font-size: 12px;">Beta 1</Tag></sup></span>
+      <span>
+        Virtual Judge<sup><span
+        style="color:white;font-size: 12px;background: #00bb00;border-radius: 15px;padding: 4px;">Beta 1</span></sup>
+      </span>
     </div>
     <MenuItem name="/">
       <Icon type="home"></Icon>
       首页
     </MenuItem>
     <MenuItem name="/problems">
-      <Icon type="ios-list"></Icon>
+      <Icon type="ios-game-controller-b"></Icon>
       题目
     </MenuItem>
-    <MenuItem name="/status">
-      <Icon type="navigate"></Icon>
+    <MenuItem name="/submissions">
+      <Icon type="ios-paperplane"></Icon>
       提交
     </MenuItem>
     <MenuItem name="/contests">
-      <Icon type="flag"></Icon>
+      <Icon type="ios-folder"></Icon>
       题组
     </MenuItem>
     <MenuItem name="/rank">
       <Icon type="stats-bars"></Icon>
       排行榜
+    </MenuItem>
+    <MenuItem name="/help">
+      <Icon type="ios-help"></Icon>
+      帮助
     </MenuItem>
     <template v-if="!isAuthenticated">
       <div class="right-item">
@@ -39,13 +46,13 @@
       <div class="right-item">
         <Submenu name="/profile">
           <template slot="title">
-            <Icon type="stats-bars"></Icon>
+            <Icon type="person"></Icon>
             {{ username}}
           </template>
-          <MenuGroup title="基本操作">
-            <MenuItem name="3-1">个人资料</MenuItem>
-            <MenuItem name="3-2">设置</MenuItem>
-            <MenuItem name="/Logout">登出</MenuItem>
+          <MenuGroup title="基础">
+            <MenuItem name="/profile">个人资料</MenuItem>
+            <MenuItem name="/setting">设置</MenuItem>
+            <MenuItem name="/logout">登出</MenuItem>
           </MenuGroup>
         </Submenu>
 
@@ -126,4 +133,5 @@
     float: left;
     line-height: 60px;
   }
+
 </style>

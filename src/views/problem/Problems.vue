@@ -54,24 +54,30 @@
           },
           {
             title: '源名称',
-            key: 'remote_oj'
+            key: 'remote_oj',
+            width: 100
           },
           {
             title: '源编号',
-            key: 'remote_id'
+            key: 'remote_id',
+            width: 100,
+            render: (h, params) => {
+              return h('a', {
+                props: {
+                  type: 'text',
+                },
+                attrs: {
+                  href: params.row.remote_url,
+                  target: '_blank'
+                },
+              }, params.row.remote_id)
+            }
           },
           {
             title: '标题',
-            key: 'title'
-          },
-          {
-            title: '更新时间',
-            key: 'update_time'
-          }, {
-            title: '操作',
-            fixed: 'right',
+            // key: 'title',
             render: (h, params) => {
-              return h('Button', {
+              return h('a', {
                 props: {
                   type: 'text',
                 },
@@ -85,8 +91,13 @@
                     })
                   }
                 }
-              }, '查看')
+              }, params.row.title)
             }
+          },
+          {
+            title: '更新时间',
+            key: 'update_time',
+            width:150
           }],
         problems: [],
         loading: true

@@ -24,6 +24,9 @@ export default {
       }
     })
   },
+  getProfile() {
+    return ajax('/api/profile/', 'get');
+  },
   logout() {
     return ajax('/api/auth/', 'delete')
   },
@@ -59,6 +62,9 @@ export default {
         'code': code
       }
     })
+  },
+  refreshProblem(remote_oj, remote_id) {
+    return ajax('/api/problem/refresh/' + remote_oj + '/' + remote_id + '/', 'get')
   }
 }
 

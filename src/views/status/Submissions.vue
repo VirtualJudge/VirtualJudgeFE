@@ -40,7 +40,6 @@
           key: 'remote_oj'
         }, {
           title: '源编号',
-          //key: 'remote_id',
           render: (h, params) => {
             return h('a', {
               props: {
@@ -66,7 +65,23 @@
           key: 'execute_memory'
         }, {
           title: '语言',
-          key: 'language_name'
+          key: 'language_name',
+          render: (h, params) => {
+            return h('a', {
+              props: {
+                type: 'text',
+              },
+              on: {
+                click: () => {
+                  this.$router.push({
+                    name: 'submission', params: {
+                      id: params.row.id,
+                    }
+                  })
+                }
+              }
+            }, params.row.language_name)
+          }
         }, {
           title: '执行结果',
           render: (h, params) => {
