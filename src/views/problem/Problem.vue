@@ -196,7 +196,7 @@
         api.submitCode(this.remote_oj, this.remote_id, this.formItem.selected, this.formItem.code).then(res => {
           this.submit_loading = false;
           this.$Message.success('提交成功');
-          this.$router.push('/status')
+          this.$router.push('/submissions')
         }, res => {
           this.submit_loading = false;
           this.$Message.error('提交失败')
