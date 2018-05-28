@@ -65,6 +65,9 @@ export default {
   },
   refreshProblem(remote_oj, remote_id) {
     return ajax('/api/problem/refresh/' + remote_oj + '/' + remote_id + '/', 'get')
+  },
+  getVerdict(submission_id) {
+    return ajax('/api/verdict/' + submission_id + '/', 'get');
   }
 }
 

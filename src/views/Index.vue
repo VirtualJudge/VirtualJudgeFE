@@ -1,8 +1,16 @@
 <template>
-  <Card style="margin: 10px;">
-    <div style="text-align:center">
-      Virtual Judge is not a real online judge. It can grab problems from other regular online judges and simulate
-      submissions to other online judges. It aims to enable holding contests when you don't have the test data.
+  <Card style="margin: 20px;">
+    <div slot="title">
+      <p>Virtual Judge</p>
+    </div>
+    <div style="text-align:left">
+
+      <p>
+        基于Python爬虫的虚拟评测系统
+      </p>
+      <p>
+
+      </p>
     </div>
   </Card>
 </template>

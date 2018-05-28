@@ -7,6 +7,7 @@ import Index from '@/views/Index';
 import Rank from '@/views/account/Rank'
 import Profile from '@/views/account/Profile'
 import Submissions from '@/views/status/Submissions'
+import Submission from '@/views/status/Submission'
 import Contests from '@/views/contest/Contests'
 import Logout from '@/views/account/Logout'
 import NewContest from '@/views/contest/NewContest'
@@ -40,7 +41,7 @@ export default new Router({
     }, {
       path: '/submission/:id',
       name: 'submission',
-      component: Submissions
+      component: Submission
     }, {
       path: '/contests',
       name: 'contests',

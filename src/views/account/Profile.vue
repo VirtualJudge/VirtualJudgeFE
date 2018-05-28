@@ -6,7 +6,8 @@
       <br/>
       <br/>
       <Row>
-        <Col span="6" offset="9">{{profile.nickname}} | {{profile.username}}</Col>
+        <Col>{{profile.nickname}}</Col>
+        <Col>{{profile.username}}</Col>
       </Row>
     </div>
     <div slot="extra">

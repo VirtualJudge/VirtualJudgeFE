@@ -2,7 +2,19 @@
   <div>
     <Row>
       <Col span="18">
-        <Table :loading="loading" :columns="columns" :data="problems" style="margin: 10px"></Table>
+        <Card style="margin: 10px">
+          <Row type="flex" justify="end">
+            <Col>
+              <Page :total="pages.total" size="small" :page-size-opts="pages.page_size_opts" :current="pages.current"
+                    :page-size="pages.page_size" @on-change="handlePageChange"
+                    @on-page-size-change="handlePageSizeChange" show-sizer show-total></Page>
+            </Col>
+          </Row>
+
+          <Table :loading="loading" :columns="columns" :data="problems" style="margin: 10px auto;"></Table>
+          <BackTop></BackTop>
+        </Card>
+
       </Col>
       <Col span="6">
         <Card style="margin: 10px">
@@ -97,10 +109,17 @@
           {
             title: '更新时间',
             key: 'update_time',
-            width:150
+            width: 150
           }],
         problems: [],
-        loading: true
+        problems_data: [],
+        loading: true,
+        pages: {
+          total: 0,
+          page_size: 20,
+          current: 1,
+          page_size_opts: [20, 50, 100, 250, 500]
+        }
       }
     },
     mounted() {
@@ -111,21 +130,36 @@
         this.getProblems();
         this.getSupport();
       },
+      handlePageChange(current) {
+        this.pages.current = current;
+        this.slicePage();
+
+      },
+      handlePageSizeChange(page_size) {
+        this.pages.page_size = page_size;
+        this.slicePage();
+      },
+      slicePage() {
+        this.problems = this.problems_data.slice((this.pages.current - 1) * this.pages.page_size, this.pages.current * this.pages.page_size)
+      },
       handleSearch() {
         api.getProblem(this.selected, this.problem_id).then(res => {
           if (res.data.data.request_status > 1) {
             if (res.data.data.request_status > 2) {
               this.$Message.error('查找失败');
+              clearInterval(this.timer);
+              this.search_loading = false;
+            } else {
+              clearInterval(this.timer);
+              this.search_loading = false;
+              this.$router.push({
+                name: 'problem',
+                params: {
+                  remote_oj: this.selected, remote_id:
+                  this.problem_id
+                }
+              })
             }
-            clearInterval(this.timer);
-            this.search_loading = false;
-            this.$router.push({
-              name: 'problem',
-              params: {
-                remote_oj: this.selected, remote_id:
-                this.problem_id
-              }
-            })
           }
         }, res => {
           clearInterval(this.timer);
@@ -154,11 +188,13 @@
         this.loading = true;
         api.getProblems().then(res => {
           this.loading = false;
-          this.problems = res.data.data;
+          this.problems_data = res.data.data;
+          this.slicePage();
           moment.locale('zh-CN');
-          for (let i = 0; i < this.problems.length; ++i) {
-            this.problems[i].update_time = moment(this.problems[i].update_time).calendar();
+          for (let i = 0; i < this.problems_data.length; ++i) {
+            this.problems_data[i].update_time = moment(this.problems_data[i].update_time).calendar();
           }
+          this.pages.total = this.problems_data.length;
         }, res => {
           this.loading = false;
         })

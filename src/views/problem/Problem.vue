@@ -8,31 +8,32 @@
         </p>
         <iframe id="id_frame" :src="frame_url" width="100%" height="0px" scrolling="no" frameborder="0">
         </iframe>
+        <Spin size="large" fix v-if="refresh_loading || loading"></Spin>
       </Card>
       <template v-if="isAuthenticated && !refresh_loading">
         <Modal v-model="submit_modal" width="50%">
           <div slot="header">
-            提交代码
+            <h3>
+              <Icon type="code-working"></Icon>
+              提交代码
+            </h3>
           </div>
-          <codemirror :options="cmOptions" v-model="formItem.code"></codemirror>
-          <Form inline title="Form">
-            <FormItem prop="user">
-              <Select v-model="formItem.selected" style="min-width: 60px">
-                <Option v-for="item in languages" :key="item.oj_language" :value="item.oj_language">
-                  {{item.oj_language_name}}
-                </Option>
-              </Select>
-            </FormItem>
-            <FormItem>
-              <Button :loading="submit_loading" type="primary" @click="submitCode()">提交</Button>
-            </FormItem>
-          </Form>
-          <div slot="footer" style="display: none"></div>
+          <Select v-model="formItem.selected" style="min-width: 60px;max-width: 200px;">
+            <Option v-for="item in languages" :key="item.oj_language" :value="item.oj_language">
+              {{item.oj_language_name}}
+            </Option>
+          </Select>
+          <codemirror :options="cmOptions" v-model="formItem.code"
+                      style="margin-top:5px;border: 1px gainsboro solid;"></codemirror>
+          <div slot="footer">
+            <Button type="ghost" @click="submit_modal=false">取消</Button>
+            <Button :loading="submit_loading" type="primary" @click="submitCode()">提交</Button>
+          </div>
         </Modal>
       </template>
     </Col>
     <Col span="6">
-      <Card :loading="loading" style="margin: 10px">
+      <Card style="margin: 10px">
         <p slot="title">
           <Icon type="ios-list"></Icon>
           基本信息
@@ -54,14 +55,21 @@
             <Tag>{{problem.update_time}}</Tag>
           </li>
         </ul>
+        <Spin size="large" fix v-if="refresh_loading || loading"></Spin>
       </Card>
       <Card style="margin: 0 10px;">
         <div slot="title">
           <Icon type="flag"></Icon>
           操作
         </div>
-        <Button :loading="refresh_loading" @click="refresh">更新题目</Button>
-        <Button :loading="refresh_loading" @click="submit_modal=true">提交题目</Button>
+        <ul>
+          <li>
+            <Button :loading="refresh_loading" @click="refresh">更新题目</Button>
+          </li>
+          <li>
+            <Button :disabled="refresh_loading" type="primary" @click="submit_modal=true">提交题目</Button>
+          </li>
+        </ul>
       </Card>
     </Col>
   </Row>
@@ -98,7 +106,7 @@
         languages: [],
         formItem: {
           selected: '',
-          code: ' '
+          code: ''
         },
         problem: {
           title: '',
@@ -116,6 +124,7 @@
     },
     methods: {
       handleRefresh() {
+
         api.getProblem(this.remote_oj, this.remote_id).then(res => {
           console.log(res);
           if (res.data.data.request_status > 1) {
@@ -123,6 +132,14 @@
               this.$Message.error('更新失败');
             } else {
               document.getElementById('id_frame').contentWindow.location.reload(true);
+              this.loading = false;
+              this.problem.title = res.data.data.title;
+              this.problem.time_limit = res.data.data.time_limit;
+              this.problem.memory_limit = res.data.data.memory_limit;
+              this.problem.remote_id = res.data.data.remote_id;
+              this.problem.remote_oj = res.data.data.remote_oj;
+              moment.locale('zh-CN');
+              this.problem.update_time = moment(res.data.data.update_time).calendar()
             }
 
             clearInterval(this.timer);
@@ -137,6 +154,7 @@
       },
       refresh() {
         this.refresh_loading = true;
+        this.loading = true;
         api.refreshProblem(this.remote_oj, this.remote_id).then(res => {
           this.timer = setInterval(() => {
             this.handleRefresh()
@@ -216,5 +234,6 @@
 <style scoped>
   ul li {
     list-style: none;
+    margin: 5px auto;
   }
 </style>
