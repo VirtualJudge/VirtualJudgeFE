@@ -6,7 +6,7 @@
     <template v-if="verdict.code">
       <Card>
         <codemirror :options="cmOptions" v-model="verdict.code"
-                    style="margin-top:5px;border: 1px gainsboro solid;"></codemirror>
+                    style="margin-top:5px;border: 1px solid #eee;"></codemirror>
       </Card>
     </template>
   </div>
@@ -15,6 +15,7 @@
 <script>
   import api from '../../api';
   import moment from 'moment';
+
   export default {
     name: "Submission",
     data() {
@@ -23,7 +24,7 @@
           tabSize: 4,
           lineNumbers: true,
           line: true,
-          readOnly: true
+          readOnly: true,
         },
         submission_id: '',
         verdict: {
@@ -69,13 +70,13 @@
         ],
       }
     },
-    beforeCreate(){
+    beforeCreate() {
       this.$Spin.show();
     },
     mounted() {
       this.init();
     },
-    updated(){
+    updated() {
       this.$Spin.hide();
     },
     methods: {
@@ -92,7 +93,7 @@
         api.getVerdict(submission_id).then(res => {
           this.verdict.code = res.data.data.code;
           this.verdict.table_data.push(res.data.data);
-          for(let i = 0;i<this.verdict.table_data.length; ++i){
+          for (let i = 0; i < this.verdict.table_data.length; ++i) {
             this.verdict.table_data[i].create_time = moment(this.verdict.table_data[i].create_time).calendar();
           }
         }, res => {
@@ -104,5 +105,12 @@
 </script>
 
 <style scoped>
-
+  .CodeMirror {
+    height: auto;
+  }
+  .CodeMirror-scroll{
+    height: auto;
+    overflow-y: hidden;
+    overflow-x: auto;
+  }
 </style>

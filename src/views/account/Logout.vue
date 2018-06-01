@@ -9,7 +9,9 @@
     name: "Logout",
     mounted() {
       api.logout().then(res => {
-        this.$router.push('/');
+        setTimeout(() => {
+          window.location.reload();
+        }, 300);
       }, res => {
         this.$Message.error('登出失败')
       })

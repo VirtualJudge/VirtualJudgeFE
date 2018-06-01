@@ -6,8 +6,10 @@ import router from './router'
 import iView from 'iview';
 import 'iview/dist/styles/iview.css';
 import CodeMirror from 'vue-codemirror-lite';
-Vue.use(CodeMirror);
+import Vuex from 'vuex'
 
+Vue.use(Vuex);
+Vue.use(CodeMirror);
 Vue.use(iView);
 Vue.config.productionTip = false;
 
@@ -18,3 +20,4 @@ new Vue({
   components: {App},
   template: '<App/>'
 });
+

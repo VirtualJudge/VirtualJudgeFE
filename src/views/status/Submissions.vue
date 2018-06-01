@@ -19,6 +19,7 @@
           </template>
         </div>
         <Table :loading="loading_table" :columns="columns" :data="submissions"></Table>
+        <BackTop></BackTop>
       </Card>
     </Col>
   </Row>
