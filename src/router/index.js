@@ -15,6 +15,7 @@ import NewContest from '@/views/contest/NewContest'
 Vue.use(Router);
 
 export default new Router({
+  model: history,
   routes: [
     {
       path: '/',

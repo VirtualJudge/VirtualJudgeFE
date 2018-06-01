@@ -75,20 +75,29 @@
             title: '语言',
             key: 'language_name',
             render: (h, params) => {
-              return h('a', {
-                props: {
-                  type: 'text',
-                },
-                on: {
-                  click: () => {
-                    this.$router.push({
-                      name: 'submission', params: {
-                        id: params.row.id,
-                      }
-                    })
+              if (params.row.user === this.login_user) {
+                return h('a', {
+                  props: {
+                    type: 'text',
+                  },
+                  on: {
+                    click: () => {
+                      this.$router.push({
+                        name: 'submission', params: {
+                          id: params.row.id,
+                        }
+                      })
+                    }
                   }
-                }
-              }, params.row.language_name)
+                }, params.row.language_name)
+              } else {
+                return h('span', {
+                  props: {
+                    type: 'text',
+                  },
+                }, params.row.language_name)
+              }
+
             }
           }, {
             title: '执行结果',

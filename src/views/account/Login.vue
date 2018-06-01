@@ -35,7 +35,9 @@
       loginRequest() {
         api.requestLogin(this.formItem.username, this.formItem.password).then(res => {
           this.$Message.success("登录成功");
-          window.location.reload();
+          setTimeout(() => {
+            this.$router.go(0)
+          }, 1000);
         }, res => {
           this.$Message.error("账号或者密码不正确");
         })

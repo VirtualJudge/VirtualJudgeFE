@@ -102,9 +102,9 @@
       },
       logout() {
         api.logout().then(res => {
-          window.location.reload();
+          this.$router.go(0);
         }, res => {
-          window.location.reload();
+          this.$router.go(0);
         })
       },
       getAuth() {
