@@ -10,7 +10,7 @@
     mounted() {
       api.logout().then(res => {
         setTimeout(() => {
-          window.location.reload();
+          window.location.href = '/';
         }, 300);
       }, res => {
         this.$Message.error('登出失败')
