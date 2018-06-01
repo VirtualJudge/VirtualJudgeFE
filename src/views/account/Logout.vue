@@ -9,7 +9,7 @@
     name: "Logout",
     mounted() {
       api.logout().then(res => {
-        window.location.href = '/'
+        this.$router.push('/');
       }, res => {
         this.$Message.error('登出失败')
       })

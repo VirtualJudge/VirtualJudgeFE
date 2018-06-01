@@ -155,8 +155,8 @@
               this.$router.push({
                 name: 'problem',
                 params: {
-                  remote_oj: this.selected, remote_id:
-                  this.problem_id
+                  remote_oj: this.selected,
+                  remote_id: this.problem_id
                 }
               })
             }
