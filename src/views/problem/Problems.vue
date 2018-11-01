@@ -24,7 +24,7 @@
           </div>
           <Form>
             <FormItem prop="">
-              <Select v-model="selected">
+              <Select @on-change="handleOJChange()" v-model="selected">
                 <Option v-for="item in support" :key="item" :value="item">
                   {{item}}
                 </Option>
@@ -46,6 +46,7 @@
 
 <script>
   import api from '../../api'
+  import local from '../../local'
   import moment from 'moment'
 
   export default {
@@ -65,12 +66,6 @@
             sortable: true
           },
           {
-            title: '源名称',
-            sortable: true,
-            key: 'remote_oj',
-            width: 100
-          },
-          {
             title: '源编号',
             key: 'remote_id',
             width: 100,
@@ -84,6 +79,16 @@
                   target: '_blank'
                 },
               }, params.row.remote_id)
+            }
+          },
+
+          {
+            title: '源名称',
+            sortable: true,
+            key: 'remote_oj',
+            filters: [],
+            filterMethod(value, row) {
+              return row.remote_oj.indexOf(value) > -1;
             }
           },
           {
@@ -131,6 +136,14 @@
       init() {
         this.getProblems();
         this.getSupport();
+      },
+      handleOJChange() {
+        local.setLastOJ(this.selected);
+      },
+      handleOJDefault() {
+        if (local.getLastOJ()) {
+          this.selected = local.getLastOJ()
+        }
       },
       handlePageChange(current) {
         this.pages.current = current;
@@ -182,6 +195,13 @@
         api.getSupport().then(res => {
           this.support = res.data.data;
           this.selected = this.support[0];
+          for (let item in this.support) {
+            this.columns[1].filters.push({
+              label: this.support[item],
+              value: this.support[item]
+            });
+          }
+          this.handleOJDefault()
         }, res => {
           console.log(res);
         })

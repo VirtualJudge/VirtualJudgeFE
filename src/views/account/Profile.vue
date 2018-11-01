@@ -14,7 +14,7 @@
       <Icon type="star"></Icon>
     </div>
 
-    <Row type="float">
+    <Row>
       <Col span="4" offset="4">提交数</Col>
       <Col span="4" offset="8">{{profile.submitted}}</Col>
     </Row>

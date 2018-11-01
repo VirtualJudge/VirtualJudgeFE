@@ -18,15 +18,17 @@
               提交代码
             </h3>
           </div>
-          <Select v-model="formItem.selected" style="min-width: 60px;max-width: 200px;">
-            <Option v-for="item in languages" :key="item.oj_language" :value="item.oj_language">
+          <Select @on-change="handleLanguageChange" v-model="formItem.selected"
+                  style="min-width: 60px;max-width: 200px;">
+            <Option v-for="item in languages" :key="item.oj_language"
+                    :value="item.oj_language">
               {{item.oj_language_name}}
             </Option>
           </Select>
           <codemirror :options="cmOptions" v-model="formItem.code"
                       style="margin-top:5px;border: 1px gainsboro solid;"></codemirror>
           <div slot="footer">
-            <Button type="ghost" @click="submit_modal=false">取消</Button>
+            <Button @click="submit_modal=false">取消</Button>
             <Button :loading="submit_loading" type="primary" @click="submitCode()">提交</Button>
           </div>
         </Modal>
@@ -64,10 +66,12 @@
         </div>
         <ul>
           <li>
-            <Button :loading="refresh_loading" @click="refresh">更新题目</Button>
+            <Button :loading="refresh_loading" :disabled="refresh_loading || !isAuthenticated" @click="refresh">更新题目
+            </Button>
           </li>
           <li>
-            <Button :disabled="refresh_loading" type="primary" @click="submit_modal=true">提交题目</Button>
+            <Button :disabled="refresh_loading || !isAuthenticated" type="primary" @click="submit_modal=true">提交题目
+            </Button>
           </li>
         </ul>
       </Card>
@@ -77,6 +81,7 @@
 
 <script>
   import api from '../../api'
+  import local from '../../local'
   import moment from 'moment'
   import Operation from "iview/src/components/transfer/operation";
 
@@ -123,6 +128,15 @@
 
     },
     methods: {
+      handleLanguageChange() {
+        console.log(this.formItem.selected);
+        local.setLastLanguage(this.problem.remote_oj, this.formItem.selected);
+      },
+      handleDefaultLanguage() {
+        if (local.getLastLanguage(this.problem.remote_oj)) {
+          this.formItem.selected = local.getLastLanguage(this.problem.remote_oj)
+        }
+      },
       handleRefresh() {
 
         api.getProblem(this.remote_oj, this.remote_id).then(res => {
@@ -194,7 +208,8 @@
           this.problem.remote_id = res.data.data.remote_id;
           this.problem.remote_oj = res.data.data.remote_oj;
           moment.locale('zh-CN');
-          this.problem.update_time = moment(res.data.data.update_time).calendar()
+          this.problem.update_time = moment(res.data.data.update_time).calendar();
+          this.handleDefaultLanguage()
         }, res => {
           this.loading = false;
 

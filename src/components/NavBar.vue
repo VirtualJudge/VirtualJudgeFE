@@ -11,33 +11,33 @@
       首页
     </MenuItem>
     <MenuItem name="/problems">
-      <Icon type="ios-game-controller-b"></Icon>
+      <Icon type="ios-game-controller-b"/>
       题目
     </MenuItem>
     <MenuItem name="/submissions">
-      <Icon type="ios-paperplane"></Icon>
+      <Icon type="md-document"/>
       提交
     </MenuItem>
     <MenuItem name="/contests">
-      <Icon type="ios-folder"></Icon>
+      <Icon type="ios-folder"/>
       题组
     </MenuItem>
     <MenuItem name="/rank">
-      <Icon type="stats-bars"></Icon>
+      <Icon type="md-stats"/>
       排行榜
     </MenuItem>
     <MenuItem name="/help">
-      <Icon type="ios-help"></Icon>
+      <Icon type="md-help-circle"/>
       帮助
     </MenuItem>
     <template v-if="!isAuthenticated">
       <div class="right-item">
-        <Button type="ghost" shape="circle" @click="modalLogin=true">
-          <Icon type="log-in"></Icon>
+        <Button shape="circle" @click="modalLogin=true">
+          <Icon type="md-log-in"/>
           登录
         </Button>
-        <Button type="ghost" shape="circle" @click="modalRegister=true">
-          <Icon type="person-add"></Icon>
+        <Button shape="circle" @click="modalRegister=true">
+          <Icon type="md-person-add"/>
           注册
         </Button>
       </div>
@@ -46,8 +46,7 @@
       <div class="right-item">
         <Submenu name="/profile">
           <template slot="title">
-            <Icon type="person"></Icon>
-            {{ username}}
+            <Avatar>{{username}}</Avatar>
           </template>
           <MenuGroup title="基础">
             <MenuItem name="/profile">个人资料</MenuItem>

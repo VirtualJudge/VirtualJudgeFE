@@ -13,7 +13,7 @@
           </Row>
 
         </div>
-        <Table></Table>
+        <Table :loading="loading" :columns="columns" :data="contests" style="margin: 10px auto;"></Table>
       </Card>
     </Col>
     <Col span="6">
@@ -34,6 +34,7 @@
 
 <script>
   import api from '../../api'
+  import moment from 'moment'
 
   export default {
     name: "Contests",
@@ -41,6 +42,47 @@
       return {
         isAuthenticated: false,
         mine_contests: false,
+        loading: true,
+        contests: [],
+        columns: [
+          {
+            title: '#',
+            sortable: true,
+            key: 'id',
+
+          },
+          {
+            title: '标题',
+            sortable: true,
+            //key: 'title',
+            render: (h, params) => {
+              return h('a', {
+                props: {
+                  type: 'text',
+                },
+                on: {
+                  click: () => {
+                    this.$router.push({
+                      name: 'contest', params: {
+                        id: params.row.id,
+                      }
+                    })
+                  }
+                }
+              }, params.row.title)
+            }
+          },
+          {
+            title: '拥有者',
+            key: 'user',
+          },
+          {
+            title: '创建时间',
+            sortable: true,
+            key: 'created_time',
+
+          },
+        ],
       }
     },
     mounted() {
@@ -49,6 +91,22 @@
     methods: {
       init() {
         this.getAuth();
+        this.getContests();
+        this.loading = false;
+      },
+
+      getContests() {
+        api.getContests().then(res => {
+          console.log(res);
+          this.contests = res.data.data;
+          moment.locale('zh-CN');
+          for (let i = 0; i < this.contests.length; ++i) {
+            this.contests[i].created_time = moment(this.contests[i].created_time).calendar();
+          }
+
+        }, res => {
+          console.log(res);
+        });
       },
       getAuth() {
         api.getAuth().then(res => {
@@ -58,7 +116,7 @@
           console.log(res);
         })
       },
-      switch_change(status){
+      switch_change(status) {
         console.log('switch');
         console.log(status);
       }

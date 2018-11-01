@@ -53,6 +53,17 @@ export default {
   getAuth() {
     return ajax('/api/auth/', 'get');
   },
+  getContests() {
+    return ajax('/api/contests/', 'get');
+  },
+  getContestProblems(id) {
+    return ajax('/api/contest/' + id + '/', 'get');
+  },
+  submitNewContest(post_data) {
+    return ajax('/api/contest/new/', 'post', {
+      data: post_data
+    })
+  },
   submitCode(remote_oj, remote_id, language, code) {
     return ajax('/api/submission/', 'post', {
       data: {

@@ -13,6 +13,7 @@
               </Col>
               <Col>
                 <Page :total="pages.total" :page-size-opts="[20,30,50,100]" :current="pages.current" size="small"
+                      @on-change="handlePageChange" @on-page-size-change="handlePageSizeChange"
                       :page-size="pages.page_size" show-sizer></Page>
               </Col>
             </Row>
@@ -116,6 +117,7 @@
           }
         ],
         submissions: [],
+        submissions_data: [],
       }
     },
     mounted() {
@@ -125,6 +127,18 @@
       init() {
         this.getSubmissions();
         this.getAuth();
+      },
+      handlePageChange(current) {
+        this.pages.current = current;
+        this.slicePage();
+
+      },
+      handlePageSizeChange(page_size) {
+        this.pages.page_size = page_size;
+        this.slicePage();
+      },
+      slicePage() {
+        this.submissions = this.submissions_data.slice((this.pages.current - 1) * this.pages.page_size, this.pages.current * this.pages.page_size)
       },
       getVerdictColor(verdict_code) {
         let color_list = ['black', 'green', 'yellow', 'red', 'pink'];
@@ -141,10 +155,12 @@
         this.loading_table = true;
         return api.getSubmissions(data).then(res => {
           this.loading_table = false;
-          this.submissions = res.data.data;
+          this.submissions_data = res.data.data;
+          this.pages.total = this.submissions_data.length;
+          this.slicePage();
           moment.locale('zh-CN');
-          for (let i = 0; i < this.submissions.length; ++i) {
-            this.submissions[i].create_time = moment(this.submissions[i].create_time).calendar()
+          for (let i = 0; i < this.submissions_data.length; ++i) {
+            this.submissions_data[i].create_time = moment(this.submissions_data[i].create_time).calendar()
           }
         }, res => {
           this.loading_table = false;
