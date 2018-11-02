@@ -17,5 +17,11 @@ export default {
   },
   getLastLanguage(OJ) {
     return this.getItem(OJ + '_LANG');
+  },
+  getFilterValue(key) {
+    return this.getItem('FILTER' + key)
+  },
+  setFilterValue(key, value) {
+    return this.setItem('FILTER' + key, value)
   }
 }

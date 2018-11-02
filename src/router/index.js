@@ -7,6 +7,8 @@ import Index from '@/views/Index';
 import Help from '@/views/Help';
 import Rank from '@/views/account/Rank'
 import Profile from '@/views/account/Profile'
+import Setting from '@/views/account/Setting'
+import Admin from '@/views/account/Admin'
 import Submissions from '@/views/status/Submissions'
 import Submission from '@/views/status/Submission'
 import Contests from '@/views/contest/Contests'
@@ -66,6 +68,14 @@ export default new Router({
       path: '/profile',
       name: 'profile',
       component: Profile
+    }, {
+      path: '/setting',
+      name: 'setting',
+      component: Setting
+    }, {
+      path: '/admin',
+      name: 'admin',
+      component: Admin
     }, {
       path: '/logout',
       name: 'logout',

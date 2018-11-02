@@ -34,7 +34,7 @@
                 </Select>
               </Col>
               <Col span="3" offset="1">
-                <Input type="text" v-model="item.value" placeholder="Enter something..."></Input>
+                <Input type="text" @on-blur="handleRefresh(index)" v-model="item.remote_id" placeholder="Enter something..."></Input>
               </Col>
               <Col span="2" offset="1">
                 <Button @click="handleRefresh(index)">刷新</Button>
@@ -42,17 +42,14 @@
               <Col span="2">
                 <Button type="error" @click="handleRemove(index)">删除</Button>
               </Col>
-              <Col offset="1">
-                <a href="#" @click="handleClick(index)">{{item.title}}</a>
+              <Col span="6" offset="1">
+                <a href="#" style="color: #2d8cf0" @click="handleClick(index)">{{item.title}}</a>
               </Col>
             </Row>
           </FormItem>
           <FormItem>
             <Row>
-              <Col span="4">
-                &nbsp;
-              </Col>
-              <Col span="4">
+              <Col span="4" offset="4">
                 <Button :disabled="add_disable" @click="handleAdd" icon="plus-round">添加题目</Button>
               </Col>
               <Col span="4">
@@ -86,6 +83,7 @@
     },
     mounted() {
       this.getSupport();
+      document.title = '新建题组';
     },
     methods: {
       handleOJChange(selected) {
@@ -140,12 +138,12 @@
           id: '',
           remote_oj: this.handleOJDefault(),
           remote_id: '',
-          value: '',
           index: this.index,
           status: 1,
           title: '',
           success: false
         });
+        console.log(this.formDynamic.items);
         this.submit_disable = true;
         this.handleSubmitChange();
       },
@@ -177,13 +175,10 @@
         }
       },
       handleRefresh(index) {
-        console.log(this.formDynamic.items[index].language);
-        console.log(this.formDynamic.items[index].value);
-        api.getProblem(this.formDynamic.items[index].language, this.formDynamic.items[index].value).then(res => {
+        console.log(this.formDynamic.items[index].remote_oj);
+        api.getProblem(this.formDynamic.items[index].remote_oj, this.formDynamic.items[index].remote_id).then(res => {
           console.log(res);
           this.formDynamic.items[index].title = res.data.data.title;
-          this.formDynamic.items[index].remote_id = res.data.data.remote_id;
-          this.formDynamic.items[index].remote_oj = res.data.data.remote_oj;
           this.formDynamic.items[index].success = res.data.data.request_status === 2;
           this.handleSubmitChange();
         }, res => {

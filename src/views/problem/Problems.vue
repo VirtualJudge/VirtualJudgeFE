@@ -19,25 +19,43 @@
       <Col span="6">
         <Card style="margin: 10px">
           <div slot="title">
-            <Icon type="document-text"></Icon>
-            查找题目
+            <Icon type="md-list"></Icon>
+            筛选题目列表
           </div>
           <Form>
-            <FormItem prop="">
-              <Select @on-change="handleOJChange()" v-model="selected">
+            <FormItem label="来源" prop="">
+
+              <Select v-model="filter.selected">
+                <Option value="default">
+                  全部
+                </Option>
                 <Option v-for="item in support" :key="item" :value="item">
                   {{item}}
                 </Option>
               </Select>
             </FormItem>
-            <FormItem>
-              <Input type="text" v-model="problem_id" placeholder="题目编号"/>
+            <FormItem label="题目编号">
+              <Input type="text" v-model="filter.id" clearable/>
+            </FormItem>
+            <FormItem label="题目标题">
+              <Input type="text" v-model="filter.title" clearable/>
             </FormItem>
             <FormItem>
-              <Button type="primary" :loading="search_loading" @click="handleSearchStart()">查找</Button>
+              <Button type="primary" @click="handleFilterStart()" :loading="filter.loading" shape="circle"
+                      icon="ios-search">筛选
+              </Button>
             </FormItem>
           </Form>
         </Card>
+        <!--
+        <Card style="margin: 10px">
+          <div slot="title">
+            <Icon type="md-list"></Icon>
+            最近未通过
+          </div>
+
+        </Card>
+        -->
       </Col>
     </Row>
 
@@ -46,13 +64,18 @@
 
 <script>
   import api from '../../api'
-  import local from '../../local'
   import moment from 'moment'
 
   export default {
     name: "Problems",
     data() {
       return {
+        filter: {
+          selected: 'default',
+          id: '',
+          title: '',
+          loading: false
+        },
         support: [],
         search_loading: false,
         selected: '',
@@ -86,10 +109,6 @@
             title: '源名称',
             sortable: true,
             key: 'remote_oj',
-            filters: [],
-            filterMethod(value, row) {
-              return row.remote_oj.indexOf(value) > -1;
-            }
           },
           {
             title: '标题',
@@ -119,7 +138,7 @@
             width: 150
           }],
         problems: [],
-        problems_data: [],
+        raw_problems: [],
         loading: true,
         pages: {
           total: 0,
@@ -134,16 +153,9 @@
     },
     methods: {
       init() {
-        this.getProblems();
+        document.title = '题目列表';
+        this.getProblems({});
         this.getSupport();
-      },
-      handleOJChange() {
-        local.setLastOJ(this.selected);
-      },
-      handleOJDefault() {
-        if (local.getLastOJ()) {
-          this.selected = local.getLastOJ()
-        }
       },
       handlePageChange(current) {
         this.pages.current = current;
@@ -155,71 +167,46 @@
         this.slicePage();
       },
       slicePage() {
-        this.problems = this.problems_data.slice((this.pages.current - 1) * this.pages.page_size, this.pages.current * this.pages.page_size)
-      },
-      handleSearch() {
-        api.getProblem(this.selected, this.problem_id).then(res => {
-          if (res.data.data.request_status > 1) {
-            if (res.data.data.request_status > 2) {
-              this.$Message.error('查找失败');
-              clearInterval(this.timer);
-              this.search_loading = false;
-            } else {
-              clearInterval(this.timer);
-              this.search_loading = false;
-              this.$router.push({
-                name: 'problem',
-                params: {
-                  remote_oj: this.selected,
-                  remote_id: this.problem_id
-                }
-              })
-            }
-          }
-        }, res => {
-          clearInterval(this.timer);
-          this.$Message.error('查找失败');
-          this.search_loading = false;
-        })
-
-      },
-      handleSearchStart() {
-        this.search_loading = true;
-        this.handleSearch();
-        this.timer = setInterval(() => {
-          this.handleSearch()
-        }, 2000);
-        //this.search_loading = false;
+        this.problems = this.raw_problems.slice((this.pages.current - 1) * this.pages.page_size, this.pages.current * this.pages.page_size)
       },
       getSupport() {
         api.getSupport().then(res => {
           this.support = res.data.data;
           this.selected = this.support[0];
-          for (let item in this.support) {
-            this.columns[1].filters.push({
-              label: this.support[item],
-              value: this.support[item]
-            });
-          }
-          this.handleOJDefault()
         }, res => {
           console.log(res);
         })
       },
-      getProblems() {
+      getProblems(params) {
         this.loading = true;
-        api.getProblems().then(res => {
+        this.filter.loading = true;
+        api.getProblems(params).then(res => {
           this.loading = false;
-          this.problems_data = res.data.data;
+          this.filter.loading = false;
+          this.raw_problems = res.data.data;
           this.slicePage();
           moment.locale('zh-CN');
-          for (let i = 0; i < this.problems_data.length; ++i) {
-            this.problems_data[i].update_time = moment(this.problems_data[i].update_time).calendar();
+          for (let i = 0; i < this.raw_problems.length; ++i) {
+            this.raw_problems[i].update_time = moment(this.raw_problems[i].update_time).calendar();
           }
-          this.pages.total = this.problems_data.length;
+          this.pages.total = this.raw_problems.length;
         }, res => {
           this.loading = false;
+          this.filter.loading = false;
         })
+      },
+      handleFilterStart() {
+        let params = {};
+        if (this.filter.selected !== 'default') {
+          params['remote_oj'] = this.filter.selected;
+        }
+        if (this.filter.id !== '') {
+          params['remote_id'] = this.filter.id;
+        }
+        if (this.filter.title !== '') {
+          params['title'] = this.filter.title;
+        }
+        this.getProblems(params);
       }
     }
   }

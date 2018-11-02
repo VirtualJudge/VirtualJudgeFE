@@ -3,7 +3,7 @@
     <div class="logo">
       <span>
         Virtual Judge<sup><span
-        style="color:white;font-size: 12px;background: #00bb00;border-radius: 15px;padding: 4px;">Beta 1</span></sup>
+        style="color:white;font-size: 12px;background: #00bb00;border-radius: 15px;padding: 4px;">Beta 2</span></sup>
       </span>
     </div>
     <MenuItem name="/">
@@ -48,11 +48,15 @@
           <template slot="title">
             <Avatar>{{username}}</Avatar>
           </template>
+          <MenuGroup v-if="isAdministrator" title="高级">
+            <MenuItem name="/admin">系统管理</MenuItem>
+          </MenuGroup>
           <MenuGroup title="基础">
             <MenuItem name="/profile">个人资料</MenuItem>
             <MenuItem name="/setting">设置</MenuItem>
             <MenuItem name="/logout">登出</MenuItem>
           </MenuGroup>
+
         </Submenu>
 
       </div>
@@ -89,11 +93,13 @@
         modalRegister: false,
         modalLogin: false,
         isAuthenticated: false,
-        username: ''
+        username: '',
+        isAdministrator: false
       }
     },
     mounted() {
-      this.getAuth()
+      this.getAuth();
+      this.getPrivilege();
     },
     methods: {
       handleRoute(route) {
@@ -112,6 +118,17 @@
           this.isAuthenticated = true;
         }, res => {
           this.isAuthenticated = false;
+        })
+      },
+      getPrivilege() {
+        this.isAdministrator = false;
+        api.getPrivilege().then(res => {
+
+          if (res.data.data === true) {
+            this.isAdministrator = true;
+          }
+        }, res => {
+
         })
       }
     }

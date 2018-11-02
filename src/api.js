@@ -7,7 +7,11 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.xsrfCookieName = 'csrftoken';
 
 export default {
+  getPrivilege() {
+    return ajax('/api/privilege/', 'get');
+  },
   requestLogin(username, password) {
+
     return ajax('/api/auth/', 'post', {
       data: {
         'username': username,
@@ -30,8 +34,11 @@ export default {
   logout() {
     return ajax('/api/auth/', 'delete')
   },
-  getProblems() {
-    return ajax('/api/problems/', 'get')
+  getProblems(params) {
+    console.log(params);
+    return ajax('/api/problems/', 'get', {
+      params
+    })
   },
   getSupport() {
     return ajax('/api/support/', 'get')
@@ -44,6 +51,7 @@ export default {
   getProblem(remote_oj, remote_id) {
     return ajax('/api/problem/' + remote_oj + '/' + remote_id + '/', 'get');
   },
+
   getLanguages(remote_oj) {
     return ajax('/api/languages/' + remote_oj + '/', 'get');
   },

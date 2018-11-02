@@ -203,6 +203,7 @@
         api.getProblem(remote_oj, remote_id).then(res => {
           this.loading = false;
           this.problem.title = res.data.data.title;
+          document.title = this.problem.title;
           this.problem.time_limit = res.data.data.time_limit;
           this.problem.memory_limit = res.data.data.memory_limit;
           this.problem.remote_id = res.data.data.remote_id;

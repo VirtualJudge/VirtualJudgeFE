@@ -90,6 +90,7 @@
     },
     methods: {
       init() {
+        document.title = '题组列表';
         this.getAuth();
         this.getContests();
         this.loading = false;
@@ -97,7 +98,7 @@
 
       getContests() {
         api.getContests().then(res => {
-          console.log(res);
+
           this.contests = res.data.data;
           moment.locale('zh-CN');
           for (let i = 0; i < this.contests.length; ++i) {
@@ -111,14 +112,13 @@
       getAuth() {
         api.getAuth().then(res => {
           this.isAuthenticated = true;
-          console.log(this.isAuthenticated);
+
         }, res => {
           console.log(res);
         })
       },
       switch_change(status) {
-        console.log('switch');
-        console.log(status);
+        console.log('switch change');
       }
     }
   }

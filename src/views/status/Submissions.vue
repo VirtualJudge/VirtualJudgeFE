@@ -125,6 +125,7 @@
     },
     methods: {
       init() {
+        document.title = '提交列表';
         this.getSubmissions();
         this.getAuth();
       },

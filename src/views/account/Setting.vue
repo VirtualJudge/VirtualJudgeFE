@@ -5,18 +5,8 @@
 </template>
 
 <script>
-
   export default {
-    name: "Index",
-    data() {
-      return {
-        value2: 2
-      }
-    },
-    mounted() {
-      document.title = 'Virtual Judge';
-    }
-
+    name: "Setting"
   }
 </script>
 

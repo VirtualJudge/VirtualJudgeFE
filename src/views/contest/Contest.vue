@@ -167,16 +167,14 @@
       },
       getProblem(remote_oj, remote_id) {
         api.getProblem(remote_oj, remote_id).then(res => {
-          console.log(res.data);
+
 
           if (res.data.data.request_status > 1) {
             if (res.data.data.request_status > 2) {
               this.$Message.error('更新失败');
             } else {
               this.select_problem.frame_url = '/api/problem/' + this.select_problem.remote_oj + '/' + this.select_problem.remote_id + '/html/';
-
               document.getElementById('id_frame').contentWindow.location.reload(true);
-              console.log(res.data.data);
               this.select_problem.loading = false;
               this.select_problem.title = res.data.data.title;
               this.select_problem.time_limit = res.data.data.time_limit;

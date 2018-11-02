@@ -1,28 +1,37 @@
 <template>
-  <Card style="max-width: 500px;min-width:400px;margin:20px auto;text-align: center;">
-    <div slot="title">
-      <img class="avatar" :src="profile.avatar"/>
-      <br/>
-      <br/>
-      <br/>
-      <Row>
-        <Col>{{profile.nickname}}</Col>
-        <Col>{{profile.username}}</Col>
-      </Row>
-    </div>
-    <div slot="extra">
-      <Icon type="star"></Icon>
-    </div>
+  <Row>
+    <Col span="6">
+      <Card style="margin:10px;">
+        <div slot="title" style="text-align: center;">
+          <Avatar size="large">{{profile.username}}</Avatar>
+          <br/>
+        </div>
+        <Row>
+          <Col span="4" offset="4">用户名</Col>
+          <Col span="4" offset="8">{{profile.username}}</Col>
+        </Row>
+        <Row v-if="profile.nickname">
+          <Col span="4" offset="4">昵称</Col>
+          <Col span="4" offset="8">{{profile.nickname}}</Col>
+        </Row>
+        <Row>
+          <Col span="4" offset="4">提交数</Col>
+          <Col span="4" offset="8">{{profile.submitted}}</Col>
+        </Row>
 
-    <Row>
-      <Col span="4" offset="4">提交数</Col>
-      <Col span="4" offset="8">{{profile.submitted}}</Col>
-    </Row>
-    <Row>
-      <Col span="4" offset="4">通过数</Col>
-      <Col span="4" offset="8">{{profile.accepted}}</Col>
-    </Row>
-  </Card>
+        <Row>
+          <Col span="4" offset="4"><p>通过数</p></Col>
+          <Col span="4" offset="8"><p>{{profile.accepted}}</p></Col>
+        </Row>
+      </Card>
+
+    </Col>
+    <Col span="18">
+      <Card title="解决的问题" icon="md-list" style="margin: 10px">
+
+      </Card>
+    </Col>
+  </Row>
 </template>
 
 <script>
