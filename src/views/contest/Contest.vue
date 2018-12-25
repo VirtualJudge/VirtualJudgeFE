@@ -82,8 +82,10 @@
         <Row type="flex" justify="space-around" class="code-row-bg" style="margin-top: 10px"
              v-for="problems_row in problems" :key="problems_row.row">
           <Col span="4" v-for="item in problems_row.data" :key="item.id">
-            <Button :type="item.type" v-if="item.id === select_problem.id" shape="circle">{{item.id}}</Button>
-            <Button :type="item.type" v-else @click="onIdTableClick(item.id)">{{item.id}}</Button>
+            <Button :type="item.type" shape="circle" v-if="item.id === select_problem.id"
+                    style="border: #515a6e 2px dashed;">{{item.id}}
+            </Button>
+            <Button :type="item.type" shape="circle" v-else @click="onIdTableClick(item.id)">{{item.id}}</Button>
           </Col>
         </Row>
       </Card>
@@ -173,7 +175,7 @@
             if (res.data.data.request_status > 2) {
               this.$Message.error('更新失败');
             } else {
-              this.select_problem.frame_url = '/api/problem/' + this.select_problem.remote_oj + '/' + this.select_problem.remote_id + '/html/';
+              this.select_problem.frame_url = '/api/problem/' + this.select_problem.remote_oj + '/' + this.select_problem.remote_id + '?html=true';
               document.getElementById('id_frame').contentWindow.location.reload(true);
               this.select_problem.loading = false;
               this.select_problem.title = res.data.data.title;
@@ -194,7 +196,7 @@
         });
       },
       getLanuages(remote_oj) {
-        api.getLanguages(remote_oj).then(res => {
+        api.getLanguage(remote_oj).then(res => {
           this.languages = res.data.data;
           if (!this.handleDefaultLanguage()) {
             this.select_problem.selected = this.languages[0].oj_language;
@@ -231,6 +233,7 @@
               } else if (data.data[i * 4 + j].status === 1) {
                 item_type = 'warning';
               }
+              console.log(data);
               list_item.data.push({
                 id: i * 4 + j + 1,
                 status: data.data[i * 4 + j].status,
@@ -245,7 +248,6 @@
                 remote_oj: data.data[i * 4 + j].remote_oj,
                 remote_id: data.data[i * 4 + j].remote_id
               })
-              //console.log(data.data[i * 4 + j])
             }
           }
           this.problems.push(list_item);

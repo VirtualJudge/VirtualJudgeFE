@@ -24,7 +24,7 @@
         </p>
         <ul style="list-style: none">
           <li>
-            <router-link to="/contests/new">新建题组</router-link>
+            <router-link to="/contests/new"><Icon type="md-add" />新建比赛</router-link>
           </li>
         </ul>
       </Card>
@@ -90,7 +90,7 @@
     },
     methods: {
       init() {
-        document.title = '题组列表';
+        document.title = '比赛列表';
         this.getAuth();
         this.getContests();
         this.loading = false;

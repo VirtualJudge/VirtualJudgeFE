@@ -12,11 +12,23 @@
                 标题
               </Col>
               <Col span="12" offset="1">
-                <Input v-model="formDynamic.title" placeholder="Enter something..."></Input>
+                <Input v-model="formDynamic.title"></Input>
               </Col>
             </Row>
-
           </FormItem>
+          <FormItem>
+            <Row>
+              <Col span="2">
+                时间
+              </Col>
+              <Col span="12" offset="1">
+                <DatePicker type="datetimerange" format="yyyy年MM月dd日HH时mm分" placeholder="选择开始时间和结束时间"
+                            style="width: 100%"></DatePicker>
+              </Col>
+            </Row>
+          </FormItem>
+
+
           <FormItem
             v-for="(item, index) in formDynamic.items"
             v-if="item.status"
@@ -34,7 +46,8 @@
                 </Select>
               </Col>
               <Col span="3" offset="1">
-                <Input type="text" @on-blur="handleRefresh(index)" v-model="item.remote_id" placeholder="Enter something..."></Input>
+                <Input type="text" @on-blur="handleRefresh(index)" v-model="item.remote_id"
+                       placeholder="Enter something..."></Input>
               </Col>
               <Col span="2" offset="1">
                 <Button @click="handleRefresh(index)">刷新</Button>
@@ -53,7 +66,7 @@
                 <Button :disabled="add_disable" @click="handleAdd" icon="plus-round">添加题目</Button>
               </Col>
               <Col span="4">
-                <Button type="primary" :disabled="submit_disable" @click="handleSubmitContest">提交题组</Button>
+                <Button type="primary" :disabled="submit_disable" @click="handleSubmitContest">提交</Button>
               </Col>
             </Row>
           </FormItem>
@@ -83,7 +96,7 @@
     },
     mounted() {
       this.getSupport();
-      document.title = '新建题组';
+      document.title = '新建比赛';
     },
     methods: {
       handleOJChange(selected) {

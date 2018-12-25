@@ -7,12 +7,22 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.xsrfCookieName = 'csrftoken';
 
 export default {
+  getInformation() {
+    return ajax('/api/profile/update', 'get')
+  },
+  updatePasswordAndEmail(data) {
+    return ajax('/api/profile/update', 'post', {data: data})
+
+  },
+  getStatistics(type) {
+    return ajax('/api/statistic/' + type, 'get');
+  },
   getPrivilege() {
-    return ajax('/api/privilege/', 'get');
+    return ajax('/api/privilege', 'get');
   },
   requestLogin(username, password) {
 
-    return ajax('/api/auth/', 'post', {
+    return ajax('/api/auth', 'post', {
       data: {
         'username': username,
         'password': password,
@@ -20,7 +30,7 @@ export default {
     })
   },
   register(username, email, password) {
-    return ajax('/api/register/', 'post', {
+    return ajax('/api/register', 'post', {
       data: {
         'username': username,
         'email': email,
@@ -29,51 +39,60 @@ export default {
     })
   },
   getProfile() {
-    return ajax('/api/profile/', 'get');
+    return ajax('/api/profile', 'get');
   },
   logout() {
-    return ajax('/api/auth/', 'delete')
+    return ajax('/api/auth', 'delete')
   },
   getProblems(params) {
-    console.log(params);
-    return ajax('/api/problems/', 'get', {
+    return ajax('/api/problem', 'get', {
       params
     })
   },
   getSupport() {
-    return ajax('/api/support/', 'get')
+    return ajax('/api/support', 'get')
   },
   getSubmissions(params) {
-    return ajax('/api/submissions/', 'get', {
+    return ajax('/api/submission', 'get', {
       params
     })
   },
-  getProblem(remote_oj, remote_id) {
-    return ajax('/api/problem/' + remote_oj + '/' + remote_id + '/', 'get');
+  getProblem(remote_oj, remote_id, params) {
+    return ajax('/api/problem/' + remote_oj + '/' + remote_id, 'get');
   },
 
-  getLanguages(remote_oj) {
-    return ajax('/api/languages/' + remote_oj + '/', 'get');
+  getLanguage(remote_oj) {
+    let params = {
+      'platform': remote_oj
+    }
+    return ajax('/api/language', 'get', {params});
   },
   getRank() {
-    return ajax('/api/rank/', 'get')
+    return ajax('/api/rank', 'get')
   },
   getAuth() {
-    return ajax('/api/auth/', 'get');
+    return ajax('/api/auth', 'get');
   },
   getContests() {
-    return ajax('/api/contests/', 'get');
+    return ajax('/api/contests', 'get');
   },
   getContestProblems(id) {
-    return ajax('/api/contest/' + id + '/', 'get');
+    return ajax('/api/contest/' + id, 'get');
   },
   submitNewContest(post_data) {
-    return ajax('/api/contest/new/', 'post', {
+    return ajax('/api/contest/new', 'post', {
       data: post_data
     })
   },
+  getAdminSupport() {
+    return ajax('/api/admin/support', 'get')
+  },
+  updateAdminSupport(params, data) {
+    console.log(params, data)
+    return ajax('/api/admin/support', 'post', {params, data})
+  },
   submitCode(remote_oj, remote_id, language, code) {
-    return ajax('/api/submission/', 'post', {
+    return ajax('/api/submission', 'post', {
       data: {
         'remote_oj': remote_oj,
         'remote_id': remote_id,
@@ -82,11 +101,31 @@ export default {
       }
     })
   },
-  refreshProblem(remote_oj, remote_id) {
-    return ajax('/api/problem/refresh/' + remote_oj + '/' + remote_id + '/', 'get')
-  },
   getVerdict(submission_id) {
-    return ajax('/api/verdict/' + submission_id + '/', 'get');
+    return ajax('/api/verdict/' + submission_id, 'get');
+  },
+  getSpiderAccounts() {
+    return ajax('/api/admin/spider', 'get')
+  },
+  updateSpiderAccount(data) {
+    return ajax('/api/admin/spider', 'post', {
+      data: data
+    })
+  },
+  deleteSpiderAccount(platform, username) {
+    return ajax('/api/admin/spider', 'delete', {
+      params: {
+        platform: platform,
+        username: username
+      }
+    })
+  },
+  getHook() {
+    return ajax('/api/profile/hook', 'get')
+
+  },
+  updateHook(data) {
+    return ajax('/api/profile/hook', 'post', {data: data})
   }
 }
 

@@ -23,5 +23,17 @@ export default {
   },
   setFilterValue(key, value) {
     return this.setItem('FILTER' + key, value)
+  },
+  setLastProblemRemoteOJ(key, value) {
+    return this.setItem('LAST_PROBLEM_OJ_' + key, value);
+  },
+  getLastProblemRemoteOJ(key) {
+    return this.getItem('LAST_PROBLEM_OJ_' + key);
+  },
+  setLastProblemRemoteId(key, value) {
+    return this.setItem('LAST_PROBLEM_ID_' + key, value);
+  },
+  getLastProblemRemoteId(key) {
+    return this.getItem('LAST_PROBLEM_ID_' + key);
   }
 }

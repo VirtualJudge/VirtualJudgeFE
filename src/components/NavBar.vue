@@ -3,33 +3,30 @@
     <div class="logo">
       <span>
         Virtual Judge<sup><span
-        style="color:white;font-size: 12px;background: #00bb00;border-radius: 15px;padding: 4px;">Beta 2</span></sup>
+        style="color:white;font-size: 12px;background: #00bb00;border-radius: 15px;padding: 4px;">freeze</span></sup>
       </span>
     </div>
     <MenuItem name="/">
-      <Icon type="home"></Icon>
+      <Icon type="md-home"></Icon>
       首页
     </MenuItem>
-    <MenuItem name="/problems">
-      <Icon type="ios-game-controller-b"/>
+    <MenuItem name="/problem">
+      <Icon type="md-school" />
       题目
     </MenuItem>
-    <MenuItem name="/submissions">
-      <Icon type="md-document"/>
+    <MenuItem name="/submission">
+      <Icon type="md-code-working" />
       提交
     </MenuItem>
-    <MenuItem name="/contests">
-      <Icon type="ios-folder"/>
-      题组
-    </MenuItem>
-    <MenuItem name="/rank">
-      <Icon type="md-stats"/>
-      排行榜
-    </MenuItem>
+    <!--<MenuItem name="/rank">-->
+      <!--<Icon type="md-stats"/>-->
+      <!--排行榜-->
+    <!--</MenuItem>-->
     <MenuItem name="/help">
-      <Icon type="md-help-circle"/>
+      <Icon type="md-alert"/>
       帮助
     </MenuItem>
+
     <template v-if="!isAuthenticated">
       <div class="right-item">
         <Button shape="circle" @click="modalLogin=true">
@@ -52,9 +49,8 @@
             <MenuItem name="/admin">系统管理</MenuItem>
           </MenuGroup>
           <MenuGroup title="基础">
-            <MenuItem name="/profile">个人资料</MenuItem>
-            <MenuItem name="/setting">设置</MenuItem>
-            <MenuItem name="/logout">登出</MenuItem>
+            <MenuItem name="/setting">我的设置</MenuItem>
+            <MenuItem name="/logout">退出登录</MenuItem>
           </MenuGroup>
 
         </Submenu>

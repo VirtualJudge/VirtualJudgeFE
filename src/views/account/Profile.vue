@@ -1,37 +1,44 @@
 <template>
-  <Row>
-    <Col span="6">
-      <Card style="margin:10px;">
-        <div slot="title" style="text-align: center;">
-          <Avatar size="large">{{profile.username}}</Avatar>
-          <br/>
+  <div class="container">
+    <div class="avatar-container">
+      <img class="avatar" :src="profile.avatar"/>
+    </div>
+    <Card :padding="100">
+      <div v-if="profile.username">
+        <p style="margin-top: -10px">
+          <span v-if="profile.username" class="emphasis">{{profile.username}} {{profile.nickname}}</span>
+          <span v-if="profile.school">武汉科技大学</span>
+        </p>
+        <p v-if="profile.motto">
+          {{profile.motto}}
+        </p>
+        <hr id="split"/>
+
+        <div class="flex-container">
+          <div class="left">
+            <p>解决数量</p>
+            <p class="emphasis">{{profile.accepted}}</p>
+          </div>
+          <div class="right">
+            <p>提交数量</p>
+            <p class="emphasis">{{profile.submitted}}</p>
+          </div>
         </div>
-        <Row>
-          <Col span="4" offset="4">用户名</Col>
-          <Col span="4" offset="8">{{profile.username}}</Col>
-        </Row>
-        <Row v-if="profile.nickname">
-          <Col span="4" offset="4">昵称</Col>
-          <Col span="4" offset="8">{{profile.nickname}}</Col>
-        </Row>
-        <Row>
-          <Col span="4" offset="4">提交数</Col>
-          <Col span="4" offset="8">{{profile.submitted}}</Col>
-        </Row>
+        <div id="icons">
+          <a :href="profile.github">
+            <Icon type="social-github-outline" size="30"></Icon>
+          </a>
+          <a :href="'mailto:'+ profile.email">
+            <Icon class="icon" type="ios-email-outline" size="30"></Icon>
+          </a>
+          <a :href="profile.blog">
+            <Icon class="icon" type="ios-world-outline" size="30"></Icon>
+          </a>
+        </div>
+      </div>
+    </Card>
+  </div>
 
-        <Row>
-          <Col span="4" offset="4"><p>通过数</p></Col>
-          <Col span="4" offset="8"><p>{{profile.accepted}}</p></Col>
-        </Row>
-      </Card>
-
-    </Col>
-    <Col span="18">
-      <Card title="解决的问题" icon="md-list" style="margin: 10px">
-
-      </Card>
-    </Col>
-  </Row>
 </template>
 
 <script>
@@ -43,11 +50,16 @@
       return {
         isAuthenticated: false,
         profile: {
-          avatar: 'https://cdn.v2ex.com/gravatar/',
-          username: '',
-          nickname: '',
-          accepted: '',
-          submitted: '',
+          motto: '',
+          avatar: '',
+          school:'学校',
+          username: 'root',
+          nickname: 'root',
+          accepted: 0,
+          submitted: 0,
+          github: '',
+          email: '',
+          blog: ''
         }
       }
     },
@@ -76,11 +88,88 @@
 
 <style scoped>
 
+  .container {
+    position: relative;
+    width: 75%;
+    margin: 170px auto;
+    text-align: center;
+  }
+
+  p {
+    margin-top: 8px;
+    margin-bottom: 8px;
+  }
+
+  .avatar-container {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    z-index: 1;
+    top: -90px;
+  }
+
   .avatar {
-    width: 150px;
-    height: 150px;
+    width: 140px;
+    height: 140px;
     border-radius: 50%;
     box-shadow: 0 1px 1px 0;
 
+  }
+
+  .emphasis {
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  #split {
+    margin: 20px auto;
+    width: 90%;
+  }
+
+  .flex-container {
+    margin-top: 30px;
+    padding: auto 20px;
+  }
+
+  .left {
+    flex: 1 1;
+  }
+
+  .middle {
+    flex: 1 1;
+    border-left: 1px solid #999;
+    border-right: 1px solid #999;
+  }
+
+  .right {
+    flex: 1 1;
+  }
+
+
+  #problems {
+    margin-top: 40px;
+    padding-left: 30px;
+    padding-right: 30px;
+    font-size: 18px;
+  }
+
+  .btns {
+    margin-top: 15px;
+  }
+
+  .problem-btn {
+    display: inline-block;
+    margin: 5px;
+  }
+
+  #icons {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translate(-50%);
+  }
+
+  .icon {
+    padding-left: 20px;
   }
 </style>

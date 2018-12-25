@@ -1,5 +1,5 @@
 <template>
-  <Table style="margin: 10px" :loading="loading" :columns="columns"
+  <Table style="margin: 10px 10%" :loading="loading" :columns="columns"
          :data="ranks"></Table>
 </template>
 
@@ -58,7 +58,7 @@
             this.ranks[item].index = id++;
             this.ranks[item].motto = '';
             if (this.ranks[item].submitted === 0) {
-              this.ranks[item].ratio = 0;
+              this.ranks[item].ratio = '0%';
             } else {
               this.ranks[item].ratio = (this.ranks[item].accepted / this.ranks[item].submitted * 100).toFixed(2) + '%';
             }

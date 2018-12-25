@@ -6,7 +6,8 @@ import router from './router'
 import iView from 'iview';
 import 'iview/dist/styles/iview.css';
 import CodeMirror from 'vue-codemirror-lite';
-import Vuex from 'vuex'
+import Vuex from 'vuex';
+import "@/styles/default.less";
 
 Vue.use(Vuex);
 Vue.use(CodeMirror);

@@ -5,18 +5,27 @@
         <div slot="title">
           <template v-if="login_user">
             <Row type="flex" justify="end">
+              <Col>自动刷新
+                <i-switch v-model="auto_reload" size="large" @on-change="auto_reload_change">
+                  <span slot="open">开启</span>
+                  <span slot="close">关闭</span>
+                </i-switch>
+              </Col>
+              <Divider type="vertical"/>
               <Col>
                 <i-switch v-model="mine_contests" size="large" @on-change="switch_change">
                   <span slot="open">我的</span>
                   <span slot="close">全部</span>
                 </i-switch>
               </Col>
+              <Divider type="vertical"/>
               <Col>
                 <Page :total="pages.total" :page-size-opts="[20,30,50,100]" :current="pages.current" size="small"
                       @on-change="handlePageChange" @on-page-size-change="handlePageSizeChange"
                       :page-size="pages.page_size" show-sizer></Page>
               </Col>
             </Row>
+
           </template>
         </div>
         <Table :loading="loading_table" :columns="columns" :data="submissions"></Table>
@@ -37,6 +46,8 @@
         loading_table: false,
         mine_contests: false,
         login_user: '',
+        isAdministrator: false,
+        auto_reload: false,
         pages: {total: 0, page_size: 20, current: 1},
         columns: [
           {
@@ -118,16 +129,27 @@
         ],
         submissions: [],
         submissions_data: [],
+        timer: null
       }
     },
     mounted() {
       this.init();
+
     },
     methods: {
       init() {
         document.title = '提交列表';
         this.getSubmissions();
         this.getAuth();
+      },
+      auto_reload_change(val) {
+        if (!val) {
+          clearInterval(this.timer)
+        } else {
+          this.timer = setInterval(() => {
+            this.getSubmissions();
+          }, 5000);
+        }
       },
       handlePageChange(current) {
         this.pages.current = current;
@@ -142,7 +164,13 @@
         this.submissions = this.submissions_data.slice((this.pages.current - 1) * this.pages.page_size, this.pages.current * this.pages.page_size)
       },
       getVerdictColor(verdict_code) {
-        let color_list = ['black', 'green', 'yellow', 'red', 'pink'];
+        let color_list = {
+          'Accepted': 'success',
+          'Running': 'primary',
+          'Compile Error': 'warning',
+          'Result Error': 'error',
+          'Submit Failed': '#FFA2D3'
+        }
         return color_list[verdict_code]
       },
       getAuth() {
@@ -150,6 +178,13 @@
           this.login_user = res.data.data;
         }, res => {
           this.login_user = ''
+        });
+        api.getPrivilege().then(res => {
+          if (res.data.data) {
+            this.isAdministrator = res.data.data;
+          }
+        }, res => {
+          this.isAdministrator = false;
         })
       },
       getSubmissions(data) {
@@ -168,7 +203,6 @@
         })
       },
       switch_change(status) {
-        console.log(status);
         if (status) {
           let data = {
             'user': this.login_user

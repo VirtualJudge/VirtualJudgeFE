@@ -14,7 +14,6 @@
           <Table :loading="loading" :columns="columns" :data="problems" style="margin: 10px auto;"></Table>
           <BackTop></BackTop>
         </Card>
-
       </Col>
       <Col span="6">
         <Card style="margin: 10px">
@@ -25,7 +24,7 @@
           <Form>
             <FormItem label="来源" prop="">
 
-              <Select v-model="filter.selected">
+              <Select @on-change="handleFilterStart" v-model="filter.selected">
                 <Option value="default">
                   全部
                 </Option>
@@ -35,17 +34,19 @@
               </Select>
             </FormItem>
             <FormItem label="题目编号">
-              <Input type="text" v-model="filter.id" clearable/>
+              <Input type="text" @on-change="handleFilterStart" v-model="filter.id" clearable/>
             </FormItem>
             <FormItem label="题目标题">
-              <Input type="text" v-model="filter.title" clearable/>
-            </FormItem>
-            <FormItem>
-              <Button type="primary" @click="handleFilterStart()" :loading="filter.loading" shape="circle"
-                      icon="ios-search">筛选
-              </Button>
+              <Input type="text" @on-change="handleFilterStart" v-model="filter.title" clearable/>
             </FormItem>
           </Form>
+        </Card>
+        <Card style="margin: 10px">
+          <div slot="title">
+            <Icon type="md-search"></Icon>
+            题目查询
+          </div>
+          <Search></Search>
         </Card>
         <!--
         <Card style="margin: 10px">
@@ -65,16 +66,18 @@
 <script>
   import api from '../../api'
   import moment from 'moment'
-
+  import Search from '@/components/Search'
   export default {
     name: "Problems",
+    components:{
+      Search
+    },
     data() {
       return {
         filter: {
           selected: 'default',
           id: '',
           title: '',
-          loading: false
         },
         support: [],
         search_loading: false,
@@ -179,10 +182,8 @@
       },
       getProblems(params) {
         this.loading = true;
-        this.filter.loading = true;
         api.getProblems(params).then(res => {
           this.loading = false;
-          this.filter.loading = false;
           this.raw_problems = res.data.data;
           this.slicePage();
           moment.locale('zh-CN');
@@ -192,7 +193,6 @@
           this.pages.total = this.raw_problems.length;
         }, res => {
           this.loading = false;
-          this.filter.loading = false;
         })
       },
       handleFilterStart() {

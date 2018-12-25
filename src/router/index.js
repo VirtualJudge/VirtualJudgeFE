@@ -27,7 +27,7 @@ export default new Router({
       component: Index
     },
     {
-      path: '/problems',
+      path: '/problem',
       name: 'problems',
       component: Problems
     },
@@ -40,12 +40,12 @@ export default new Router({
       path: '/problem/:remote_oj/:remote_id',
       name: 'problem',
       component: Problem
+    // }, {
+    //   path: '/rank',
+    //   name: 'rank',
+    //   component: Rank
     }, {
-      path: '/rank',
-      name: 'rank',
-      component: Rank
-    }, {
-      path: '/submissions',
+      path: '/submission',
       name: 'submissions',
       component: Submissions
     }, {
