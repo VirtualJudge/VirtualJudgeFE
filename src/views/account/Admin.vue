@@ -11,6 +11,10 @@
             <Icon type="md-leaf"/>
             爬虫账号
           </MenuItem>
+          <MenuItem name="language">
+            <Icon type="md-heart"/>
+            提交语言
+          </MenuItem>
         </MenuGroup>
       </Menu>
     </Col>
@@ -18,6 +22,7 @@
       <Card style="margin: 10px">
         <Support v-if="cell === 'support'"></Support>
         <Account v-else-if="cell === 'account'"></Account>
+        <Language v-else-if="cell === 'language'"></Language>
       </Card>
     </Col>
   </Row>
@@ -27,10 +32,12 @@
 <script>
   import Support from "@/components/admin/Support";
   import Account from "@/components/admin/Account";
+  import Language from "../../components/admin/Language";
 
   export default {
     name: "Admin",
     components: {
+      Language,
       Support,
       Account
     },

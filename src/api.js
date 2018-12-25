@@ -126,6 +126,12 @@ export default {
   },
   updateHook(data) {
     return ajax('/api/profile/hook', 'post', {data: data})
+  },
+  getLanguageAdmin() {
+    return ajax('/api/language', 'get')
+  },
+  updateLanguageAdmin(params, data) {
+    return ajax('/api/language', 'post', {params: params, data: data})
   }
 }
 
