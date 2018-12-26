@@ -119,7 +119,7 @@
           this.problem.remote_id = res.data.data.remote_id;
           this.problem.remote_oj = res.data.data.remote_oj;
           moment.locale('zh-CN');
-          this.problem.update_time = moment(res.data.data.update_time).calendar();
+          this.problem.update_time = moment.utc(res.data.data.update_time).local().calendar();
         }, res => {
           this.loading = false;
         })

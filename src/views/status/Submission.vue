@@ -94,7 +94,7 @@
           this.verdict.code = res.data.data.code;
           this.verdict.table_data.push(res.data.data);
           for (let i = 0; i < this.verdict.table_data.length; ++i) {
-            this.verdict.table_data[i].create_time = moment(this.verdict.table_data[i].create_time).calendar();
+            this.verdict.table_data[i].create_time = moment.utc(this.verdict.table_data[i].create_time).local().calendar();
           }
         }, res => {
           this.$Message.error('加载失败');

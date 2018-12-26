@@ -196,7 +196,7 @@
           this.slicePage();
           moment.locale('zh-CN');
           for (let i = 0; i < this.submissions_data.length; ++i) {
-            this.submissions_data[i].create_time = moment(this.submissions_data[i].create_time).calendar()
+            this.submissions_data[i].create_time = moment.utc(this.submissions_data[i].create_time).local().calendar()
           }
         }, res => {
           this.loading_table = false;

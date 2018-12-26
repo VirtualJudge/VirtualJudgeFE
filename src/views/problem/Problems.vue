@@ -188,7 +188,7 @@
           this.slicePage();
           moment.locale('zh-CN');
           for (let i = 0; i < this.raw_problems.length; ++i) {
-            this.raw_problems[i].update_time = moment(this.raw_problems[i].update_time).calendar();
+            this.raw_problems[i].update_time = moment.utc(this.raw_problems[i].update_time).local().calendar();
           }
           this.pages.total = this.raw_problems.length;
         }, res => {

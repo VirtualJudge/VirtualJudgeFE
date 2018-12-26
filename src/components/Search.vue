@@ -31,7 +31,7 @@
         problem: {
           title: null,
           remote_oj: '',
-          remote_id: '1000',
+          remote_id: '',
           status: null
         },
         loading: false,
