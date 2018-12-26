@@ -58,7 +58,7 @@ export default {
     })
   },
   getProblem(remote_oj, remote_id, params) {
-    return ajax('/api/problem/' + remote_oj + '/' + remote_id, 'get');
+    return ajax('/api/problem/' + remote_oj + '/' + remote_id, 'get', {params});
   },
 
   getLanguage(remote_oj) {

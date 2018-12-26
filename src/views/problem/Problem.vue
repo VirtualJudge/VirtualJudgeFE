@@ -22,10 +22,10 @@
     </Col>
     <Col span="6">
       <Card style="margin: 10px">
-        <p slot="title">
-          <Icon type="ios-list"></Icon>
+        <div slot="title">
+          <Icon type="md-list"></Icon>
           基本信息
-        </p>
+        </div>
         <ul>
           <li>源平台:
             <span style="font-weight: bolder">{{problem.remote_oj}}</span>
@@ -45,6 +45,14 @@
         </ul>
         <Spin size="large" fix v-if="refresh_loading || loading"></Spin>
       </Card>
+      <Card style="margin: 10px">
+        <div slot="title">
+          <Icon type="md-heart"></Icon>操作
+        </div>
+        <Button type="primary" :loading="refresh_loading" @click="handleFreshProblem">
+          <span v-if="!refresh_loading">更新题目</span>
+          <span v-else>等待中</span></Button>
+      </Card>
     </Col>
   </Row>
 </template>
@@ -53,6 +61,7 @@
   import api from '../../api'
   import moment from 'moment'
   import CodeMirror from '@/components/CodeMirror'
+
   export default {
     name: "Problem",
     components: {
@@ -107,7 +116,16 @@
           console.log(res);
         })
       },
-
+      handleFreshProblem() {
+        this.refresh_loading = true
+        api.getProblem(this.remote_oj, this.remote_id, {fresh: true}).then(res => {
+          this.refresh_loading = false
+          this.$Message.success('更新提交')
+        },res=>{
+          this.refresh_loading = false
+          this.$Message.error('更新失败')
+        })
+      },
       getProblem(remote_oj, remote_id) {
         this.loading = true;
         api.getProblem(remote_oj, remote_id).then(res => {
