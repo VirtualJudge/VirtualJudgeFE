@@ -20,6 +20,7 @@
     "less-loader": "^4.1.0",
     "moment": "^2.22.2",
     "raven": "^2.6.4",
+    "raven-js": "^3.27.0",
     "vue": "^2.5.2",
     "vue-chartjs": "^3.4.0",
     "vue-clipboard2": "^0.2.1",
