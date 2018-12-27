@@ -1,0 +1,32 @@
+language: node_js
+node_js:
+  - 11.4.0
+sudo: required
+services: docker
+env:
+  matrix:
+    - USE_SENTRY=1
+
+before_install:
+  - docker pull getsentry/sentry-cli
+
+script:
+  - yarn
+  - yarn run build:dll
+  - yarn run build
+
+before_deploy:
+  - bash deploy/sentry_release.sh
+  - find dist/ --type f -name "*.map" -delete
+  - zip -r dist.zip dist
+
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key:
+    secure: ${GH_TOKEN}
+  file: dist.zip
+  on:
+    repo: VirtualJudge/VirtualJudgeFE
+    all_branches: true
+    tags: true
