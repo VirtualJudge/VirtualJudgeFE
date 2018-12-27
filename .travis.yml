@@ -16,7 +16,7 @@ script:
 
 before_deploy:
   - bash deploy/sentry_release.sh
-  - find dist/ --type f -name "*.map" -delete
+  - find dist/ -type f -name "*.map" -delete
   - zip -r dist.zip dist
 
 deploy:
