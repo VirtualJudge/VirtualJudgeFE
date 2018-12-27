@@ -1,11 +1,10 @@
 <template>
   <div class="container">
-    <div class="Chart">
-      <Spin size="large" fix v-if="!loaded"></Spin>
-      <h1 v-if="loaded" style="text-align:center;">提交统计</h1>
-      <line-chart v-if="loaded" :chartdata="chartdata" :options="options" :style="chartStyle"/>
+    <div v-if="loaded" class="Chart">
+      <h1 style="text-align:center;">提交统计</h1>
+      <line-chart :chartdata="chartdata" :options="options" :style="chartStyle"/>
     </div>
-
+    <Spin size="large" fix v-if="!loaded"></Spin>
   </div>
 </template>
 
@@ -34,6 +33,9 @@
     mounted() {
       document.title = 'Virtual Judge';
       this.getSubmissionsCount();
+      setTimeout(() => {
+        this.getSubmissionsCount()
+      }, 2000)
     },
     methods: {
       getLabels() {
