@@ -1,8 +1,8 @@
 <template>
-  <div  class="container">
+  <div class="container">
     <div class="Chart">
       <Spin size="large" fix v-if="!loaded"></Spin>
-      <h1 v-if="loaded"  style="text-align:center;">提交统计</h1>
+      <h1 v-if="loaded" style="text-align:center;">提交统计</h1>
       <line-chart v-if="loaded" :chartdata="chartdata" :options="options" :style="chartStyle"/>
     </div>
 
@@ -27,7 +27,8 @@
           responsive: true,
           maintainAspectRatio: false
         },
-        submissions_data: []
+        submissions_data: [],
+        accepted_data: []
       }
     },
     mounted() {
@@ -45,7 +46,10 @@
       },
       getSubmissionsCount() {
         api.getStatistics('submission').then(res => {
-          this.submissions_data = res.data.data;
+          for (let i = 0; i < res.data.data.length; ++i) {
+            this.submissions_data.push(res.data.data[i][0])
+            this.accepted_data.push(res.data.data[i][1])
+          }
           this.fillData();
         })
       },
@@ -54,10 +58,16 @@
           labels: this.getLabels(),
           datasets: [
             {
+              label: '日通过',
+              backgroundColor: '#19be6b',
+              data: this.accepted_data
+            },
+            {
               label: '日提交',
-              backgroundColor: '#f87979',
+              backgroundColor: '#f90',
               data: this.submissions_data
-            }
+            },
+
           ]
         };
         this.loaded = true;

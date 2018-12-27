@@ -36,11 +36,15 @@
 </template>
 
 <script>
-  import api from '../../api'
+  import api from '@/api'
   import moment from 'moment'
+  import Verdict from '@/components/Verdict'
 
   export default {
     name: "Submissions",
+    components: {
+      Verdict
+    },
     data() {
       return {
         loading_table: false,
@@ -116,11 +120,12 @@
             title: '执行结果',
             width: 200,
             render: (h, params) => {
-              return h('Tag', {
+              return h(Verdict, {
                 props: {
-                  color: this.getVerdictColor(params.row.verdict_code)
+                  verdict: params.row.verdict,
+                  verdict_code: params.row.verdict_code,
                 }
-              }, params.row.verdict)
+              })
             }
           }, {
             title: '创建时间',

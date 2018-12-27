@@ -5,16 +5,11 @@ import Problems from '@/views/problem/Problems';
 import Problem from '@/views/problem/Problem';
 import Index from '@/views/Index';
 import Help from '@/views/Help';
-import Rank from '@/views/account/Rank'
-import Profile from '@/views/account/Profile'
 import Setting from '@/views/account/Setting'
 import Admin from '@/views/account/Admin'
 import Submissions from '@/views/status/Submissions'
 import Submission from '@/views/status/Submission'
-import Contests from '@/views/contest/Contests'
-import Contest from '@/views/contest/Contest'
 import Logout from '@/views/account/Logout'
-import NewContest from '@/views/contest/NewContest'
 
 Vue.use(Router);
 
@@ -52,22 +47,6 @@ export default new Router({
       path: '/submission/:id',
       name: 'submission',
       component: Submission
-    }, {
-      path: '/contests',
-      name: 'contests',
-      component: Contests
-    }, {
-      path: '/contest/:id',
-      name: 'contest',
-      component: Contest
-    }, {
-      path: '/contests/new',
-      name: 'new_contest',
-      component: NewContest
-    }, {
-      path: '/profile',
-      name: 'profile',
-      component: Profile
     }, {
       path: '/setting',
       name: 'setting',

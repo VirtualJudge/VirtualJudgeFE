@@ -1,23 +1,85 @@
 <template>
   <div>
-    <Card>
-      <Table :columns="columns" :data="verdict.table_data"></Table>
-    </Card>
-    <template v-if="verdict.code">
-      <Card>
-        <codemirror :options="cmOptions" v-model="verdict.code"
-                    style="margin-top:5px;border: 1px solid #eee;"></codemirror>
-      </Card>
-    </template>
+    <Row>
+      <Col span="6">
+        <Card style="margin: 10px">
+          <div slot="title">
+            <Icon type="md-analytics"/>
+            信息
+          </div>
+          <Row>
+            <Col span="12">编号</Col>
+            <Col span="12">
+              <Tag>{{result.id}}</Tag>
+            </Col>
+          </Row>
+          <Row v-if="result.execute_time">
+            <Col span="12">时间</Col>
+            <Col span="12">
+              <Tag>{{result.execute_time}}</Tag>
+            </Col>
+          </Row>
+          <Row v-if="result.execute_memory">
+            <Col span="12">内存</Col>
+            <Col span="12">
+              <Tag>{{result.execute_memory}}</Tag>
+            </Col>
+          </Row>
+          <Row>
+            <Col span="12">创建时间</Col>
+            <Col span="12">
+              <Tag>{{result.create_time}}</Tag>
+            </Col>
+          </Row>
+          <Row>
+            <Col span="12">提交用户</Col>
+            <Col span="12">
+              <Tag>{{result.username}}</Tag>
+            </Col>
+          </Row>
+          <Row>
+            <Col span="12">结果</Col>
+            <Col span="12">
+              <Verdict :verdict="result.verdict" :verdict_code="result.verdict_code"></Verdict>
+            </Col>
+          </Row>
+          <Row>
+            <Col span="12">语言</Col>
+            <Col span="12">
+              <Tag>{{result.language_name}}</Tag>
+            </Col>
+          </Row>
+        </Card>
+      </Col>
+      <Col span="18">
+        <Card style="margin: 10px;">
+          <div slot="title">
+            <Icon type="md-code-working"/>
+            代码
+            <Button shape="circle"
+                    v-clipboard:copy="result.code"
+                    v-clipboard:success="onCopySuccess"
+                    v-clipboard:error="onCopyError">
+              <Icon type="md-clipboard"/>
+            </Button>
+          </div>
+          <pre style="tab-size: 4;">{{result.code}}</pre>
+        </Card>
+      </Col>
+    </Row>
   </div>
 </template>
 
 <script>
-  import api from '../../api';
+  import api from '@/api';
   import moment from 'moment';
+  import Verdict from "@/components/Verdict";
 
   export default {
     name: "Submission",
+    components: {
+      Verdict
+    },
     data() {
       return {
         cmOptions: {
@@ -27,47 +89,24 @@
           readOnly: true,
         },
         submission_id: '',
+        result: {
+          id: '',
+          code: '',
+          create_time: '',
+          execute_memory: '',
+          execute_time: '',
+          remote_oj: '',
+          remote_id: '',
+          username: '',
+          language_name: '',
+          verdict: '',
+          verdict_code: '',
+
+        },
         verdict: {
           code: '',
           table_data: [],
         },
-        columns: [
-          {
-            title: '#',
-            key: 'id'
-          }, {
-            title: '用户',
-            key: 'user'
-          }, {
-            title: '源名称',
-            key: 'remote_oj'
-          }, {
-            title: '源编号',
-            key: 'remote_id'
-          }, {
-            title: '运行时间',
-            key: 'execute_time'
-          }, {
-            title: '运行内存',
-            key: 'execute_memory'
-          }, {
-            title: '语言',
-            key: 'language_name',
-          }, {
-            title: '执行结果',
-            width: 200,
-            render: (h, params) => {
-              return h('Tag', {
-                props: {
-                  color: this.getVerdictColor(params.row.verdict_code)
-                }
-              }, params.row.verdict)
-            }
-          }, {
-            title: '创建时间',
-            key: 'create_time'
-          }
-        ],
       }
     },
     beforeCreate() {
@@ -80,8 +119,13 @@
       this.$Spin.hide();
     },
     methods: {
+      onCopySuccess() {
+        this.$Message.success('拷贝成功')
+      },
+      onCopyError() {
+        this.$Message.error('拷贝失败')
+      },
       init() {
-
         this.submission_id = this.$route.params.id;
         this.getVerdict(this.submission_id);
       },
@@ -91,11 +135,18 @@
       },
       getVerdict(submission_id) {
         api.getVerdict(submission_id).then(res => {
-          this.verdict.code = res.data.data.code;
-          this.verdict.table_data.push(res.data.data);
-          for (let i = 0; i < this.verdict.table_data.length; ++i) {
-            this.verdict.table_data[i].create_time = moment.utc(this.verdict.table_data[i].create_time).local().calendar();
-          }
+          this.result.id = res.data.data.id
+          this.result.remote_id = res.data.data.remote_id
+          this.result.remote_oj = res.data.data.remote_oj
+          this.result.execute_time = res.data.data.execute_time
+          this.result.execute_memory = res.data.data.execute_memory
+          this.result.code = res.data.data.code
+          this.result.username = res.data.data.user
+          this.result.verdict = res.data.data.verdict
+          this.result.verdict_code = res.data.data.verdict_code
+          this.result.language_name = res.data.data.language_name
+          this.result.create_time = moment.utc(res.data.data.create_time).local().calendar();
+
         }, res => {
           this.$Message.error('加载失败');
         });
@@ -105,10 +156,16 @@
 </script>
 
 <style scoped>
+  ul li {
+    padding: 5px 10px;
+    list-style-type: none;
+  }
+
   .CodeMirror {
     height: auto;
   }
-  .CodeMirror-scroll{
+
+  .CodeMirror-scroll {
     height: auto;
     overflow-y: hidden;
     overflow-x: auto;

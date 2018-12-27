@@ -8,10 +8,11 @@ import 'iview/dist/styles/iview.css';
 import CodeMirror from 'vue-codemirror-lite';
 import Vuex from 'vuex';
 import "@/styles/default.less";
-
-Vue.use(Vuex);
-Vue.use(CodeMirror);
-Vue.use(iView);
+import VueClipboard from 'vue-clipboard2'
+Vue.use(Vuex)
+Vue.use(CodeMirror)
+Vue.use(iView)
+Vue.use(VueClipboard)
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
