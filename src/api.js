@@ -132,6 +132,9 @@ export default {
   },
   updateLanguageAdmin(params, data) {
     return ajax('/api/language', 'post', {params: params, data: data})
+  },
+  reloadSubmission(submission_id) {
+    return ajax('/api/reload/' + submission_id, 'post')
   }
 }
 

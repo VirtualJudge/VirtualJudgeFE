@@ -48,6 +48,7 @@
       },
       getSubmissionsCount() {
         api.getStatistics('submission').then(res => {
+          console.log(res.data.data)
           for (let i = 0; i < res.data.data.length; ++i) {
             this.submissions_data.push(res.data.data[i][0])
             this.accepted_data.push(res.data.data[i][1])

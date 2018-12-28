@@ -8,44 +8,47 @@
             信息
           </div>
           <Row>
-            <Col span="12">编号</Col>
-            <Col span="12">
+            <Col span="8">编号</Col>
+            <Col span="16">
               <Tag>{{result.id}}</Tag>
             </Col>
           </Row>
           <Row v-if="result.execute_time">
-            <Col span="12">时间</Col>
-            <Col span="12">
+            <Col span="8">时间</Col>
+            <Col span="16">
               <Tag>{{result.execute_time}}</Tag>
             </Col>
           </Row>
           <Row v-if="result.execute_memory">
-            <Col span="12">内存</Col>
-            <Col span="12">
+            <Col span="8">内存</Col>
+            <Col span="16">
               <Tag>{{result.execute_memory}}</Tag>
             </Col>
           </Row>
           <Row>
-            <Col span="12">创建时间</Col>
-            <Col span="12">
+            <Col span="8">创建时间</Col>
+            <Col span="16">
               <Tag>{{result.create_time}}</Tag>
             </Col>
           </Row>
           <Row>
-            <Col span="12">提交用户</Col>
-            <Col span="12">
+            <Col span="8">提交用户</Col>
+            <Col span="16">
               <Tag>{{result.username}}</Tag>
             </Col>
           </Row>
           <Row>
-            <Col span="12">结果</Col>
-            <Col span="12">
-              <Verdict :verdict="result.verdict" :verdict_code="result.verdict_code"></Verdict>
+            <Col span="8">结果</Col>
+            <Col span="16">
+              <Verdict :verdict="result.verdict"
+                       :reloadable="result.reloadable"
+                       :submission_id="result.submission_id"
+                       :verdict_info="result.verdict_info"></Verdict>
             </Col>
           </Row>
           <Row>
-            <Col span="12">语言</Col>
-            <Col span="12">
+            <Col span="8">语言</Col>
+            <Col span="16">
               <Tag>{{result.language_name}}</Tag>
             </Col>
           </Row>
@@ -100,7 +103,8 @@
           username: '',
           language_name: '',
           verdict: '',
-          verdict_code: '',
+          verdict_info: '',
+          reloadable: false
 
         },
         verdict: {
@@ -135,6 +139,7 @@
       },
       getVerdict(submission_id) {
         api.getVerdict(submission_id).then(res => {
+          console.log(res.data.data)
           this.result.id = res.data.data.id
           this.result.remote_id = res.data.data.remote_id
           this.result.remote_oj = res.data.data.remote_oj
@@ -143,7 +148,8 @@
           this.result.code = res.data.data.code
           this.result.username = res.data.data.user
           this.result.verdict = res.data.data.verdict
-          this.result.verdict_code = res.data.data.verdict_code
+          this.result.reloadable = res.data.data.reloadable
+          this.result.verdict_info = res.data.data.verdict_info ? res.data.data.verdict_info : 'submitted'
           this.result.language_name = res.data.data.language_name
           this.result.create_time = moment.utc(res.data.data.create_time).local().calendar();
 

@@ -123,7 +123,9 @@
               return h(Verdict, {
                 props: {
                   verdict: params.row.verdict,
-                  verdict_code: params.row.verdict_code,
+                  verdict_info: params.row.verdict_info,
+                  submission_id: params.row.id,
+                  reloadable: params.row.reloadable
                 }
               })
             }
@@ -168,7 +170,7 @@
       slicePage() {
         this.submissions = this.submissions_data.slice((this.pages.current - 1) * this.pages.page_size, this.pages.current * this.pages.page_size)
       },
-      getVerdictColor(verdict_code) {
+      getVerdictColor(verdict) {
         let color_list = {
           'Accepted': 'success',
           'Running': 'primary',
@@ -176,7 +178,7 @@
           'Result Error': 'error',
           'Submit Failed': '#FFA2D3'
         }
-        return color_list[verdict_code]
+        return color_list[verdict]
       },
       getAuth() {
         api.getAuth().then(res => {
@@ -197,10 +199,14 @@
         return api.getSubmissions(data).then(res => {
           this.loading_table = false;
           this.submissions_data = res.data.data;
+          console.log(this.submissions_data)
           this.pages.total = this.submissions_data.length;
           this.slicePage();
           moment.locale('zh-CN');
           for (let i = 0; i < this.submissions_data.length; ++i) {
+            if (this.submissions_data[i].verdict_info === null) {
+              this.submissions_data[i].verdict_info = 'Submitted'
+            }
             this.submissions_data[i].create_time = moment.utc(this.submissions_data[i].create_time).local().calendar()
           }
         }, res => {

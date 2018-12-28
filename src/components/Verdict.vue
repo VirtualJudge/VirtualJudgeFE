@@ -1,21 +1,35 @@
 <template>
-  <Tag :color="color">{{verdict}}</Tag>
+  <Tag v-if="verdict==='Running' && reloadable" @click.native="handleClick" :color="color">
+    <Icon type="md-refresh"/>
+    {{verdict_info}}
+  </Tag>
+  <Tag v-else :color="color">
+    {{verdict_info}}
+  </Tag>
 </template>
 
 <script>
+  import api from '@/api'
   export default {
     name: "Verdict",
     data() {
       return {
-        color: 'default',
+        color: '#FFA2D3',
       }
     },
     props: {
+      submission_id: {
+        required: true,
+      },
+      reloadable: {
+        required: false,
+        default: false
+      },
       verdict: {
         required: false,
         default: ''
       },
-      verdict_code: {
+      verdict_info: {
         required: false,
         default: ''
       }
@@ -27,16 +41,22 @@
       this.init()
     },
     methods: {
+      handleClick() {
+        console.log(this.submission_id, this.reloadable, this.verdict, this.verdict_info)
+        api.reloadSubmission(this.submission_id).then(res=>{
+          console.log(res);
+          this.$emit('click')
+        })
+      },
       init() {
         let color_list = {
-          'Accepted': 'success',
+          'AC': 'success',
           'Running': 'primary',
-          'Compile Error': 'warning',
-          'Result Error': 'error',
-          'Submit Failed': '#FFA2D3'
+          'CE': 'warning',
+          'WA': 'error',
         }
-        if (color_list[this.verdict_code]) {
-          this.color = color_list[this.verdict_code]
+        if (color_list[this.verdict]) {
+          this.color = color_list[this.verdict]
         }
       }
     }
