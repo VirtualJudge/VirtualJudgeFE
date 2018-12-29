@@ -106,11 +106,19 @@
             }
           },
           {
-            title: '检查sha128',
+            title: '结果复用',
             key: 'Reuse',
             align: "center",
+            renderHeader: (h, params) => {
+              return h('Tooltip', {
+                props: {
+                  'max-width': 200,
+                  'content': '代码提交结果重用功能（codeforces强制生效），提交相同sha128的代码的时候采用之前提交运行的结果',
+                }
+              }, '结果复用')
+            },
             render: (h, params) => {
-              if (params.row.Status === 'SUCCESS') {
+              if (params.row.Status === 'SUCCESS' && params.row.Platform !== 'Codeforces') {
                 return h('i-switch', {
                   props: {
                     value: params.row.Enable

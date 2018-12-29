@@ -29,7 +29,7 @@
     data() {
       return {
         url: '',
-        count: 0x12231,
+        count: null,
         new_url: ''
       }
     },
