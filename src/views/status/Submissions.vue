@@ -132,7 +132,8 @@
             }
           }, {
             title: '创建时间',
-            key: 'create_time'
+            key: 'create_time',
+            width: 140
           }
         ],
         submissions: [],

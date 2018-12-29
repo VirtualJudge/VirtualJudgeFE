@@ -1,26 +1,26 @@
 <template>
-  <div class="container">
-    <div v-if="loaded" class="Chart">
-      <h1 style="text-align:center;">提交统计</h1>
-      <line-chart :chartdata="chartdata" :options="options" :style="chartStyle"/>
-    </div>
+  <div style="margin: 0 auto">
+    <Card v-if="loaded" style="margin: 10px auto">
+      <IndexChart :submitted="submissions_data" :accepted="accepted_data" :labels="labels"/>
+    </Card>
     <Spin size="large" fix v-if="!loaded"></Spin>
   </div>
 </template>
 
 <script>
-  import LineChart from "./LineChart.js";
   import moment from "moment";
   import api from '../api';
+  import IndexChart from "../components/IndexChart";
 
   export default {
     name: "Index",
     components: {
-      LineChart
+      IndexChart,
     },
     data() {
       return {
         loaded: false,
+        labels: [],
         chartdata: null,
         options: {
           responsive: true,
@@ -32,19 +32,16 @@
     },
     mounted() {
       document.title = 'Virtual Judge';
+      this.getLabels()
       this.getSubmissionsCount();
-      setTimeout(() => {
-        this.getSubmissionsCount()
-      }, 2000)
     },
     methods: {
       getLabels() {
         moment.locale('zh-CN');
-        let labels = [];
+        this.labels = [];
         for (let offset = 6; offset >= 0; offset--) {
-          labels.push(moment().subtract(offset, 'days').format('dddd').toString())
+          this.labels.push(moment().subtract(offset, 'days').format('dddd').toString())
         }
-        return labels
       },
       getSubmissionsCount() {
         api.getStatistics('submission').then(res => {
@@ -53,39 +50,10 @@
             this.submissions_data.push(res.data.data[i][0])
             this.accepted_data.push(res.data.data[i][1])
           }
-          this.fillData();
+          this.loaded = true
         })
       },
-      fillData() {
-        this.chartdata = {
-          labels: this.getLabels(),
-          datasets: [
-            {
-              label: '日通过',
-              backgroundColor: '#19be6b',
-              data: this.accepted_data
-            },
-            {
-              label: '日提交',
-              backgroundColor: '#f90',
-              data: this.submissions_data
-            },
-
-          ]
-        };
-        this.loaded = true;
-      }
     },
-    computed: {
-      chartStyle() {
-        return {
-          width: '600px',
-          height: '400px'
-        }
-
-      }
-    }
-
   }
 </script>
 
@@ -94,18 +62,4 @@
     margin: 0 auto;
   }
 
-  h1 {
-    color: #464646;
-    text-transform: uppercase;
-    border-bottom: 1px solid #f1f1f1;
-    padding-bottom: 15px;
-    font-size: 28px;
-    margin-top: 0;
-  }
-
-  .Chart {
-    padding: 20px;
-    box-shadow: 0 0 20px 2px rgba(0, 0, 0, .4);
-    margin: 50px 0;
-  }
 </style>

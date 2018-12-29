@@ -18,7 +18,7 @@
       <Col span="6">
         <Card style="margin: 10px">
           <div slot="title">
-            <Icon type="md-list"></Icon>
+            <Icon type="md-funnel" />
             筛选题目列表
           </div>
           <Form>
@@ -48,15 +48,6 @@
           </div>
           <Search></Search>
         </Card>
-        <!--
-        <Card style="margin: 10px">
-          <div slot="title">
-            <Icon type="md-list"></Icon>
-            最近未通过
-          </div>
-
-        </Card>
-        -->
       </Col>
     </Row>
 
@@ -67,9 +58,10 @@
   import api from '../../api'
   import moment from 'moment'
   import Search from '@/components/Search'
+
   export default {
     name: "Problems",
-    components:{
+    components: {
       Search
     },
     data() {
@@ -88,13 +80,11 @@
           {
             title: '#',
             key: 'id',
-            width: 100,
             sortable: true
           },
           {
             title: '源编号',
             key: 'remote_id',
-            width: 100,
             render: (h, params) => {
               return h('a', {
                 props: {
@@ -107,15 +97,12 @@
               }, params.row.remote_id)
             }
           },
-
           {
             title: '源名称',
-            sortable: true,
             key: 'remote_oj',
           },
           {
             title: '标题',
-            // key: 'title',
             render: (h, params) => {
               return h('a', {
                 props: {

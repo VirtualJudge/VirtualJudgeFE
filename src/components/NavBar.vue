@@ -18,10 +18,6 @@
       <Icon type="md-code-working" />
       提交
     </MenuItem>
-    <!--<MenuItem name="/rank">-->
-      <!--<Icon type="md-stats"/>-->
-      <!--排行榜-->
-    <!--</MenuItem>-->
     <MenuItem name="/help">
       <Icon type="md-alert"/>
       帮助

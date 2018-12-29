@@ -11,8 +11,6 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "chart.js": "^2.7.3",
-    "echarts": "^4.2.0-rc.2",
     "highlight.js": "^9.13.1",
     "iview": "^3.1.3",
     "iview-loader": "^1.2.2",
@@ -22,9 +20,9 @@
     "raven": "^2.6.4",
     "raven-js": "^3.27.0",
     "vue": "^2.5.2",
-    "vue-chartjs": "^3.4.0",
     "vue-clipboard2": "^0.2.1",
     "vue-codemirror-lite": "^1.0.4",
+    "vue-echarts": "^3.1.3",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   },
