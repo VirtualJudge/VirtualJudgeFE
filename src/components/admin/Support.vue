@@ -105,9 +105,41 @@
               }
             }
           },
+          {
+            title: '检查sha128',
+            key: 'Reuse',
+            align: "center",
+            render: (h, params) => {
+              if (params.row.Status === 'SUCCESS') {
+                return h('i-switch', {
+                  props: {
+                    value: params.row.Enable
+                  },
+                  on: {
+                    'on-change': (val) => {
+                      this.updateReuse(params.row.Platform, val)
+                    }
+                  }
+                })
+              } else {
+                return h('i-switch', {
+                  props: {
+                    value: params.row.Enable,
+                    disabled: true
+                  },
+                  on: {
+                    'on-change': (val) => {
+                      this.updateReuse(params.row.Platform, val)
+                    }
+                  }
+                })
+
+
+              }
+            }
+          },
         ],
-        platforms: [
-        ],
+        platforms: [],
         loading: true,
         timer: null
       }
@@ -165,6 +197,23 @@
         let data = {
           platform: platform,
           enable: val
+        }
+        api.updateAdminSupport(params, data).then(res => {
+          if (res.data.status === 0) {
+            this.$Message.success('修改成功')
+          } else {
+            this.$Message.error('修改失败')
+            this.getSupport()
+          }
+        })
+      },
+      updateReuse(platform, val) {
+        let params = {
+          type: 'reuse'
+        }
+        let data = {
+          platform: platform,
+          reuse: val
         }
         api.updateAdminSupport(params, data).then(res => {
           if (res.data.status === 0) {

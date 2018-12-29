@@ -91,8 +91,9 @@
           }, {
             title: '语言',
             key: 'language_name',
+            width: 200,
             render: (h, params) => {
-              if (params.row.user === this.login_user) {
+              if (params.row.user === this.login_user || this.isAdministrator) {
                 return h('a', {
                   props: {
                     type: 'text',
@@ -118,7 +119,7 @@
             }
           }, {
             title: '执行结果',
-            width: 200,
+            width: 250,
             render: (h, params) => {
               return h(Verdict, {
                 props: {
