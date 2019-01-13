@@ -5,13 +5,6 @@
         <div slot="title">
           <template v-if="login_user">
             <Row type="flex" justify="end">
-              <Col>自动刷新
-                <i-switch v-model="auto_reload" size="large" @on-change="auto_reload_change">
-                  <span slot="open">开启</span>
-                  <span slot="close">关闭</span>
-                </i-switch>
-              </Col>
-              <Divider type="vertical"/>
               <Col>
                 <i-switch v-model="mine_contests" size="large" @on-change="switch_change">
                   <span slot="open">我的</span>
@@ -39,6 +32,7 @@
   import api from '@/api'
   import moment from 'moment'
   import Verdict from '@/components/Verdict'
+  import ws from '@/ws'
 
   export default {
     name: "Submissions",
@@ -46,7 +40,9 @@
       Verdict
     },
     data() {
+      let protocol = window.location.href.indexOf("https://") ? 'ws://' : 'wss://'
       return {
+        protocol: protocol,
         loading_table: false,
         mine_contests: false,
         login_user: '',
@@ -138,27 +134,19 @@
         ],
         submissions: [],
         submissions_data: [],
-        timer: null
+        timer: null,
+        socket_pool: []
+
       }
     },
     mounted() {
       this.init();
-
     },
     methods: {
       init() {
         document.title = '提交列表';
         this.getSubmissions();
         this.getAuth();
-      },
-      auto_reload_change(val) {
-        if (!val) {
-          clearInterval(this.timer)
-        } else {
-          this.timer = setInterval(() => {
-            this.getSubmissions();
-          }, 5000);
-        }
       },
       handlePageChange(current) {
         this.pages.current = current;
@@ -196,12 +184,18 @@
           this.isAdministrator = false;
         })
       },
+      handleWsUpdate(index, message) {
+        this.submissions_data[index].verdict = message.verdict;
+        this.submissions_data[index].verdict_info = message.verdict_info;
+        this.submissions_data[index].execute_time = message.execute_time;
+        this.submissions_data[index].execute_memory = message.execute_memory;
+        this.slicePage()
+      },
       getSubmissions(data) {
         this.loading_table = true;
         return api.getSubmissions(data).then(res => {
           this.loading_table = false;
           this.submissions_data = res.data.data;
-          console.log(this.submissions_data)
           this.pages.total = this.submissions_data.length;
           this.slicePage();
           moment.locale('zh-CN');
@@ -210,6 +204,9 @@
               this.submissions_data[i].verdict_info = 'Submitted'
             }
             this.submissions_data[i].create_time = moment.utc(this.submissions_data[i].create_time).local().calendar()
+            if (this.submissions_data[i].verdict === 'Running' || this.submissions_data[i].verdict === 'Pending') {
+              this.socket_pool.push(ws.WebSocketTest(this.protocol, 'submission', this.submissions_data[i].id, i, this.handleWsUpdate))
+            }
           }
         }, res => {
           this.loading_table = false;
