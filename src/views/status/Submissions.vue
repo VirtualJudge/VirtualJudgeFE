@@ -135,18 +135,24 @@
         submissions: [],
         submissions_data: [],
         timer: null,
-        socket_pool: []
-
+        ws: null
       }
     },
     mounted() {
       this.init();
+      console.log('ws create')
+      this.ws = ws.WebSocketFunc(this.protocol, 'submission', this.handleWsUpdate)
+    },
+    beforeDestroy() {
+      console.log('ws close')
+      this.ws.close()
     },
     methods: {
       init() {
         document.title = '提交列表';
         this.getSubmissions();
         this.getAuth();
+
       },
       handlePageChange(current) {
         this.pages.current = current;
@@ -184,11 +190,16 @@
           this.isAdministrator = false;
         })
       },
-      handleWsUpdate(index, message) {
-        this.submissions_data[index].verdict = message.verdict;
-        this.submissions_data[index].verdict_info = message.verdict_info;
-        this.submissions_data[index].execute_time = message.execute_time;
-        this.submissions_data[index].execute_memory = message.execute_memory;
+      handleWsUpdate(message) {
+        for (let i = 0; i < this.submissions_data.length; ++i) {
+          if (this.submissions_data[i].id === message.id) {
+            this.submissions_data[i].verdict = message.verdict;
+            this.submissions_data[i].verdict_info = message.verdict_info;
+            this.submissions_data[i].execute_time = message.execute_time;
+            this.submissions_data[i].execute_memory = message.execute_memory;
+            break
+          }
+        }
         this.slicePage()
       },
       getSubmissions(data) {
@@ -204,9 +215,6 @@
               this.submissions_data[i].verdict_info = 'Submitted'
             }
             this.submissions_data[i].create_time = moment.utc(this.submissions_data[i].create_time).local().calendar()
-            if (this.submissions_data[i].verdict === 'Running' || this.submissions_data[i].verdict === 'Pending') {
-              this.socket_pool.push(ws.WebSocketTest(this.protocol, 'submission', this.submissions_data[i].id, i, this.handleWsUpdate))
-            }
           }
         }, res => {
           this.loading_table = false;

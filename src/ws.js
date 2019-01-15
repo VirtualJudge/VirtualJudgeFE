@@ -1,24 +1,23 @@
 export default {
-  WebSocketTest(protocol, chat_type, number, index, callback) {
+  /**
+   * @return {null}
+   */
+  WebSocketFunc(protocol, chat_type, callback) {
     if ("WebSocket" in window) {
       // 打开一个 web socket
-      let ws = new WebSocket(protocol + window.location.host + '/api/ws/' + chat_type + '/' + number);
+      let ws = new WebSocket(protocol + window.location.host + '/api/ws_' + chat_type);
 
       ws.onmessage = function (evt) {
         console.log(evt.data)
         let received = JSON.parse(evt.data)
-        callback(index, received.message)
-        if (received.message.verdict !== 'Running' && received.message.verdict !== 'Pending') {
-          ws.close()
-        }
+        callback(received.message)
+
 
       };
       ws.onclose = function () {
         // 关闭 websocket
-        console.log(number + ' close')
       };
-    } else {
-      // 浏览器不支持 WebSocket
-    }
+      return ws
+    } else return null
   }
 }
