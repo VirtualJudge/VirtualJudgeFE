@@ -8,10 +8,8 @@ export default {
       let ws = new WebSocket(protocol + window.location.host + '/api/ws_' + chat_type);
 
       ws.onmessage = function (evt) {
-        console.log(evt.data)
         let received = JSON.parse(evt.data)
         callback(received.message)
-
 
       };
       ws.onclose = function () {

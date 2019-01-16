@@ -140,11 +140,9 @@
     },
     mounted() {
       this.init();
-      console.log('ws create')
       this.ws = ws.WebSocketFunc(this.protocol, 'submission', this.handleWsUpdate)
     },
     beforeDestroy() {
-      console.log('ws close')
       this.ws.close()
     },
     methods: {
