@@ -17,6 +17,10 @@ script:
 before_deploy:
   - bash deploy/sentry_release.sh
   - zip -r dist.zip dist
+  - git config --local user.name "dianhsu"
+  - git config --local user.email "xudian.cn@gmail.com"
+  - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
+  - git tag $TRAVIS_TAG
 
 deploy:
   provider: releases
@@ -27,3 +31,5 @@ deploy:
   on:
     repo: VirtualJudge/VirtualJudgeFE
     all_branches: true
+  overwrite: true
+  
