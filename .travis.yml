@@ -1,3 +1,4 @@
+os: linux
 language: node_js
 node_js:
   - 11.4.0
@@ -19,13 +20,12 @@ before_deploy:
 
 deploy:
   provider: releases
-  cleanup: true
+  cleanup: false
   token:
     secure: ${GH_TOKEN}
   file: dist.zip
   on:
     repo: VirtualJudge/VirtualJudgeFE
     all_branches: true
-    tags: true
   overwrite: true
   
