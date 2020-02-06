@@ -20,7 +20,7 @@ before_deploy:
 
 deploy:
   provider: releases
-  cleanup: false
+  skip_cleanup: true
   token:
     secure: ${GH_TOKEN}
   file: dist.zip
