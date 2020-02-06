@@ -27,5 +27,6 @@ deploy:
   on:
     repo: VirtualJudge/VirtualJudgeFE
     all_branches: true
+    tags: true
   overwrite: true
   
