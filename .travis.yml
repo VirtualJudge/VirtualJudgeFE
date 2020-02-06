@@ -1,10 +1,9 @@
 language: node_js
 node_js:
   - 11.4.0
-sudo: required
 services: docker
 env:
-  matrix:
+  jobs:
     - USE_SENTRY=1
 
 before_install:
@@ -20,8 +19,8 @@ before_deploy:
 
 deploy:
   provider: releases
-  skip_cleanup: true
-  api_key:
+  cleanup: true
+  token:
     secure: ${GH_TOKEN}
   file: dist.zip
   on:
