@@ -1,29 +1,29 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import ViewUI from 'view-design';
 
+Vue.use(ViewUI);
 Vue.use(VueRouter)
 
-  const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
-]
-
-const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
+const manageFiles = require.context('./modules', true, /\.js$/)
+let configRouters = []
+manageFiles.keys().forEach(key => {
+    configRouters = configRouters.concat(manageFiles(key).default)
 })
 
+const router = new VueRouter({
+    mode: 'history',
+    base: process.env.BASE_URL,
+    routes: configRouters
+})
+router.beforeEach((to, from, next) => {//beforeEach是router的钩子函数，在进入路由前执行
+    ViewUI.LoadingBar.start();
+    if (to.meta.title) {//判断是否有标题
+        document.title = to.meta.title
+    }
+    next()
+})
+router.afterEach(() => {
+    ViewUI.LoadingBar.finish();
+});
 export default router
