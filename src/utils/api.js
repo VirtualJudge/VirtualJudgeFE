@@ -11,11 +11,22 @@ export default {
     deleteUserInformation() {
         return ajax('/user/auth', 'delete')
     },
-    postUserLogin(username, password) {
+    postUserLogin(username, password, captcha) {
         return ajax('/user/auth', 'post', {
             data: {
                 'username': username,
-                'password': password
+                'password': password,
+                'captcha': captcha
+            }
+        })
+    },
+    putUserRegister(username, password, email, captcha) {
+        return ajax('/user/auth', 'put', {
+            data: {
+                'username': username,
+                'password': password,
+                'captcha': captcha,
+                'email': email
             }
         })
     }

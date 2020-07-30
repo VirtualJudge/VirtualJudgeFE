@@ -1,5 +1,8 @@
 <template>
-    <p>首页</p>
+    <div>
+        <h2>首页</h2>
+        <p>Time is limited, everyday is <strong>deadline</strong>.</p>
+    </div>
 </template>
 
 <script>
