@@ -1,5 +1,13 @@
 # ddl
 
+## dev 环境
+- 本机上运行后端
+- node.js 14
+- vue-cli
+
+## 推荐IDE
+JetBains Webstorm 最新版本
+
 ## Project setup
 ```
 yarn install
