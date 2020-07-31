@@ -1,65 +1,60 @@
 <template>
-    <div>
-        <Steps :current="currentStep" class="step-list">
-            <Step title="填写信息"></Step>
-            <Step title="验证邮箱"></Step>
-            <Step title="完成注册"></Step>
-        </Steps>
+  <div>
+    <Steps :current="currentStep" class="step-list">
+      <Step title="填写信息"></Step>
+      <Step title="验证邮箱"></Step>
+      <Step title="完成注册"></Step>
+    </Steps>
 
-        <router-view id="router-view" @step="updateStep" @nextStep="nextStep"/>
-        <Button class="register-page-button" type="primary" @click="nextStep" v-if="currentStep<2">下一步</Button>
-    </div>
+    <RegisterStep1 class="step-view" @nextStep="nextStep" v-show="currentStep===0"/>
+    <RegisterStep2 class="step-view" v-show="currentStep===1"/>
+    <RegisterStep3 class="step-view" v-show="currentStep===2"/>
+    <Button class="register-page-button" type="primary" @click="nextStep" v-if="currentStep<2">下一步</Button>
+  </div>
 </template>
 
 <script>
 
-    export default {
-        name: "Register",
-        data() {
-            return {
-                currentStep: 0
-            }
-        },
-        mounted() {
+import RegisterStep1 from "@/components/user/RegisterStep1";
+import RegisterStep2 from "@/components/user/RegisterStep2";
+import RegisterStep3 from "@/components/user/RegisterStep3";
 
-        }, methods: {
-            updateStep(step){
-                this.currentStep = step
-            },
-            nextStep() {
-                if (this.currentStep < 2) {
-                    this.currentStep += 1
-                }
-                if (this.currentStep === 0) {
-                    this.$router.push('/register/step1')
-                }
-                if (this.currentStep === 1) {
-                    this.$router.push('/register/step2')
-                }
-                if (this.currentStep === 2) {
-                    this.$router.push('/register/step3')
-                }
-            }
-        }
+export default {
+  name: "Register",
+  components: {RegisterStep3, RegisterStep2, RegisterStep1},
+  data() {
+    return {
+      currentStep: 0
     }
+  },
+  mounted() {
+
+  }, methods: {
+    nextStep() {
+      if (this.currentStep < 2) {
+        this.currentStep += 1
+      }
+    }
+  }
+}
 </script>
 
 <style scoped>
-    #router-view {
-        margin-left: auto;
-        margin-right: auto;
-        width: 600px;
-        margin-bottom: 10px;
-        height: 400px;
-    }
+.step-view {
+  margin-left: auto;
+  margin-right: auto;
+  width: 600px;
+  margin-bottom: 10px;
+  height: 400px;
+}
 
-    .step-list {
-        width: 90%;
-        max-width: 1200px;
-        margin: 20px auto 20px auto;
-    }
+.step-list {
+  width: 90%;
+  max-width: 1200px;
+  margin: 20px auto 20px auto;
+}
 
-    .register-page-button {
-        margin: 20px auto 20px auto;
-    }
+.register-page-button {
+  margin: 20px auto 20px auto;
+}
 </style>
