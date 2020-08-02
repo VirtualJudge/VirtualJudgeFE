@@ -6,13 +6,13 @@ axios.defaults.xsrfCookieName = 'csrftoken';
 
 export default {
     getUserInformation() {
-        return ajax('/user/auth', 'get')
+        return ajax('/user/info/', 'get')
     },
     deleteUserInformation() {
-        return ajax('/user/auth', 'delete')
+        return ajax('/user/logout/', 'delete')
     },
     postUserLogin(username, password, captcha) {
-        return ajax('/user/auth', 'post', {
+        return ajax('/user/login/', 'post', {
             data: {
                 'username': username,
                 'password': password,
@@ -21,7 +21,7 @@ export default {
         })
     },
     putUserRegister(username, password, email, captcha) {
-        return ajax('/user/auth', 'put', {
+        return ajax('/user/register/', 'put', {
             data: {
                 'username': username,
                 'password': password,
@@ -29,7 +29,15 @@ export default {
                 'email': email
             }
         })
-    }
+    },
+    postAccountActivate(id, code) {
+        return ajax('/user/activate/', 'post', {
+            data: {
+                'id': id,
+                'code': code
+            }
+        })
+    },
 }
 
 /**

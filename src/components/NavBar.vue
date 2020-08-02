@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Menu mode="horizontal" theme="light" :active-name="activeItem">
+    <Menu mode="horizontal" theme="light" :active-name="active_nav">
       <MenuItem class="left-menu-item" name="/" to="/">
         首页
       </MenuItem>
@@ -28,8 +28,13 @@
             <template slot="title">
               <Avatar :src="emailHashURL">{{ profile.username }}</Avatar>
             </template>
-            <MenuItem name="setting">个人设置</MenuItem>
-            <MenuItem name="logout" @click.native="clearProfile">退出登录</MenuItem>
+            <MenuGroup v-if="isAdminRole" title="系统">
+              <MenuItem name="admin-setting">高级设置</MenuItem>
+            </MenuGroup>
+            <MenuGroup title="基本">
+              <MenuItem name="setting">个人设置</MenuItem>
+              <MenuItem name="logout" @click.native="clearProfile">退出登录</MenuItem>
+            </MenuGroup>
           </Submenu>
         </div>
       </template>
@@ -56,17 +61,12 @@ export default {
     return {
       isLogin: false,
       loginModal: false,
-      activeItem: '',
       enabledRegister: true,
       modalChange: null
     }
   },
   mounted() {
     this.getProfile()
-    let path = this.$route.fullPath
-    if (path in ['/', '/problem', '/submission', '/help', '/register']) {
-      this.activeItem = path
-    }
   },
   methods: {
     ...mapActions(['getProfile', 'clearProfile', 'randomCaptcha']),
@@ -77,7 +77,7 @@ export default {
 
     }
   }, computed: {
-    ...mapGetters(['isAuthenticated', 'isAdminRole', 'profile', 'emailHashURL','captcha_url']),
+    ...mapGetters(['isAuthenticated', 'isAdminRole', 'profile', 'emailHashURL','captcha_url','active_nav']),
   }
 }
 </script>

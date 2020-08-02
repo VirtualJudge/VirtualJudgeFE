@@ -26,7 +26,7 @@
         <Row>
           <Col span="16">
             <label for="captcha"></label><Input id="captcha" type="text" v-model="formValidate.captcha">
-            </Input>
+          </Input>
           </Col>
           <Col span="7" offset="1">
             <img alt="captcha" :src="this.captcha_url" @click="randomCaptcha" style="height: 32px">
@@ -43,6 +43,7 @@
 
 <script>
 import {mapGetters, mapActions} from 'vuex'
+import api from "@/utils/api";
 
 export default {
   name: "RegisterStep1",
@@ -108,8 +109,29 @@ export default {
     handleSubmit(name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
-          this.$Message.success('Success!');
-          this.$emit('nextStep')
+          api.putUserRegister(this.formValidate.username, this.formValidate.password, this.formValidate.email, this.formValidate.captcha).then(res => {
+            if (res.data.err === null) {
+              this.$Message.success('注册成功')
+              this.$emit('nextStep', {'step2': res.data.data})
+            } else {
+              let msg = '登录失败\n'
+              if (typeof (res.data.err) === 'string') {
+                msg += res.data.err
+              } else if (typeof (res.data.err) === 'object') {
+                for (const key1 in res.data.err) {
+                  if (Object.prototype.hasOwnProperty.call(res.data.err, key1)) {
+                    msg += `${key1}:${res.data.err[key1]}\n`
+                  }
+                }
+              }
+              this.$Message.error({
+                content: msg,
+                duration: 3
+              });
+            }
+            this.randomCaptcha()
+          })
+
         } else {
           this.$Message.error('表单中部分字段不满足条件');
         }

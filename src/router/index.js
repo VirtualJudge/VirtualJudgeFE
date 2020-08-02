@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import ViewUI from 'view-design';
+import types from "@/store/types";
+import store from '../store'
 
 Vue.use(ViewUI);
 Vue.use(VueRouter)
@@ -23,7 +25,11 @@ router.beforeEach((to, from, next) => {//beforeEach是router的钩子函数，�
     }
     next()
 })
-router.afterEach(() => {
+router.afterEach((to) => {
     ViewUI.LoadingBar.finish();
+    store.commit(types.CHANGE_NAV_ACTIVE, {
+        active_nav: to.path
+    })
+
 });
 export default router

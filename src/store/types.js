@@ -13,5 +13,5 @@ export default keyMirror({
     'CHANGE_PROFILE': null,
     'CHANGE_EMAIL_HASH': null,
     'CHANGE_CAPTCHA': null,
-
+    'CHANGE_NAV_ACTIVE': null,
 })
