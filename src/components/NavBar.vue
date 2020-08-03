@@ -32,7 +32,7 @@
               <MenuItem name="admin-setting">高级设置</MenuItem>
             </MenuGroup>
             <MenuGroup title="基本">
-              <MenuItem name="setting">个人设置</MenuItem>
+              <MenuItem name="/user" to="/user">个人设置</MenuItem>
               <MenuItem name="logout" @click.native="clearProfile">退出登录</MenuItem>
             </MenuGroup>
           </Submenu>
@@ -71,13 +71,13 @@ export default {
   methods: {
     ...mapActions(['getProfile', 'clearProfile', 'randomCaptcha']),
     visibleChange(visible) {
-      if(visible){
+      if (visible) {
         this.randomCaptcha()
       }
 
     }
   }, computed: {
-    ...mapGetters(['isAuthenticated', 'isAdminRole', 'profile', 'emailHashURL','captcha_url','active_nav']),
+    ...mapGetters(['isAuthenticated', 'isAdminRole', 'profile', 'emailHashURL', 'captcha_url', 'active_nav']),
   }
 }
 </script>

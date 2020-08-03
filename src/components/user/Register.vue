@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main-view">
     <Steps :current="currentStep" class="step-list">
       <Step title="填写信息"></Step>
       <Step title="验证邮箱"></Step>
@@ -65,5 +65,10 @@ export default {
   max-width: 1200px;
   margin: 20px auto 20px auto;
 }
-
+.main-view{
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+}
 </style>
