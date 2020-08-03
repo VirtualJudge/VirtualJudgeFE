@@ -1,5 +1,5 @@
 import Index from "../../components/index/Index";
-import Problem from "../../components/problem/Problem";
+import Problem from "../../components/problem/list/ProblemList";
 import Submission from "../../components/submission/Submission";
 import Help from "../../components/help/Help";
 
