@@ -91,22 +91,48 @@ export default {
                 content: '登录成功',
                 duration: 2
               })
+              if (this.$route.fullPath.startsWith('/register')) {
+                this.$router.push('/')
+              }
             } else {
-              this.randomCaptcha()
-              let msg = '登录失败\n'
-              if (typeof (res.data.err) === 'string') {
-                msg += res.data.err
-              } else if (typeof (res.data.err) === 'object') {
-                for (const key1 in res.data.err) {
-                  if (Object.prototype.hasOwnProperty.call(res.data.err, key1)) {
-                    msg += `${key1}:${res.data.err[key1]}\n`
+              if (res.data.data !== null && res.data.data.activated !== true) {
+                if (this.$route.fullPath.startsWith('/register')) {
+                  this.$router.push('/')
+                }
+                this.$Modal.info({
+                  title: '邮箱验证提醒',
+                  content: '你的账号邮箱并没有验证，点击按钮跳转邮箱验证',
+                  okText: '验证邮箱',
+                  onOk: () => {
+                    this.$emit('closeModal')
+                    this.$router.push({
+                      name: 'register', params: {
+                        step: 1,
+                        info: res.data.data || {}
+                      }
+                    })
+
+                  }
+
+                })
+              } else {
+                this.randomCaptcha()
+                let msg = '登录失败\n'
+                if (typeof (res.data.err) === 'string') {
+                  msg += res.data.err
+                } else if (typeof (res.data.err) === 'object') {
+                  for (const key1 in res.data.err) {
+                    if (Object.prototype.hasOwnProperty.call(res.data.err, key1)) {
+                      msg += `${key1}:${res.data.err[key1]}\n`
+                    }
                   }
                 }
+                this.$Message.error({
+                  content: msg,
+                  duration: 3
+                });
               }
-              this.$Message.error({
-                content: msg,
-                duration: 3
-              });
+
             }
           })
         } else {

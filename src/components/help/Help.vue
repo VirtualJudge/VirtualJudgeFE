@@ -1,5 +1,7 @@
 <template>
-    <p>帮助</p>
+  <div class="main-view">
+    <h2>帮助</h2>
+  </div>
 </template>
 
 <script>
@@ -9,5 +11,10 @@
 </script>
 
 <style scoped>
-
+.main-view{
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+}
 </style>
