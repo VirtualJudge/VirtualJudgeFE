@@ -38,8 +38,11 @@ export default {
             }
         })
     },
-    getProblemList() {
-        return ajax('/problem/', 'get')
+    getProblemList(params) {
+        let url_params = params || {}
+        return ajax('/problem/', 'get', {
+            params: url_params
+        })
     }
 }
 

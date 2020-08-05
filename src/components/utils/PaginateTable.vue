@@ -6,6 +6,8 @@
           :page-size="page_size"
           :page-size-opts="page_size_opts"
           size="small"
+          @on-change="onPageChange"
+          @on-page-size-change="onPageSizeChange"
           show-total
           show-sizer
           style="margin-bottom: 10px;"/>
@@ -20,6 +22,8 @@
         :current="current"
         :page-size="page_size"
         :page-size-opts="page_size_opts"
+        @on-change="onPageChange"
+        @on-page-size-change="onPageSizeChange"
         size="small"
         show-total show-sizer
         style="margin-top: 10px;"/>
@@ -28,7 +32,7 @@
 
 <script>
 export default {
-  name: "ModTable",
+  name: "PaginateTable",
   props: {
     tableLoading: {
       type: Boolean,
@@ -66,6 +70,13 @@ export default {
     }
   },
   methods: {
+    onPageChange(data) {
+
+      this.$emit('on-page-change', data)
+    },
+    onPageSizeChange(data) {
+      this.$emit('on-page-size-change', data)
+    },
     handleRowClick(params) {
       if (params.public === 2) {
         this.$Message.error('不可查看')

@@ -35,6 +35,7 @@
 <script>
 
 import api from "@/utils/api";
+import message from "@/utils/message";
 
 export default {
   name: "RegisterStep2",
@@ -65,18 +66,8 @@ export default {
           this.$Message.success('邮箱验证成功')
           this.$emit('nextStep', {})
         } else {
-          let msg = '邮箱验证失败 '
-          if (typeof (res.data.err) === 'string') {
-            msg += res.data.err
-          } else if (typeof (res.data.err) === 'object') {
-            for (const key1 in res.data.err) {
-              if (Object.prototype.hasOwnProperty.call(res.data.err, key1)) {
-                msg += `${key1}:${res.data.err[key1]} `
-              }
-            }
-          }
           this.$Message.error({
-            content: msg,
+            content: '邮箱验证失败' + message.err(res.data.err),
             duration: 3
           });
         }

@@ -44,6 +44,7 @@
 <script>
 import {mapGetters, mapActions} from 'vuex'
 import api from "@/utils/api";
+import message from "@/utils/message";
 
 export default {
   name: "RegisterStep1",
@@ -114,18 +115,8 @@ export default {
               this.$Message.success('注册成功')
               this.$emit('nextStep', {'step2': res.data.data})
             } else {
-              let msg = '登录失败\n'
-              if (typeof (res.data.err) === 'string') {
-                msg += res.data.err
-              } else if (typeof (res.data.err) === 'object') {
-                for (const key1 in res.data.err) {
-                  if (Object.prototype.hasOwnProperty.call(res.data.err, key1)) {
-                    msg += `${key1}:${res.data.err[key1]}\n`
-                  }
-                }
-              }
               this.$Message.error({
-                content: msg,
+                content: '注册失败' + message.err(res.data.err),
                 duration: 3
               });
             }
