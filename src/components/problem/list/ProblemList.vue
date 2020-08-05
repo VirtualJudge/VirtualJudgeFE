@@ -3,17 +3,18 @@
     <h2 style="text-align: center">题目列表</h2>
     <Row style="margin-top: 10px">
       <Col span="16">
-        <ModTable
+        <PaginateTable
+            @on-page-change="onPageChange"
+            @on-page-size-change="onPageSizeChange"
             v-bind:total="total"
             v-bind:page_size="page_size"
-            v-bind:page_size_opts="page_size_opts"
             v-bind:data="data"
             v-bind:columns="columns"
             v-bind:current="current"
             v-bind:tableLoading="tableLoading"/>
       </Col>
       <Col span="8" style="padding-left: 20px">
-        <ModFilter @handlerFilter="handlerFilter"/>
+        <ProblemFilter v-bind:tableFilters="table_filters" @handlerFilter="handlerFilter"/>
       </Col>
     </Row>
 
@@ -21,18 +22,19 @@
 </template>
 
 <script>
-import ModTable from "@/components/utils/PaginateTable";
-import ModFilter from "@/components/problem/list/ProblemFilter";
+import PaginateTable from "@/components/utils/PaginateTable";
+import ProblemFilter from "@/components/problem/list/ProblemFilter";
+import api from "@/utils/api";
+import message from "@/utils/message";
 
 export default {
   name: "ProblemList",
-  components: {ModFilter, ModTable},
+  components: {ProblemFilter, PaginateTable},
   data() {
     return {
       tableLoading: false,
       total: 0,
       page_size: 10,
-      page_size_opts: [10, 20, 50, 100],
       columns: [{
         title: '编号',
         key: 'id'
@@ -40,16 +42,47 @@ export default {
         title: '标题',
         key: 'title'
       }],
-      data: [{'id': 1, 'title': 'A+B'}],
-      current: 1
+      data: [],
+      current: 1,
+      table_filters: {
+        id: '',
+        title: ''
+      }
     }
   }, mounted() {
     // TODO: 这里处理题目表格数据的初始化。
+    this.requestTableData()
   },
   methods: {
+    requestTableData() {
+      this.tableLoading = true
+      api.getProblemList({
+        page: this.current,
+        page_size: this.page_size,
+        id: this.table_filters.id,
+        title: this.table_filters.title
+      }).then(res => {
+        if (res.data.err == null) {
+          this.data = res.data.data.results || []
+          this.total = res.data.data.count || 0
+          this.tableLoading = false
+        } else {
+          this.$Message.error(message.err(res.data.err));
+          this.tableLoading = false
+        }
+      })
+    },
+    onPageChange(page_number) {
+      this.current = page_number
+      this.requestTableData()
+    },
+    onPageSizeChange(page_size) {
+      this.page_size = page_size
+      this.requestTableData()
+    },
     handlerFilter() {
       // TODO: 这里处理题目筛选操作。
-      this.tableLoading = !this.tableLoading
+      this.requestTableData()
     }
   }
 }

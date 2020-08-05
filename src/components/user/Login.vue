@@ -41,6 +41,7 @@
 <script>
 import {mapActions, mapGetters} from 'vuex'
 import api from "../../utils/api";
+import message from "@/utils/message";
 
 export default {
   name: "Login",
@@ -117,22 +118,11 @@ export default {
                 })
               } else {
                 this.randomCaptcha()
-                let msg = '登录失败\n'
-                if (typeof (res.data.err) === 'string') {
-                  msg += res.data.err
-                } else if (typeof (res.data.err) === 'object') {
-                  for (const key1 in res.data.err) {
-                    if (Object.prototype.hasOwnProperty.call(res.data.err, key1)) {
-                      msg += `${key1}:${res.data.err[key1]}\n`
-                    }
-                  }
-                }
                 this.$Message.error({
-                  content: msg,
+                  content: '登录失败' + message.err(res.data.err),
                   duration: 3
                 });
               }
-
             }
           })
         } else {

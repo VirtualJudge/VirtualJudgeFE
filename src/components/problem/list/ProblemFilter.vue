@@ -5,12 +5,12 @@
       <Form label-position="right" :label-width="50">
         <FormItem label="编号">
           <label>
-            <Input v-model="formItem.id"/>
+            <Input v-model="tableFilters.id"/>
           </label>
         </FormItem>
         <FormItem label="标题">
           <label>
-            <Input v-model="formItem.title"/>
+            <Input v-model="tableFilters.title"/>
           </label>
         </FormItem>
         <FormItem>
@@ -26,15 +26,20 @@
 
 <script>
 export default {
-  name: "ModFilter",
-  data() {
-    return {
-      formItem: {
-        id: '',
-        title: ''
+  name: "ProblemFilter",
+  props: {
+    tableFilters: {
+      id: {
+        type: String,
+        default: ''
+      },
+      title: {
+        type: String,
+        default: ''
       }
     }
-  }, methods: {
+  },
+  methods: {
     handlerFilter() {
       this.$emit('handlerFilter')
     }
