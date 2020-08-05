@@ -38,6 +38,9 @@ export default {
             }
         })
     },
+    getProblemList() {
+        return ajax('/problem/', 'get')
+    }
 }
 
 /**
