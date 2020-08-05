@@ -37,11 +37,19 @@ export default {
       page_size: 10,
       columns: [{
         title: '编号',
-        key: 'id'
+        key: 'id',
+        width: 100
       }, {
         title: '标题',
         key: 'title'
-      }],
+      },
+        {
+          width: 100,
+          title: '提交',
+          render: (h, params) => {
+            return h('span', `${params.row.accepted_submissions}(${params.row.total_submissions})`)
+          }
+        }],
       data: [],
       current: 1,
       table_filters: {
@@ -81,7 +89,6 @@ export default {
       this.requestTableData()
     },
     handlerFilter() {
-      // TODO: 这里处理题目筛选操作。
       this.requestTableData()
     }
   }
