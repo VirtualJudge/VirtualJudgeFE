@@ -14,7 +14,7 @@ const getters = {
         return !!getters.profile.username
     },
     isAdminRole: (state, getters) => {
-        return getters.profile.is_admin === true
+        return getters.profile.is_superuser === true
     },
 }
 
