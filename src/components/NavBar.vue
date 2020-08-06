@@ -28,11 +28,8 @@
             <template slot="title">
               <Avatar :src="emailHashURL">{{ profile.username }}</Avatar>
             </template>
-            <MenuGroup v-if="isAdminRole" title="系统">
-              <MenuItem name="admin-setting">高级设置</MenuItem>
-            </MenuGroup>
             <MenuGroup title="基本">
-              <MenuItem name="/user" to="/user">个人设置</MenuItem>
+              <MenuItem name="/self" to="/self">个人设置</MenuItem>
               <MenuItem name="logout" @click.native="clearProfile">退出登录</MenuItem>
             </MenuGroup>
           </Submenu>

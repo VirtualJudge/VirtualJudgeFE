@@ -1,6 +1,6 @@
 import CannotLogin from "../../components/user/CannotLogin";
 import Register from "../../components/user/Register";
-import Index from "../../components/user/basic/Index";
+import SelfIndex from "../../components/user/SelfIndex";
 export default [
     {
         path: '/cannot_login',
@@ -18,9 +18,9 @@ export default [
             title: '注册'
         }
     },{
-        path: '/user',
-        name: 'user',
-        component: Index,
+        path: '/self',
+        name: 'self',
+        component: SelfIndex,
         meta:{
             title: '个人设置'
         }

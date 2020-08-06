@@ -6,6 +6,7 @@
         <PaginateTable
             @on-page-change="onPageChange"
             @on-page-size-change="onPageSizeChange"
+            @on-row-click="onRowClick"
             v-bind:total="total"
             v-bind:page_size="page_size"
             v-bind:data="data"
@@ -69,7 +70,7 @@ export default {
         page_size: this.page_size,
         id: this.table_filters.id,
         title: this.table_filters.title
-      }).then(res => {
+      }).then((res) => {
         if (res.data.err == null) {
           this.data = res.data.data.results || []
           this.total = res.data.data.count || 0
@@ -87,6 +88,9 @@ export default {
     onPageSizeChange(page_size) {
       this.page_size = page_size
       this.requestTableData()
+    },
+    onRowClick(params) {
+      this.$router.push(`/problem/${params.id}`)
     },
     handlerFilter() {
       this.requestTableData()
