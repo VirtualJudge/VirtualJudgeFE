@@ -78,14 +78,7 @@ export default {
       this.$emit('on-page-size-change', data)
     },
     handleRowClick(params) {
-      if (params.public === 2) {
-        this.$Message.error('不可查看')
-      } else if (params.public === 1) {
-        this.$Message.info('不可提交')
-      } else {
-        this.$Message.success(params.title)
-      }
-
+      this.$emit('on-row-click', params)
     }
   }
 }

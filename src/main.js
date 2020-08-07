@@ -4,7 +4,10 @@ import store from './store'
 import router from './router'
 import ViewUI from 'view-design';
 import '../theme/index.less';
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
 
+Vue.use(mavonEditor)
 Vue.use(ViewUI);
 Vue.config.productionTip = false
 

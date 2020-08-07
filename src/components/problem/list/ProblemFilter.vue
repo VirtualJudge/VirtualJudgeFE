@@ -5,7 +5,7 @@
       <Form label-position="right" :label-width="50">
         <FormItem label="编号">
           <label>
-            <Input v-model="tableFilters.id"/>
+            <Input type="number" v-model="tableFilters.id"/>
           </label>
         </FormItem>
         <FormItem label="标题">

@@ -12,6 +12,8 @@
     "core-js": "^3.6.5",
     "js-md5": "^0.7.3",
     "less-loader": "^6.2.0",
+    "mavon-editor": "^2.9.0",
+    "moment": "^2.27.0",
     "remove": "^0.1.5",
     "view-design": "^4.3.2",
     "vue": "^2.6.11",
@@ -25,6 +27,7 @@
     "@vue/cli-plugin-vuex": "~4.4.0",
     "@vue/cli-service": "~4.4.0",
     "babel-eslint": "^10.1.0",
+    "copy-webpack-plugin": "^6.0.3",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
     "vue-template-compiler": "^2.6.11"

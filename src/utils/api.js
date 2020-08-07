@@ -1,18 +1,17 @@
 import axios from 'axios';
 
-axios.defaults.baseURL = '/api';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.xsrfCookieName = 'csrftoken';
 
 export default {
     getUserInformation() {
-        return ajax('/user/info/', 'get')
+        return ajax('/api/user/info/', 'get')
     },
     deleteUserInformation() {
-        return ajax('/user/logout/', 'delete')
+        return ajax('/api/user/logout/', 'delete')
     },
     postUserLogin(username, password, captcha) {
-        return ajax('/user/login/', 'post', {
+        return ajax('/api/user/login/', 'post', {
             data: {
                 'username': username,
                 'password': password,
@@ -21,7 +20,7 @@ export default {
         })
     },
     putUserRegister(username, password, email, captcha) {
-        return ajax('/user/register/', 'put', {
+        return ajax('/api/user/register/', 'put', {
             data: {
                 'username': username,
                 'password': password,
@@ -31,7 +30,7 @@ export default {
         })
     },
     postAccountActivate(id, code) {
-        return ajax('/user/activate/', 'post', {
+        return ajax('/api/user/activate/', 'post', {
             data: {
                 'id': id,
                 'code': code
@@ -40,8 +39,23 @@ export default {
     },
     getProblemList(params) {
         let url_params = params || {}
-        return ajax('/problem/', 'get', {
+        return ajax('/api/problem/', 'get', {
             params: url_params
+        })
+    },
+    getProblemDetail(id) {
+        return ajax(`/api/problem/${id}`, 'get')
+    },
+    postProblemCreate(title, content, source, time_limit, memory_limit, is_public) {
+        return ajax('/api/problem/', 'post', {
+            data: {
+                'title': title,
+                'content': content,
+                'source': source,
+                'time_limit': time_limit,
+                'memory_limit': memory_limit,
+                'public': is_public
+            }
         })
     }
 }

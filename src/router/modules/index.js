@@ -1,5 +1,4 @@
 import Index from "../../components/index/Index";
-import Problem from "../../components/problem/list/ProblemList";
 import Submission from "../../components/submission/Submission";
 import Help from "../../components/help/Help";
 
@@ -10,14 +9,6 @@ export default [
         component: Index,
         meta: {
             title: '首页'
-        }
-    },
-    {
-        path: '/problem',
-        name: 'problem',
-        component: Problem,
-        meta: {
-            title: '题目列表'
         }
     },
     {
