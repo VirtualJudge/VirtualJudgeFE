@@ -15,7 +15,5 @@ module.exports = {
                 changeOrigin: true
             }
         }
-    }, configureWebpack: {
-        plugins: []
-    }
+    },
 }

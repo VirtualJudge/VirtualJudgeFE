@@ -46,7 +46,7 @@ export default {
     getProblemDetail(id) {
         return ajax(`/api/problem/${id}`, 'get')
     },
-    postProblemCreate(title, content, source, time_limit, memory_limit, is_public) {
+    postProblemCreate(title, content, source, time_limit, memory_limit, is_public, manifest) {
         return ajax('/api/problem/', 'post', {
             data: {
                 'title': title,
@@ -54,7 +54,8 @@ export default {
                 'source': source,
                 'time_limit': time_limit,
                 'memory_limit': memory_limit,
-                'public': is_public
+                'public': is_public,
+                'manifest': manifest
             }
         })
     }

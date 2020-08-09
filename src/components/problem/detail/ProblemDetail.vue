@@ -3,18 +3,26 @@
     <h2 style="text-align: center">{{ problem.title }}</h2>
     <Row>
       <Col span="16">
-          <mavon-editor
-              v-model="editor_value"
-              defaultOpen="preview"
-              codeStyle="atom-one-light"
-              previewBackground="#ffffff"
-              v-bind:boxShadow="false"
-              v-bind:tabSize="4"
-              v-bind:editable="false"
-              v-bind:subfield="false"
-              v-bind:toolbarsFlag="false"
-              fontSize="16px"
-          />
+        <Tabs :value="tab_val">
+          <TabPane label="Markdown" name="Markdown" v-if="editor_value.markdown">
+            <mavon-editor
+                v-model="editor_value.markdown"
+                defaultOpen="preview"
+                codeStyle="atom-one-light"
+                previewBackground="#ffffff"
+                v-bind:boxShadow="false"
+                v-bind:tabSize="4"
+                v-bind:editable="false"
+                v-bind:subfield="false"
+                v-bind:toolbarsFlag="false"
+                fontSize="16px"
+            />
+          </TabPane>
+          <TabPane label="PDF" name="PDF" v-if="editor_value.pdf">
+            <embed height="800" width="100%" :src="editor_value.pdf">
+          </TabPane>
+        </Tabs>
+
       </Col>
       <Col span="8" style="padding-left: 20px">
         <Card>
@@ -37,7 +45,8 @@ export default {
 
   data() {
     return {
-      editor_value: '',
+      tab_val: 'Markdown',
+      editor_value: {},
       problem: {}
     }
   },
@@ -51,7 +60,14 @@ export default {
         this.$Message.error(message.err(res.data.err))
       } else {
         this.problem = res.data.data || {}
-        this.editor_value = res.data.data.content.markdown || ''
+        this.editor_value = res.data.data.content || {}
+        if (this.editor_value.markdown) {
+          this.tab_val = 'Markdown'
+        } else if (this.editor_value.pdf) {
+          this.tab_val = 'PDF'
+        } else {
+          this.tab_val = 'Markdown'
+        }
       }
     })
   }
