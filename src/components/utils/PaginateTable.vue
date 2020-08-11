@@ -5,6 +5,7 @@
           :current="current"
           :page-size="page_size"
           :page-size-opts="page_size_opts"
+          :transfer="true"
           size="small"
           @on-change="onPageChange"
           @on-page-size-change="onPageSizeChange"
@@ -17,6 +18,7 @@
            @on-row-click="handleRowClick"
            :loading="tableLoading"></Table>
     <Page
+        :transfer="true"
         :disabled="tableLoading"
         :total="total"
         :current="current"
