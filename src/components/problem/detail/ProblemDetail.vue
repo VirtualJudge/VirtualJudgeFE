@@ -79,6 +79,7 @@
 <script>
 import api from "@/utils/api";
 import message from "@/utils/message";
+import {PROBLEM_SUBMIT_LANGUAGES} from "@/utils/constant";
 
 export default {
   name: "ProblemDetail",
@@ -97,22 +98,7 @@ export default {
         short: '',
         info: ''
       },
-      languages: [{
-        val: 'c',
-        info: 'C (GCC 9.2.0)'
-      }, {
-        val: 'cpp',
-        info: 'C++ (G++ 9.2.0)'
-      }, {
-        val: 'java',
-        info: 'Java (OpenJDK 14)'
-      }, {
-        val: 'python',
-        info: 'Python (Python 3.8)'
-      }, {
-        val: 'go',
-        info: 'Go (Golang 1.14.3)'
-      }]
+      languages: PROBLEM_SUBMIT_LANGUAGES
     }
   },
   mounted() {

@@ -37,7 +37,7 @@ export const MAVON_EDITOR_TOOLBAR_EDIT_MODE = {
     undo: true, // 上一步
     redo: true, // 下一步
     trash: true, // 清空
-    save: false, // 保存（触发events中的save事件）
+    save: true, // 保存（触发events中的save事件）
     /* 1.4.2 */
     navigation: true, // 导航目录
     /* 2.1.8 */
@@ -48,4 +48,20 @@ export const MAVON_EDITOR_TOOLBAR_EDIT_MODE = {
     subfield: true, // 单双栏模式
     preview: true, // 预览
 }
-export const locale = 'zh-cn'
+export const DEFAULT_LOCALE = 'zh-cn'
+export const PROBLEM_SUBMIT_LANGUAGES = [{
+    val: 'c',
+    info: 'C (GCC 9.3.0)'
+}, {
+    val: 'cpp',
+    info: 'C++ (G++ 9.3.0)'
+}, {
+    val: 'java',
+    info: 'Java (OpenJDK 14.0.1)'
+}, {
+    val: 'python',
+    info: 'Python (Python 3.8.2)'
+}, {
+    val: 'go',
+    info: 'Go (Golang 1.13.8)'
+}]

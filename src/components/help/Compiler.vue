@@ -2,7 +2,8 @@
   <div class="main-view">
     <h2>编译器信息</h2>
     <pre>
-      <code class="language-shell">$ gcc --version
+      <code class="language-shell">
+$ gcc --version
 gcc (Ubuntu 9.3.0-10ubuntu2) 9.3.0
 Copyright (C) 2019 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
@@ -36,6 +37,7 @@ import 'highlight.js/styles/atom-one-light.css';
 export default {
   name: "Help",
   mounted() {
+    console.log('mounted')
     hljs.registerLanguage('shell', shell);
     hljs.initHighlightingOnLoad();
   }

@@ -1,5 +1,5 @@
 import Index from "../../components/index/Index";
-import Submission from "../../components/submission/Submission";
+import SubmissionList from "../../components/submission/SubmissionList";
 
 export default [
     {
@@ -13,7 +13,7 @@ export default [
     {
         path: '/submission',
         name: 'submission',
-        component: Submission,
+        component: SubmissionList,
         meta: {
             title: '提交列表'
         }

@@ -61,6 +61,9 @@ export default {
     },
     deleteProblemDestroy(id) {
         return ajax(`/api/problem/${id}/`, 'delete')
+    },
+    getSubmissionList() {
+        return ajax('/api/submission/', 'get')
     }
 }
 
