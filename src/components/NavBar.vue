@@ -10,9 +10,18 @@
       <MenuItem class="left-menu-item" name="/submission" to="/submission">
         提交
       </MenuItem>
-      <MenuItem class="left-menu-item" name="/help" to="/help">
-        帮助
-      </MenuItem>
+      <Submenu name="/help">
+        <template slot="title">
+          帮助
+        </template>
+        <MenuItem class="left-menu-item" name="/help" to="/help">
+          首页
+        </MenuItem>
+        <MenuItem class="left-menu-item" name="/compiler" to="/compiler">
+          编译器信息
+        </MenuItem>
+      </Submenu>
+
       <MenuItem class="left-menu-item" name="/register" to="/register"
                 v-if="!isAuthenticated && enabledRegister">注册
       </MenuItem>

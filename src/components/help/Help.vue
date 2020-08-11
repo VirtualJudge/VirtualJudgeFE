@@ -5,13 +5,16 @@
 </template>
 
 <script>
-    export default {
-        name: "Help"
-    }
+
+export default {
+  name: "Help",
+  mounted() {
+  }
+}
 </script>
 
 <style scoped>
-.main-view{
+.main-view {
   width: 95%;
   margin-left: auto;
   margin-right: auto;
