@@ -44,7 +44,7 @@ export default {
         })
     },
     getProblemDetail(id) {
-        return ajax(`/api/problem/${id}`, 'get')
+        return ajax(`/api/problem/${id}/`, 'get')
     },
     postProblemCreate(title, content, source, time_limit, memory_limit, is_public, manifest) {
         return ajax('/api/problem/', 'post', {
@@ -58,6 +58,9 @@ export default {
                 'manifest': manifest
             }
         })
+    },
+    deleteProblemDestroy(id) {
+        return ajax(`/api/problem/${id}/`, 'delete')
     }
 }
 

@@ -101,7 +101,7 @@ export default {
               },
               on: {
                 click: () => {
-                  this.$Message.error(params.row.title)
+                  this.handleProblemDelete(params.row.id)
                 }
               }
             }, '删除')
@@ -147,6 +147,16 @@ export default {
     },
     handleAddClick() {
       this.$emit('add-button-click')
+    },
+    handleProblemDelete(id) {
+      api.deleteProblemDestroy(id).then(res => {
+        if (res.data.err == null) {
+          this.requestTableData()
+          this.$Message.success('删除成功')
+        } else {
+          this.$Message.error('删除失败，' + message.err(res.data.err))
+        }
+      })
     }
   }
 }
