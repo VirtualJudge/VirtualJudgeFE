@@ -25,10 +25,50 @@
 
       </Col>
       <Col span="8" style="padding-left: 20px">
-        <Card>
+        <Card dis-hover>
           <p slot="title">信息</p>
           <p>时间限制：{{ problem.time_limit }} MS</p>
           <p>内存限制：{{ problem.memory_limit }} MB</p>
+        </Card>
+        <Card style="margin-top: 10px">
+          <p slot="title">提交</p>
+          <Form>
+            <FormItem>
+              <label>
+                <Select class="mono-text" v-model="lang">
+                  <Option
+                      class="mono-text"
+                      :key="item.val"
+                      v-for="item in languages"
+                      :value="item.val">
+                    {{ item.info }}
+                  </Option>
+                </Select>
+              </label>
+            </FormItem>
+            <FormItem>
+              <label>
+                <Input v-model="code"
+                       type="textarea"
+                       autofocus
+                       ref="textarea"
+                       class="mono-text"
+                       :autosize="{minRows: 10,maxRows: 40}"/>
+              </label>
+            </FormItem>
+            <FormItem>
+              <Button type="primary" @click="handleSubmitClick" :loading="submitButtonLoading">提交</Button>
+              <span v-if="judge_result.short==='P'" style="margin-left: 10px;color: gold">
+                {{ judge_result.info }}
+              </span>
+              <span v-if="judge_result.short==='R'" style="margin-left: 10px;color: #2b85e4">
+                {{ judge_result.info }}
+              </span>
+              <span v-if="judge_result.short==='AC'" style="margin-left: 10px;color: #18b566">
+                {{ judge_result.info }}
+              </span>
+            </FormItem>
+          </Form>
         </Card>
       </Col>
     </Row>
@@ -47,7 +87,32 @@ export default {
     return {
       tab_val: 'Markdown',
       editor_value: {},
-      problem: {}
+      problem: {},
+      code: '',
+      lang: 'c',
+      submitButtonLoading: false,
+      fake: 3,
+      timer: null,
+      judge_result: {
+        short: '',
+        info: ''
+      },
+      languages: [{
+        val: 'c',
+        info: 'C (GCC 9.2.0)'
+      }, {
+        val: 'cpp',
+        info: 'C++ (G++ 9.2.0)'
+      }, {
+        val: 'java',
+        info: 'Java (OpenJDK 14)'
+      }, {
+        val: 'python',
+        info: 'Python (Python 3.8)'
+      }, {
+        val: 'go',
+        info: 'Go (Golang 1.14.3)'
+      }]
     }
   },
   mounted() {
@@ -70,6 +135,32 @@ export default {
         }
       }
     })
+  }, methods: {
+    handleSubmitClick() {
+      this.submitButtonLoading = true
+      this.judge_result = {
+        short: 'P',
+        info: 'Pending'
+      }
+      this.timer = setInterval(this.getResult, 1000)
+    },
+    getResult() {
+      if (this.fake > 0) {
+        this.fake--
+        this.judge_result = {
+          short: 'R',
+          info: 'Running'
+        }
+      } else {
+        this.submitButtonLoading = false
+        clearInterval(this.timer)
+        this.timer = null
+        this.judge_result = {
+          short: 'AC',
+          info: 'Accepted'
+        }
+      }
+    }
   }
 }
 </script>
@@ -80,5 +171,9 @@ export default {
   margin-left: auto;
   margin-right: auto;
   margin-top: 10px;
+}
+
+.mono-text {
+  font-family: "Ubuntu Mono", "JetBrains Mono", Consolas, Menlo, Courier, monospace;
 }
 </style>
