@@ -7,7 +7,7 @@
 
 <style>
 #app {
-  min-width: 1280px;
+  min-width: 800px;
 }
 
 </style>
