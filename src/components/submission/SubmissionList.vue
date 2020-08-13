@@ -8,18 +8,11 @@
       </i-switch>
 
       <label>
-        <Select style="width: 200px; margin-left: 10px">
-          <Option value="ALL">All</Option>
-          <Option value="P">Pending</Option>
-          <Option value="R">Running</Option>
-          <Option value="AC">Accepted</Option>
-          <Option value="WA">Wrong Answer</Option>
-          <Option value="PE">Presentation Error</Option>
-          <Option value="RE">Runtime Error</Option>
-          <Option value="MLE">Memory Limit Exceeded</Option>
-          <Option value="TLE">Time Limit Exceeded</Option>
-          <Option value="CE">Compile Error</Option>
-          <Option value="SE">System Error</Option>
+        <Select :value="verdict_filter" style="width: 200px; margin-left: 10px">
+          <Option :key="item" :value="item"
+                  v-for="item in Object.keys(submission_verdicts)">
+            {{ submission_verdicts[item].info }}
+          </Option>
         </Select>
       </label>
 
@@ -29,6 +22,8 @@
     </div>
 
     <PaginateTable style="margin-top: 10px"
+                   @on-page-size-change="onPageSizeChange"
+                   @on-page-change="onPageChange"
                    :table-loading="tableLoading"
                    :page_size="page_size"
                    :current="current"
@@ -41,6 +36,13 @@
 <script>
 import PaginateTable from "@/components/utils/PaginateTable";
 import api from "@/utils/api";
+import moment from 'moment'
+import {
+  DEFAULT_LOCALE,
+  VERDICT_FILTER,
+  PROBLEM_SUBMIT_LANGUAGES,
+  SUBMISSION_VERDICTS, LANGUAGE_FILTER
+} from '@/utils/constant'
 
 export default {
   name: "SubmissionList",
@@ -54,106 +56,102 @@ export default {
         },
         {
           title: '题目',
-          key: 'problem'
+          key: 'problem',
+          render: (h, params) => {
+            return h('a', {
+              on: {
+                click: () => {
+                  this.$router.push(`/problem/${params.row.problem.id}`)
+                }
+              }
+            }, params.row.problem.title)
+          }
         },
         {
           title: '用户',
-          key: 'user'
+          key: 'user',
+          render: (h, params) => {
+            return h('span', params.row.user.username)
+          }
         },
         {
           title: '时间花费',
-          key: 'time_spend'
+          key: 'time_spend',
+          render: (h, params) => {
+            if (params.row.time_spend !== null) {
+              return h('span', params.row.time_spend)
+            } else {
+              return h('span', '-')
+            }
+          }
         },
         {
           title: '内存花费',
-          key: 'memory_spend'
+          key: 'memory_spend',
+          render: (h, params) => {
+            if (params.row.memory_spend !== null) {
+              return h('span', params.row.memory_spend)
+            } else {
+              return h('span', '-')
+            }
+          }
         }, {
           title: '提交语言',
-          key: 'lang'
+          key: 'lang',
+          render: (h, params) => {
+            return h('span', PROBLEM_SUBMIT_LANGUAGES[params.row.lang].withVersion)
+          },
+          filters: LANGUAGE_FILTER,
+          filterMultiple: false,
+          filterRemote(value) {
+            console.log(value)
+          }
         },
         {
           title: '结果',
-          key: 'verdict'
+          key: 'verdict',
+          render: (h, params) => {
+            return h('Tag', {
+              props: {
+                color: SUBMISSION_VERDICTS[params.row.verdict].color
+              }
+            }, SUBMISSION_VERDICTS[params.row.verdict].info)
+          },
+          filters: VERDICT_FILTER,
+          filterMultiple: false,
+          filterRemote(value) {
+            console.log(value)
+          }
+        },
+        {
+          title: '提交时间',
+          key: 'create_time',
+          render: (h, params) => {
+            moment.locale(DEFAULT_LOCALE)
+            return h('Tooltip', {
+              props: {
+                transfer: true,
+                content: moment(params.row.create_time).format('lll')
+              }
+            }, moment(params.row.create_time).fromNow())
+          }
         }
       ],
       tData: [],
       current: 1,
-      page_size: 10,
+      page_size: 20,
       total: 0,
       myself: false,
-      tableLoading: false
+      tableLoading: false,
+      submission_verdicts: SUBMISSION_VERDICTS,
+      verdict_filter: 'A'
     }
   }, mounted() {
-    this.handleScreenResize()
-    window.onresize = () => {
-      return (() => {
-        this.handleScreenResize()
-      })()
-    }
+    this.requestTableData()
   },
   methods: {
-    handleScreenResize() {
-      window.screenWidth = document.body.clientWidth
-      if (window.screenWidth < 1200) {
-        this.columns = [
-          {
-            title: '编号',
-            key: 'id'
-          },
-          {
-            title: '题目',
-            key: 'problem'
-          },
-          {
-            title: '用户',
-            key: 'user'
-          },
-          {
-            title: '结果',
-            key: 'verdict'
-          },
-          {
-            title: '提交时间',
-            key: 'create_time'
-          }
-        ]
-      } else {
-        this.columns = [
-          {
-            title: '编号',
-            key: 'id'
-          },
-          {
-            title: '题目',
-            key: 'problem'
-          },
-          {
-            title: '用户',
-            key: 'user'
-          },
-          {
-            title: '时间花费',
-            key: 'time_spend'
-          },
-          {
-            title: '内存花费',
-            key: 'memory_spend'
-          }, {
-            title: '提交语言',
-            key: 'lang'
-          },
-          {
-            title: '结果',
-            key: 'verdict'
-          },
-          {
-            title: '提交时间',
-            key: 'create_time'
-          }
-        ]
-      }
-    },
     requestTableData() {
+      this.tableLoading = true
       api.getSubmissionList({
         page: this.current,
         page_size: this.page_size,
@@ -161,9 +159,19 @@ export default {
       }).then(res => {
         if (res.data.err === null) {
           this.tData = res.data.data.results || []
+          this.total = res.data.data.count || 0
         }
+        this.tableLoading = false
       })
-    }
+    },
+    onPageChange(page_number) {
+      this.current = page_number
+      this.requestTableData()
+    },
+    onPageSizeChange(page_size) {
+      this.page_size = page_size
+      this.requestTableData()
+    },
   }
 }
 </script>

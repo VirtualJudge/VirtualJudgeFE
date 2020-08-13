@@ -62,8 +62,20 @@ export default {
     deleteProblemDestroy(id) {
         return ajax(`/api/problem/${id}/`, 'delete')
     },
-    getSubmissionList() {
-        return ajax('/api/submission/', 'get')
+    getSubmissionList(params) {
+        let url_params = params || {}
+        return ajax('/api/submission/', 'get', {
+            params: url_params
+        })
+    },
+    postSubmissionCreate(problem_id, code, lang) {
+        return ajax('/api/submission/', 'post', {
+            data: {
+                'problem': problem_id,
+                'code': code,
+                'lang': lang
+            }
+        })
     }
 }
 

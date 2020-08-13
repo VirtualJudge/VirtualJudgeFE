@@ -27,10 +27,20 @@
       <Col span="8" style="padding-left: 20px">
         <Card dis-hover>
           <p slot="title">信息</p>
-          <p>时间限制：{{ problem.time_limit }} MS</p>
-          <p>内存限制：{{ problem.memory_limit }} MB</p>
+          <List :split="false">
+            <ListItem>
+              <ListItemMeta title="时间限制">
+                <span slot="description">{{ problem.time_limit }} MB</span>
+              </ListItemMeta>
+            </ListItem>
+            <ListItem>
+              <ListItemMeta title="内存限制">
+                <span slot="description">{{ problem.memory_limit }} MB</span>
+              </ListItemMeta>
+            </ListItem>
+          </List>
         </Card>
-        <Card style="margin-top: 10px">
+        <Card style="margin-top: 10px" v-if="isAuthenticated">
           <p slot="title">提交</p>
           <Form>
             <FormItem>
@@ -38,10 +48,12 @@
                 <Select class="mono-text" v-model="lang">
                   <Option
                       class="mono-text"
-                      :key="item.val"
-                      v-for="item in languages"
-                      :value="item.val">
-                    {{ item.info }}
+                      :key="item"
+                      :label="languages[item].short"
+                      v-for="item in Object.keys(languages)"
+                      :value="item">
+                    <span>{{ languages[item].short }}</span>
+                    <span style="float:right;color:#ccc">{{ languages[item].withVersion }}</span>
                   </Option>
                 </Select>
               </label>
@@ -80,6 +92,7 @@
 import api from "@/utils/api";
 import message from "@/utils/message";
 import {PROBLEM_SUBMIT_LANGUAGES} from "@/utils/constant";
+import {mapGetters} from 'vuex'
 
 export default {
   name: "ProblemDetail",
@@ -92,8 +105,6 @@ export default {
       code: '',
       lang: 'c',
       submitButtonLoading: false,
-      fake: 3,
-      timer: null,
       judge_result: {
         short: '',
         info: ''
@@ -124,29 +135,17 @@ export default {
   }, methods: {
     handleSubmitClick() {
       this.submitButtonLoading = true
-      this.judge_result = {
-        short: 'P',
-        info: 'Pending'
-      }
-      this.timer = setInterval(this.getResult, 1000)
-    },
-    getResult() {
-      if (this.fake > 0) {
-        this.fake--
-        this.judge_result = {
-          short: 'R',
-          info: 'Running'
+      api.postSubmissionCreate(this.problem.id, this.code, this.lang).then(res => {
+        if (res.data.err === null) {
+          this.$Message.success('提交成功')
+        } else {
+          this.$Message.error(message.err(res.data.err))
         }
-      } else {
         this.submitButtonLoading = false
-        clearInterval(this.timer)
-        this.timer = null
-        this.judge_result = {
-          short: 'AC',
-          info: 'Accepted'
-        }
-      }
-    }
+      })
+    },
+  }, computed: {
+    ...mapGetters(['isAuthenticated'])
   }
 }
 </script>

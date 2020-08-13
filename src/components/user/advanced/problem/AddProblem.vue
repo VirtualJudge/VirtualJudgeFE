@@ -42,12 +42,12 @@
           <mavon-editor
               ref=md
               @imgAdd="imageAdd"
+              @save="onMavonSave"
               @imgDel="imageDel"
               v-model="formData.editor_text.markdown"
               v-bind:boxShadow="false"
               v-bind:tabSize="4"
-              codeStyle="atom-one-light"
-              v-bind:toolbars="this.editor_config.toolbars"/>
+              codeStyle="atom-one-light"/>
         </TabPane>
         <TabPane label="PDF" name="PDF">
           <Row>
@@ -146,11 +146,12 @@
 </template>
 
 <script>
-import {MAVON_EDITOR_TOOLBAR_EDIT_MODE, PROBLEM_PUBLIC_TYPE} from "@/utils/constant";
+import {PROBLEM_PUBLIC_TYPE} from "@/utils/constant";
 import api from "@/utils/api";
 import message from "@/utils/message";
 import axios from "axios";
-
+import FileSaver from 'file-saver'
+import moment from 'moment'
 
 export default {
   name: "AddProblem",
@@ -170,9 +171,6 @@ export default {
       },
       uploadFormData: {
         spj: false
-      },
-      editor_config: {
-        toolbars: MAVON_EDITOR_TOOLBAR_EDIT_MODE
       },
       source_choice: PROBLEM_PUBLIC_TYPE,
       uploadConfig: {
@@ -213,6 +211,11 @@ export default {
           this.$Message.error('提交失败' + message.err(res.data.err))
         }
       })
+    },
+    onMavonSave(value) {
+      let blob = new Blob([value], {type: "text/plain;charset=utf-8"})
+      let date = moment().format()
+      FileSaver.saveAs(blob, `problem_${date}.md`)
     },
     imageDel(file) {
       axios({

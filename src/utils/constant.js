@@ -13,55 +13,94 @@ export const PROBLEM_PUBLIC_TYPE = [
     }
 ]
 
-export const MAVON_EDITOR_TOOLBAR_EDIT_MODE = {
-    bold: true, // 粗体
-    italic: true, // 斜体
-    header: true, // 标题
-    underline: true, // 下划线
-    strikethrough: true, // 中划线
-    mark: true, // 标记
-    superscript: true, // 上角标
-    subscript: true, // 下角标
-    quote: true, // 引用
-    ol: true, // 有序列表
-    ul: true, // 无序列表
-    link: true, // 链接
-    imagelink: true, // 图片链接
-    code: true, // code
-    table: true, // 表格
-    fullscreen: true, // 全屏编辑
-    readmodel: true, // 沉浸式阅读
-    htmlcode: true, // 展示html源码
-    help: true, // 帮助
-    /* 1.3.5 */
-    undo: true, // 上一步
-    redo: true, // 下一步
-    trash: true, // 清空
-    save: true, // 保存（触发events中的save事件）
-    /* 1.4.2 */
-    navigation: true, // 导航目录
-    /* 2.1.8 */
-    alignleft: true, // 左对齐
-    aligncenter: true, // 居中
-    alignright: true, // 右对齐
-    /* 2.2.1 */
-    subfield: true, // 单双栏模式
-    preview: true, // 预览
-}
 export const DEFAULT_LOCALE = 'zh-cn'
-export const PROBLEM_SUBMIT_LANGUAGES = [{
-    val: 'c',
-    info: 'C (GCC 9.3.0)'
-}, {
-    val: 'cpp',
-    info: 'C++ (G++ 9.3.0)'
-}, {
-    val: 'java',
-    info: 'Java (OpenJDK 14.0.1)'
-}, {
-    val: 'python',
-    info: 'Python (Python 3.8.2)'
-}, {
-    val: 'go',
-    info: 'Go (Golang 1.13.8)'
-}]
+export const PROBLEM_SUBMIT_LANGUAGES = {
+    'c': {info: 'C (GCC 9.3.0)', short: 'C', withVersion: 'GCC 9.3.0'},
+    'cpp': {info: 'C++ (G++ 9.3.0)', short: 'C++', withVersion: 'G++ 9.3.0'},
+    'java': {info: 'Java (OpenJDK 14.0.1)', short: 'Java', withVersion: 'OpenJDK 14.0.1'},
+    'python': {info: 'Python (Python 3.8.2)', short: 'Python', withVersion: 'Python 3.8.2'},
+    'go': {info: 'Go (Go 1.13.8)', short: 'Go', withVersion: 'Go 1.13.8'}
+}
+export const SUBMISSION_VERDICTS = {
+    'A': {info: 'All'},
+    'P': {info: 'Pending', color: 'default'},
+    'R': {info: 'Running', color: 'green'},
+    'AC': {info: 'Accepted', color: 'success'},
+    'PE': {info: 'Presentation Error', color: 'warning'},
+    'TLE': {info: 'Time Limit Exceeded', color: 'error'},
+    'MLE': {info: 'Memory Limit Exceeded', color: 'error'},
+    'WA': {info: 'Wrong Answer', color: 'error'},
+    'RE': {info: 'Runtime Error', color: 'error'},
+    'OLE': {info: 'Output Limit Exceeded', color: 'error'},
+    'CE': {info: 'Compile Error', color: 'warning'},
+    'SE': {info: 'System Error', color: 'error'}
+}
+export const LANGUAGE_FILTER = [
+    {
+        label: 'GCC 9.3.0',
+        value: 'c'
+    },
+    {
+        label: 'G++ 9.3.0',
+        value: 'cpp'
+    },
+    {
+        label: 'Java (OpenJDK 14.0.1)',
+        value: 'java'
+    },
+    {
+        label: 'Python (Python 3.8.2)',
+        value: 'python'
+    },
+    {
+        label: 'Go (Go 1.13.8)',
+        value: 'go'
+    },
+
+]
+export const VERDICT_FILTER = [
+    {
+        label: 'Pending',
+        value: 'P'
+    },
+    {
+        label: 'Running',
+        value: 'R'
+    },
+    {
+        label: 'Accepted',
+        value: 'AC'
+    },
+    {
+        label: 'Presentation Error',
+        value: 'PE'
+    },
+    {
+        label: 'Time Limit Exceeded',
+        value: 'TLE'
+    },
+    {
+        label: 'Memory Limit Exceeded',
+        value: 'MLE'
+    },
+    {
+        label: 'Wrong Answer',
+        value: 'WA'
+    },
+    {
+        label: 'Runtime Error',
+        value: 'RE'
+    },
+    {
+        label: 'Output Limit Exceeded',
+        value: 'OLE'
+    },
+    {
+        label: 'Presentation Error',
+        value: 'CE'
+    },
+    {
+        label: 'Presentation Error',
+        value: 'SE'
+    },
+]
