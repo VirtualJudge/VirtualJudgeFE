@@ -2,7 +2,7 @@
   <div class="main-view">
     <h2 style="text-align: center">提交列表</h2>
     <div>
-      <i-switch v-model="myself" size="large" false-color="#13ce66">
+      <i-switch @on-change="handleSwitchChange" v-model="myself" size="large" false-color="#13ce66">
         <span slot="open">我的</span>
         <span slot="close">全部</span>
       </i-switch>
@@ -39,10 +39,12 @@ import api from "@/utils/api";
 import moment from 'moment'
 import {
   DEFAULT_LOCALE,
-  VERDICT_FILTER,
+  LANGUAGE_FILTER,
   PROBLEM_SUBMIT_LANGUAGES,
-  SUBMISSION_VERDICTS, LANGUAGE_FILTER
+  SUBMISSION_VERDICTS,
+  VERDICT_FILTER
 } from '@/utils/constant'
+import {mapGetters} from "vuex";
 
 export default {
   name: "SubmissionList",
@@ -99,7 +101,20 @@ export default {
           title: '提交语言',
           key: 'lang',
           render: (h, params) => {
-            return h('span', PROBLEM_SUBMIT_LANGUAGES[params.row.lang].withVersion)
+            if (this.profile.id !== null
+                && (params.row.user.id === this.profile.id
+                    || this.isAdminRole)) {
+              return h('a', {
+                on: {
+                  click: () => {
+                    this.$router.push(`/submission/${params.row.id}`)
+                  }
+                }
+              }, PROBLEM_SUBMIT_LANGUAGES[params.row.lang].withVersion)
+            } else {
+              return h('span', PROBLEM_SUBMIT_LANGUAGES[params.row.lang].withVersion)
+            }
+
           },
           filters: LANGUAGE_FILTER,
           filterMultiple: false,
@@ -172,6 +187,12 @@ export default {
       this.page_size = page_size
       this.requestTableData()
     },
+    handleSwitchChange() {
+      this.requestTableData()
+    }
+  },
+  computed: {
+    ...mapGetters(['profile', 'isAdminRole'])
   }
 }
 </script>
