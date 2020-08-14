@@ -4,12 +4,13 @@ import md5 from 'js-md5'
 
 const state = {
     profile: {},
-    emailHashURL: ''
+    emailHashURL: '',
 }
 
 const getters = {
     emailHashURL: state => state.emailHashURL,
     profile: state => state.profile,
+    userUrl: state => state.profile.id ? `/user/${state.profile.id}` : '',
     isAuthenticated: (state, getters) => {
         return !!getters.profile.username
     },
@@ -34,7 +35,7 @@ const actions = {
             }
             commit(types.CHANGE_PROFILE, {
                 profile: res.data.data || {},
-                emailHashURL: 'https://cn.gravatar.com/avatar/' + (email ? md5(email) : '')
+                emailHashURL: 'https://cn.gravatar.com/avatar/' + (email ? md5(email) + '?s=200' : '')
             })
         })
     },

@@ -37,7 +37,11 @@
             <template slot="title">
               <Avatar :src="emailHashURL">{{ profile.username }}</Avatar>
             </template>
+            <MenuGroup title="高级">
+              <MenuItem name="/system" to="/system">系统设置</MenuItem>
+            </MenuGroup>
             <MenuGroup title="基本">
+              <MenuItem name="/user" :to="userUrl">个人信息</MenuItem>
               <MenuItem name="/self" to="/self">个人设置</MenuItem>
               <MenuItem name="logout" @click.native="clearProfile">退出登录</MenuItem>
             </MenuGroup>
@@ -83,7 +87,7 @@ export default {
 
     }
   }, computed: {
-    ...mapGetters(['isAuthenticated', 'isAdminRole', 'profile', 'emailHashURL', 'captcha_url', 'active_nav']),
+    ...mapGetters(['isAuthenticated', 'userUrl', 'isAdminRole', 'profile', 'emailHashURL', 'captcha_url', 'active_nav']),
   }
 }
 </script>

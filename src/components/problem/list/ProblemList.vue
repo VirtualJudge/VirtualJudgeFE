@@ -48,7 +48,7 @@ export default {
           width: 100,
           title: '提交',
           render: (h, params) => {
-            return h('span', `${params.row.accepted_submissions}(${params.row.total_submissions})`)
+            return h('span', `${params.row.total_accepted}(${params.row.total_submitted})`)
           }
         }],
       data: [],
