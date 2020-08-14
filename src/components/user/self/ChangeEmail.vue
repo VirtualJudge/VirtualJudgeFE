@@ -1,10 +1,10 @@
 <template>
-  <p>Account information.</p>
+  <p>Change email.</p>
 </template>
 
 <script>
 export default {
-name: "AccountInfo"
+  name: "ChangeEmail"
 }
 </script>
 
