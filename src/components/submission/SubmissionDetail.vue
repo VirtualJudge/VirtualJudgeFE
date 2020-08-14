@@ -10,7 +10,14 @@
       <Col span="6" style="padding-left: 10px">
         <Card dis-hover>
           <p slot="title">信息</p>
-          <List :split="false">
+          <List v-if="code" :split="false">
+            <ListItem>
+              <ListItemMeta title="作者">
+                <span slot="description">
+                  {{ user.username }}
+                </span>
+              </ListItemMeta>
+            </ListItem>
             <ListItem>
               <ListItemMeta title="题目">
                 <a slot="description"
@@ -59,7 +66,8 @@ export default {
       verdict: {},
       time_spend: '-',
       memory_spend: '-',
-      problem: {}
+      problem: {},
+      user: {}
     }
   }, mounted() {
     api.getSubmissionPersonal(this.$route.params.id).then(res => {
@@ -68,6 +76,7 @@ export default {
         this.code = response.code || ''
         this.code_type = response.lang
         this.problem = response.problem || {}
+        this.user = response.user || {}
         this.verdict = SUBMISSION_VERDICTS[response.verdict] || {}
         this.time_spend = response.time_spend || '-'
         this.memory_spend = response.memory_spend || '-'
