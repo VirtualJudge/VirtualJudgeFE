@@ -100,13 +100,29 @@
       <h2 style="text-align: center">上传测试样例</h2>
       <div style="width: 500px;margin: auto">
         <Form :label-width="120">
-          <FormItem label="SPJ">
-            <i-switch v-model="formData.spj" style="margin-top: 10px">
+          <FormItem>
+            <p slot="label">SPJ
+              <Icon type="md-help" @click="spj_help_modal=true"></Icon>
+            </p>
+            <i-switch v-model="formData.manifest.spj" style="margin-top: 10px">
               <span slot="open">是</span>
               <span slot="close">否</span>
             </i-switch>
+            <Tag style="margin-left: 10px" color="warning" v-if="formData.manifest.spj">仅支持C语言</Tag>
+          </FormItem>
+          <FormItem v-if="formData.manifest.spj" label="SPJ Code">
+            <label>
+              <Input v-model="formData.manifest.spj_code"
+                     type="textarea"
+                     autofocus
+                     @on-keydown="handleKeyDown"
+                     ref="textarea"
+                     class="mono-text"
+                     :autosize="{minRows: 10,maxRows: 40}"/>
+            </label>
           </FormItem>
         </Form>
+
         <Upload
             style="margin-top: 10px"
             :on-success="onSuccess"
@@ -119,7 +135,7 @@
             :max-size="10240"
             type="drag"
             :headers="uploadHeaders"
-            :data="uploadFormData"
+            :data="formData.manifest"
             :show-upload-list="false"
             action="/api/problem/upload_test_cases/">
           <div style="padding: 20px 0">
@@ -130,17 +146,18 @@
         <Table
             style="margin-top: 10px"
             size="small"
-            v-if="test_cases_data.length > 0"
+            v-if="formData.manifest.test_cases.length > 0"
             :columns="test_cases_col"
-            :data="test_cases_data">
-
+            :data="formData.manifest.test_cases">
         </Table>
       </div>
       <Divider/>
       <Button type="primary" @click="handleSubmit">提交</Button>
 
     </div>
-
+    <Modal width="800" v-model="spj_help_modal">
+      <HelpSPJ/>
+    </Modal>
   </div>
 
 </template>
@@ -152,11 +169,14 @@ import message from "@/utils/message";
 import axios from "axios";
 import FileSaver from 'file-saver'
 import moment from 'moment'
+import HelpSPJ from "@/components/user/advanced/problem/HelpSPJ";
 
 export default {
   name: "AddProblem",
+  components: {HelpSPJ},
   data() {
     return {
+      spj_help_modal: false,
       formData: {
         editor_text: {
           markdown: '',
@@ -167,10 +187,7 @@ export default {
         source: '',
         title: '',
         is_public: 0,
-        manifest: {}
-      },
-      uploadFormData: {
-        spj: false
+        manifest: {spj: false, spj_code: '', test_cases: []}
       },
       source_choice: PROBLEM_PUBLIC_TYPE,
       uploadConfig: {
@@ -206,7 +223,7 @@ export default {
       ).then(res => {
         if (res.data.err === null) {
           this.$Message.success('提交成功')
-          this.$emit('on-add-success', res.data.data)
+          this.$router.push('/system/manage_problem')
         } else {
           this.$Message.error('提交失败' + message.err(res.data.err))
         }
@@ -251,9 +268,9 @@ export default {
 
       } else {
         if (Object.hasOwnProperty.call(res.data, 'test_cases')) {
-          this.test_cases_data = res.data['test_cases'] || []
+          this.formData.manifest.test_cases = res.data['test_cases'] || []
         }
-        this.formData.manifest = res.data.manifest || {}
+        this.formData.manifest.test_cases = []
         this.$Message.success('上传成功')
       }
     },
@@ -296,9 +313,17 @@ export default {
 
     handleClearPDF() {
       this.formData.editor_text.pdf = ''
+    },
+    handleKeyDown(event) {
+      if (event.key === 'Tab') {
+        event.preventDefault()
+      }
     }
   }
 }
 </script>
 <style scoped>
+.mono-text {
+  font-family: "Ubuntu Mono", "JetBrains Mono", Consolas, Menlo, Courier, monospace;
+}
 </style>

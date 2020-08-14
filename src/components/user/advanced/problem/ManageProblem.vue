@@ -146,7 +146,7 @@ export default {
       this.requestTableData()
     },
     handleAddClick() {
-      this.$emit('add-button-click')
+      this.$router.push('/system/add_problem')
     },
     handleProblemDelete(id) {
       api.deleteProblemDestroy(id).then(res => {

@@ -6,6 +6,8 @@ import UserInfo from "@/components/user/self/UserInfo";
 import UpdateInfo from "@/components/user/self/UpdateInfo";
 import ChangePassword from "@/components/user/self/ChangePassword";
 import ChangeEmail from "@/components/user/self/ChangeEmail";
+import ManageProblem from "@/components/user/advanced/problem/ManageProblem";
+import AddProblem from "@/components/user/advanced/problem/AddProblem";
 
 export default [
     {
@@ -23,7 +25,8 @@ export default [
         meta: {
             title: '注册'
         }
-    }, {
+    },
+    {
         path: '/self',
         name: 'self',
         component: SelfIndex,
@@ -53,7 +56,19 @@ export default [
         component: AdvancedIndex,
         meta: {
             title: '系统设置'
-        }
+        },
+        children: [
+            {
+                path: 'manage_problem',
+                name: 'manage_problem',
+                component: ManageProblem
+            },
+            {
+                path: 'add_problem',
+                name: 'add_problem',
+                component: AddProblem
+            }
+        ]
     }, {
         path: '/user/:id',
         name: 'user',
