@@ -8,7 +8,9 @@ import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 import VueHighlightJS from 'vue-highlightjs'
 import 'highlight.js/styles/atom-one-light.css'
+import VueClipboard from 'vue-clipboard2'
 
+Vue.use(VueClipboard)
 Vue.use(VueHighlightJS)
 Vue.use(mavonEditor)
 Vue.use(ViewUI);

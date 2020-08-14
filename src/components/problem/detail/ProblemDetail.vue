@@ -30,7 +30,7 @@
           <List :split="false">
             <ListItem>
               <ListItemMeta title="时间限制">
-                <span slot="description">{{ problem.time_limit }} MB</span>
+                <span slot="description">{{ problem.time_limit }} MS</span>
               </ListItemMeta>
             </ListItem>
             <ListItem>
@@ -63,6 +63,7 @@
                 <Input v-model="code"
                        type="textarea"
                        autofocus
+                       @on-keydown="handleKeyDown"
                        ref="textarea"
                        class="mono-text"
                        :autosize="{minRows: 10,maxRows: 40}"/>
@@ -144,6 +145,11 @@ export default {
         this.submitButtonLoading = false
       })
     },
+    handleKeyDown(event) {
+      if (event.key === 'Tab') {
+        event.preventDefault()
+      }
+    }
   }, computed: {
     ...mapGetters(['isAuthenticated'])
   }

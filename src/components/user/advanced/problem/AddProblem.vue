@@ -162,7 +162,7 @@ export default {
           markdown: '',
           pdf: ''
         },
-        memory_limit: 32,
+        memory_limit: 128,
         time_limit: 1000,
         source: '',
         title: '',

@@ -76,6 +76,9 @@ export default {
                 'lang': lang
             }
         })
+    },
+    getSubmissionPersonal(submission_id) {
+        return ajax(`/api/submission/${submission_id}/personal/`, 'get')
     }
 }
 

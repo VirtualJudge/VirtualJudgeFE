@@ -2,22 +2,26 @@
   <div class="main-view">
     <h2 style="text-align: center">提交列表</h2>
     <div>
-      <i-switch @on-change="handleSwitchChange" v-model="myself" size="large" false-color="#13ce66">
+      <i-switch
+          v-if="isAuthenticated"
+          @on-change="handleSwitchChange"
+          v-model="list_filter.myself"
+          size="large"
+          false-color="#13ce66">
         <span slot="open">我的</span>
         <span slot="close">全部</span>
       </i-switch>
 
       <label>
-        <Select :value="verdict_filter" style="width: 200px; margin-left: 10px">
+        <Select
+            @on-change="handleSelectedChange"
+            v-model="list_filter.verdict"
+            style="width: 200px; margin-left: 10px">
           <Option :key="item" :value="item"
                   v-for="item in Object.keys(submission_verdicts)">
             {{ submission_verdicts[item].info }}
           </Option>
         </Select>
-      </label>
-
-      <label>
-        <Input type="text" placeholder="筛选提交者" style="width: 200px;margin-left: 10px"/>
       </label>
     </div>
 
@@ -37,13 +41,7 @@
 import PaginateTable from "@/components/utils/PaginateTable";
 import api from "@/utils/api";
 import moment from 'moment'
-import {
-  DEFAULT_LOCALE,
-  LANGUAGE_FILTER,
-  PROBLEM_SUBMIT_LANGUAGES,
-  SUBMISSION_VERDICTS,
-  VERDICT_FILTER
-} from '@/utils/constant'
+import {DEFAULT_LOCALE, PROBLEM_SUBMIT_LANGUAGES, SUBMISSION_VERDICTS} from '@/utils/constant'
 import {mapGetters} from "vuex";
 
 export default {
@@ -51,6 +49,11 @@ export default {
   components: {PaginateTable},
   data() {
     return {
+      list_filter: {
+        myself: false,
+        verdict: 'A',
+        lang: ''
+      },
       columns: [
         {
           title: '编号',
@@ -116,11 +119,7 @@ export default {
             }
 
           },
-          filters: LANGUAGE_FILTER,
-          filterMultiple: false,
-          filterRemote(value) {
-            console.log(value)
-          }
+
         },
         {
           title: '结果',
@@ -132,11 +131,6 @@ export default {
               }
             }, SUBMISSION_VERDICTS[params.row.verdict].info)
           },
-          filters: VERDICT_FILTER,
-          filterMultiple: false,
-          filterRemote(value) {
-            console.log(value)
-          }
         },
         {
           title: '提交时间',
@@ -156,10 +150,9 @@ export default {
       current: 1,
       page_size: 20,
       total: 0,
-      myself: false,
+
       tableLoading: false,
-      submission_verdicts: SUBMISSION_VERDICTS,
-      verdict_filter: 'A'
+      submission_verdicts: SUBMISSION_VERDICTS
     }
   }, mounted() {
     this.requestTableData()
@@ -170,7 +163,8 @@ export default {
       api.getSubmissionList({
         page: this.current,
         page_size: this.page_size,
-        myself: this.myself
+        user: (this.list_filter.myself ? this.profile.id : ''),
+        verdict: (this.list_filter.verdict === 'A' ? '' : this.list_filter.verdict)
       }).then(res => {
         if (res.data.err === null) {
           this.tData = res.data.data.results || []
@@ -189,10 +183,14 @@ export default {
     },
     handleSwitchChange() {
       this.requestTableData()
+    },
+    handleSelectedChange(val) {
+      console.log('val', val)
+      this.requestTableData()
     }
   },
   computed: {
-    ...mapGetters(['profile', 'isAdminRole'])
+    ...mapGetters(['profile', 'isAdminRole', 'isAuthenticated'])
   }
 }
 </script>
