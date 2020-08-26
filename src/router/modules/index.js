@@ -1,4 +1,5 @@
 import Index from "../../components/index/Index";
+import NotFound from "@/components/NotFound";
 
 export default [
     {
@@ -9,4 +10,12 @@ export default [
             title: '首页'
         }
     },
+    {
+        path: '*',
+        name: 'default',
+        component: NotFound,
+        meta: {
+            title: '页面不存在'
+        }
+    }
 ]

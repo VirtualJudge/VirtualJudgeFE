@@ -2,7 +2,7 @@ import CannotLogin from "../../components/user/CannotLogin";
 import Register from "../../components/user/Register";
 import SelfIndex from "../../components/user/self/SelfIndex";
 import AdvancedIndex from "@/components/user/advanced/AdvancedIndex";
-import UserInfo from "@/components/user/self/UserInfo";
+import UserInfo from "@/components/user/UserInfo";
 import UpdateInfo from "@/components/user/self/UpdateInfo";
 import ChangePassword from "@/components/user/self/ChangePassword";
 import ChangeEmail from "@/components/user/self/ChangeEmail";
