@@ -36,7 +36,16 @@ export default {
         width: 100
       }, {
         title: '标题',
-        key: 'title'
+        key: 'title',
+        render: (h, params) => {
+          return h('a', {
+            on: {
+              click: () => {
+                window.open(`/problem/${params.row.id}`)
+              }
+            }
+          }, params.row.title)
+        }
       }, {
         title: '权限',
         key: 'public',
@@ -71,14 +80,6 @@ export default {
         width: 250,
         render: (h, params) => {
           return h('div', {}, [
-            h('Button', {
-              props: {
-                type: 'info',
-                size: 'small',
-                to: `/problem/${params.row.id}`,
-                target: '_blank'
-              }
-            }, '查看'),
             h('Button', {
               props: {
                 type: 'warning',

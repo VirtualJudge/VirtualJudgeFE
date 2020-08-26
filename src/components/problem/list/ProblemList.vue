@@ -6,7 +6,6 @@
         <PaginateTable
             @on-page-change="onPageChange"
             @on-page-size-change="onPageSizeChange"
-            @on-row-click="onRowClick"
             v-bind:total="total"
             v-bind:page_size="page_size"
             v-bind:data="data"
@@ -42,11 +41,19 @@ export default {
         width: 100
       }, {
         title: '标题',
-        key: 'title'
+        render: (h, params) => {
+          return h('a', {
+            on: {
+              click: () => {
+                this.$router.push(`/problem/${params.row.id}`)
+              }
+            }
+          }, params.row.title)
+        }
       },
         {
-          width: 100,
-          title: '提交',
+          width: 150,
+          title: '通过/提交',
           render: (h, params) => {
             return h('span', `${params.row.total_accepted}(${params.row.total_submitted})`)
           }
@@ -88,9 +95,6 @@ export default {
     onPageSizeChange(page_size) {
       this.page_size = page_size
       this.requestTableData()
-    },
-    onRowClick(params) {
-      this.$router.push(`/problem/${params.id}`)
     },
     handlerFilter() {
       this.requestTableData()

@@ -5,9 +5,11 @@ import md5 from 'js-md5'
 const state = {
     profile: {},
     emailHashURL: '',
+    permissions: []
 }
 
 const getters = {
+    permissions: state => state.permissions,
     emailHashURL: state => state.emailHashURL,
     profile: state => state.profile,
     userUrl: state => state.profile.id ? `/user/${state.profile.id}` : '',
@@ -22,6 +24,7 @@ const getters = {
 const mutations = {
     [types.CHANGE_PROFILE](state, {profile, emailHashURL}) {
         state.profile = profile
+        state.permissions = profile.user_permissions || []
         state.emailHashURL = emailHashURL
     }
 }
