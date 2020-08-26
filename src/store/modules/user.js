@@ -28,7 +28,7 @@ const mutations = {
 
 const actions = {
     getProfile({commit}) {
-        api.getUserInformation().then(res => {
+        api.getSelfInformation().then(res => {
             let email = ''
             if (res.data.data) {
                 email = res.data.data.email ? res.data.data.email : ''
@@ -40,7 +40,7 @@ const actions = {
         })
     },
     clearProfile({commit}) {
-        api.deleteUserInformation().then(() => {
+        api.deleteSelfInformation().then(() => {
             commit(types.CHANGE_PROFILE, {
                 profile: {}, emailHashURL: ''
             })

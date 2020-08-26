@@ -4,11 +4,14 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.xsrfCookieName = 'csrftoken';
 
 export default {
-    getUserInformation() {
+    getSelfInformation() {
         return ajax('/api/user/info/', 'get')
     },
-    deleteUserInformation() {
+    deleteSelfInformation() {
         return ajax('/api/user/logout/', 'delete')
+    },
+    getUserInformation(user_id) {
+        return ajax(`/api/user/${user_id}/`, 'get')
     },
     postUserLogin(username, password, captcha) {
         return ajax('/api/user/login/', 'post', {
@@ -79,7 +82,7 @@ export default {
     },
     getSubmissionPersonal(submission_id) {
         return ajax(`/api/submission/${submission_id}/personal/`, 'get')
-    }
+    },
 }
 
 /**
