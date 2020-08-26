@@ -13,7 +13,7 @@ export const PROBLEM_PUBLIC_TYPE = [
     }
 ]
 
-export const DEFAULT_LOCALE = 'zh-cn'
+
 export const PROBLEM_SUBMIT_LANGUAGES = {
     'c': {info: 'C (GCC 9.3.0)', short: 'C', withVersion: 'GCC 9.3.0'},
     'cpp': {info: 'C++ (G++ 9.3.0)', short: 'C++', withVersion: 'G++ 9.3.0'},
@@ -104,3 +104,19 @@ export const VERDICT_FILTER = [
         value: 'SE'
     },
 ]
+export const ACCEPT_LOCALES = {
+    'CN': {
+        moment: 'zh-cn',
+        lang: 'zh-hans',
+        countryFlag: 'chn',
+        updateMessage: '语言切换为中文'
+    },
+    'UK': {
+        moment: 'en',
+        lang: 'en',
+        countryFlag: 'gbr',
+        updateMessage: 'Language change to English'
+    }
+}
+export const DEFAULT_LOCALE = 'UK'
+export const STORAGE_LOCALE_KEY = '_locale'

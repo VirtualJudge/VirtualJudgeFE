@@ -35,12 +35,14 @@ export default {
       tableLoading: false,
       total: 0,
       page_size: 10,
-      columns: [{
-        title: '编号',
+      columns: [
+          {
+        title: this.$t('pages.problem.number'),
         key: 'id',
         width: 100
-      }, {
-        title: '标题',
+      },
+        {
+        title: this.$t('pages.problem.title'),
         render: (h, params) => {
           return h('a', {
             on: {
@@ -53,7 +55,7 @@ export default {
       },
         {
           width: 150,
-          title: '通过/提交',
+          title: this.$t('pages.problem.ac/submit'),
           render: (h, params) => {
             return h('span', `${params.row.total_accepted}/${params.row.total_submitted}`)
           }

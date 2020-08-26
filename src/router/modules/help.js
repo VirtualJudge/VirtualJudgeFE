@@ -7,14 +7,14 @@ export default [
         name: 'help',
         component: Help,
         meta: {
-            title: '帮助'
+            title: 'title.help'
         }
     }, {
         path: '/compiler',
         name: 'compiler',
         component: Compiler,
         meta: {
-            title: '编译器'
+            title: 'title.compiler'
         }
     }
 ]

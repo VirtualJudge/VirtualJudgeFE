@@ -12,7 +12,7 @@ export default [
         name: 'cannot_login',
         component: CannotLogin,
         meta: {
-            title: '无法登陆？'
+            title: 'title.cannot_login'
         }
     },
     {
@@ -20,7 +20,7 @@ export default [
         name: 'register',
         component: Register,
         meta: {
-            title: '注册'
+            title: 'title.register'
         }
     },
     {
@@ -28,7 +28,7 @@ export default [
         name: 'self',
         component: SelfIndex,
         meta: {
-            title: '个人设置'
+            title: 'title.self_setting'
         },
         children: [
             {
@@ -52,7 +52,7 @@ export default [
         name: 'user',
         component: UserInfo,
         meta: {
-            title: '个人信息'
+            title: 'title.self_info'
         }
     }
 ]
