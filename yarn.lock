@@ -8303,6 +8303,11 @@ vue-clipboard2@^0.3.1:
   dependencies:
     clipboard "^2.0.0"
 
+vue-country-flag@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.npm.taobao.org/vue-country-flag/download/vue-country-flag-2.0.1.tgz#b5b9c2092284dbcb793deee690ae12a13571f6fe"
+  integrity sha1-tbnCCSKE28t5Pe7mkK4SoTVx9v4=
+
 vue-eslint-parser@^7.0.0:
   version "7.1.0"
   resolved "https://registry.npm.taobao.org/vue-eslint-parser/download/vue-eslint-parser-7.1.0.tgz?cache=0&sync_timestamp=1589539313907&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue-eslint-parser%2Fdownload%2Fvue-eslint-parser-7.1.0.tgz#9cdbcc823e656b087507a1911732b867ac101e83"

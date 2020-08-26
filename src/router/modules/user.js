@@ -1,13 +1,10 @@
 import CannotLogin from "../../components/user/CannotLogin";
 import Register from "../../components/user/Register";
 import SelfIndex from "../../components/user/self/SelfIndex";
-import AdvancedIndex from "@/components/user/advanced/AdvancedIndex";
 import UserInfo from "@/components/user/UserInfo";
 import UpdateInfo from "@/components/user/self/UpdateInfo";
 import ChangePassword from "@/components/user/self/ChangePassword";
 import ChangeEmail from "@/components/user/self/ChangeEmail";
-import ManageProblem from "@/components/user/advanced/problem/ManageProblem";
-import AddProblem from "@/components/user/advanced/problem/AddProblem";
 
 export default [
     {
@@ -48,25 +45,6 @@ export default [
                 path: 'change_email',
                 name: 'change_email',
                 component: ChangeEmail
-            }
-        ]
-    }, {
-        path: '/system',
-        name: 'system',
-        component: AdvancedIndex,
-        meta: {
-            title: '系统设置'
-        },
-        children: [
-            {
-                path: 'manage_problem',
-                name: 'manage_problem',
-                component: ManageProblem
-            },
-            {
-                path: 'add_problem',
-                name: 'add_problem',
-                component: AddProblem
             }
         ]
     }, {

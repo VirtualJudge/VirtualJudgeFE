@@ -88,7 +88,7 @@ export default {
                 marginLeft: '5px'
               }, on: {
                 click: () => {
-                  this.$Message.warning(params.row.title)
+                  this.$router.push(`/system/update_problem/${params.row.id}`)
                 }
               }
             }, '修改'),

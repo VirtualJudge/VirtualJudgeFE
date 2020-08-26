@@ -9,6 +9,7 @@
       </MenuItem>
       <MenuItem class="left-menu-item" name="/submission" to="/submission">
         提交
+
       </MenuItem>
       <Submenu name="/help">
         <template slot="title">
@@ -19,16 +20,23 @@
         </MenuItem>
         <MenuItem class="left-menu-item" name="/compiler" to="/compiler">
           编译器信息
+
         </MenuItem>
       </Submenu>
-
-      <MenuItem class="left-menu-item" name="/register" to="/register"
-                v-if="!isAuthenticated && enabledRegister">注册
-      </MenuItem>
+      <Dropdown class="left-menu-item">
+        <span>
+          语言
+          <Icon type="ios-arrow-down"></Icon>
+        </span>
+        <DropdownMenu slot="list">
+          <DropdownItem name="zh-hans"><country-flag country='chn'/></DropdownItem>
+          <DropdownItem name="en"><country-flag country='gbr'/></DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
       <template v-if="!isAuthenticated">
         <div class="right-menu-item">
+          <Button type="default" class="right-menu-item-button" @click="handleRegisterClick">注册</Button>
           <Button type="default" class="right-menu-item-button" @click="loginModal=true">登录</Button>
-
         </div>
       </template>
       <template v-else>
@@ -38,7 +46,8 @@
               <Avatar :src="emailHashURL">{{ profile.username }}</Avatar>
             </template>
             <MenuGroup title="高级">
-              <MenuItem name="/system" to="/system">系统设置</MenuItem>
+              <MenuItem name="/system/problem" to="/system/manage_problem">题目管理</MenuItem>
+              <MenuItem name="/system/permission" to="/system/manage_permission">权限管理</MenuItem>
             </MenuGroup>
             <MenuGroup title="基本">
               <MenuItem name="/user" :to="userUrl">个人信息</MenuItem>
@@ -63,10 +72,11 @@
 <script>
 import {mapGetters, mapActions} from 'vuex'
 import Login from "./user/Login";
+import CountryFlag from 'vue-country-flag'
 
 export default {
   name: "NavBar",
-  components: {Login},
+  components: {Login, CountryFlag},
   data() {
     return {
       isLogin: false,
@@ -84,7 +94,9 @@ export default {
       if (visible) {
         this.randomCaptcha()
       }
-
+    },
+    handleRegisterClick(){
+      this.$router.push('/register')
     }
   }, computed: {
     ...mapGetters(['isAuthenticated', 'userUrl', 'isAdminRole', 'profile', 'emailHashURL', 'captcha_url', 'active_nav']),

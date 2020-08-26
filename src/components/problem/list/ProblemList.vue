@@ -55,7 +55,7 @@ export default {
           width: 150,
           title: '通过/提交',
           render: (h, params) => {
-            return h('span', `${params.row.total_accepted}(${params.row.total_submitted})`)
+            return h('span', `${params.row.total_accepted}/${params.row.total_submitted}`)
           }
         }],
       data: [],
