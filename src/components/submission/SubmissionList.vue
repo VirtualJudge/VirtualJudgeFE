@@ -76,7 +76,13 @@ export default {
           title: '用户',
           key: 'user',
           render: (h, params) => {
-            return h('span', params.row.user.username)
+            return h('a', {
+              on: {
+                click: () => {
+                  this.$router.push(`/user/${params.row.user.id}`)
+                }
+              }
+            }, params.row.user.username)
           }
         },
         {

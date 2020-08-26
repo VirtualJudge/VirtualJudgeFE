@@ -13,16 +13,16 @@
           <List v-if="code" :split="false">
             <ListItem>
               <ListItemMeta title="作者">
-                <span slot="description">
+                <a slot="description" @click="handleUsernameClick">
                   {{ user.username }}
-                </span>
+                </a>
               </ListItemMeta>
             </ListItem>
             <ListItem>
               <ListItemMeta title="题目">
                 <a slot="description"
                    @click="handleProblemClick">
-                  {{ problem.id }} - {{ problem.title }}
+                  {{ problem.title }}
                 </a>
               </ListItemMeta>
             </ListItem>
@@ -92,7 +92,10 @@ export default {
       })
     },
     handleProblemClick() {
-      this.$router.push(`/problem/${this.data.problem.id}`)
+      this.$router.push(`/problem/${this.problem.id}`)
+    },
+    handleUsernameClick() {
+      this.$router.push(`/user/${this.user.id}`)
     }
   }
 }
