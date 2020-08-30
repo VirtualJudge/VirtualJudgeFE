@@ -205,8 +205,7 @@ export default {
           title: '输出数据',
           key: 'out'
         }
-      ],
-      test_cases_data: []
+      ]
     }
   },
   mounted() {
@@ -219,26 +218,56 @@ export default {
   methods: {
     updateProblemInit() {
       api.getProblemDetail(this.problem_id).then(res => {
-        console.log(res.data)
+        console.log(res.data.data)
+        if (res.data.err === null) {
+          this.formData.manifest = res.data.data.manifest || {spj: false, spj_code: '', test_cases: []}
+          this.formData.editor_text = res.data.data.content || {markdown: '', pdf: ''}
+          this.formData.time_limit = res.data.data.time_limit || 1000
+          this.formData.memory_limit = res.data.data.memory_limit || 128
+          this.formData.title = res.data.data.title || ''
+          this.formData.public = res.data.data.public || 0
+          this.formData.source = res.data.data.source || ''
+
+        } else {
+          this.$Message.error(message.err(res.data.err))
+        }
       })
     },
     handleSubmit() {
-      api.postProblemCreate(
-          this.formData.title,
-          this.formData.editor_text,
-          this.formData.source,
-          this.formData.time_limit,
-          this.formData.memory_limit,
-          this.formData.is_public,
-          this.formData.manifest
-      ).then(res => {
-        if (res.data.err === null) {
-          this.$Message.success('提交成功')
-          this.$router.push('/system/manage_problem')
-        } else {
-          this.$Message.error('提交失败' + message.err(res.data.err))
-        }
-      })
+      if (this.problem_id === null) {
+        api.postProblemCreate(
+            this.formData.title,
+            this.formData.editor_text,
+            this.formData.source,
+            this.formData.time_limit,
+            this.formData.memory_limit,
+            this.formData.is_public,
+            this.formData.manifest
+        ).then(res => {
+          if (res.data.err === null) {
+            this.$Message.success('提交成功')
+            this.$router.push('/system/manage_problem')
+          } else {
+            this.$Message.error('提交失败' + message.err(res.data.err))
+          }
+        })
+      } else {
+        api.putProblemUpdate(this.problem_id, this.formData.title,
+            this.formData.editor_text,
+            this.formData.source,
+            this.formData.time_limit,
+            this.formData.memory_limit,
+            this.formData.is_public,
+            this.formData.manifest).then(res => {
+          if (res.data.err === null) {
+            this.$Message.success('修改成功')
+            this.$router.push('/system/manage_problem')
+          } else {
+            this.$Message.error('修改失败' + message.err(res.data.err))
+          }
+        })
+      }
+
     },
     onMavonSave(value) {
       let blob = new Blob([value], {type: "text/plain;charset=utf-8"})

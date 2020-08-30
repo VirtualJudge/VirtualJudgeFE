@@ -21,6 +21,9 @@
 import PaginateTable from "@/components/utils/PaginateTable";
 import api from "@/utils/api";
 import message from "@/utils/message";
+import moment from "moment";
+import {ACCEPT_LOCALES} from "@/utils/constant";
+import {mapGetters} from 'vuex'
 
 export default {
   name: "ManageProblem",
@@ -47,33 +50,26 @@ export default {
           }, params.row.title)
         }
       }, {
-        title: '权限',
-        key: 'public',
-        width: 200,
+        title: '创建时间',
         render: (h, params) => {
-          return h('Select', {
+          moment.locale(ACCEPT_LOCALES[this.web_lang].moment)
+          return h('Tooltip', {
             props: {
               transfer: true,
-              value: params.row.public,
-              size: 'small'
+              content: moment(params.row.create_time).format('lll')
             }
-          }, [
-            h('Option', {
-              props: {
-                value: 0
-              }
-            }, '查看且提交'),
-            h('Option', {
-              props: {
-                value: 1
-              }
-            }, '仅查看'),
-            h('Option', {
-              props: {
-                value: 2
-              }
-            }, '不允许查看和提交'),
-          ])
+          }, moment(params.row.create_time).fromNow())
+        }
+      }, {
+        title: '上次修改时间',
+        render: (h, params) => {
+          moment.locale(ACCEPT_LOCALES[this.web_lang].moment)
+          return h('Tooltip', {
+            props: {
+              transfer: true,
+              content: moment(params.row.last_update).format('lll')
+            }
+          }, moment(params.row.last_update).fromNow())
         }
       }, {
         title: '操作',
@@ -159,6 +155,9 @@ export default {
         }
       })
     }
+  },
+  computed: {
+    ...mapGetters(['web_lang'])
   }
 }
 </script>

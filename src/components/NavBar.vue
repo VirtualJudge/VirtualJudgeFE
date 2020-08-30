@@ -105,7 +105,7 @@ export default {
     this.getProfile()
   },
   methods: {
-    ...mapActions(['getProfile', 'clearProfile', 'randomCaptcha']),
+    ...mapActions(['getProfile', 'clearProfile', 'randomCaptcha', 'getWebLang']),
     visibleChange(visible) {
       if (visible) {
         this.randomCaptcha()
@@ -118,6 +118,7 @@ export default {
       this.$Message.info(this.locales[name].updateMessage)
       storage.set(STORAGE_LOCALE_KEY, name)
       this.$i18n.locale = this.locales[name].lang
+      this.getWebLang()
       this.reload()
     }
   }, computed: {
