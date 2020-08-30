@@ -1,6 +1,6 @@
 <template>
   <div class="main-view">
-    <h2>编译器信息</h2>
+    <h2>{{ $t('pages.help.compiler_info') }}</h2>
     <pre v-highlightjs>
       <code class="shell">
 $ gcc --version

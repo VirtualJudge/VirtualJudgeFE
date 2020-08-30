@@ -2,33 +2,51 @@
   <div>
     <Menu mode="horizontal" theme="light" :active-name="active_nav">
       <MenuItem class="left-menu-item" name="/" to="/">
-        首页
+        {{ $t('navbar.index') }}
       </MenuItem>
       <MenuItem class="left-menu-item" name="/problem" to="/problem">
-        题目
+        {{ $t('navbar.problem') }}
       </MenuItem>
       <MenuItem class="left-menu-item" name="/submission" to="/submission">
-        提交
+        {{ $t('navbar.submission') }}
+
       </MenuItem>
       <Submenu name="/help">
         <template slot="title">
-          帮助
+          {{ $t('navbar.help') }}
         </template>
         <MenuItem class="left-menu-item" name="/help" to="/help">
-          首页
+          {{ $t('navbar.index') }}
         </MenuItem>
         <MenuItem class="left-menu-item" name="/compiler" to="/compiler">
-          编译器信息
+          {{ $t('navbar.compiler') }}
+
         </MenuItem>
       </Submenu>
-
-      <MenuItem class="left-menu-item" name="/register" to="/register"
-                v-if="!isAuthenticated && enabledRegister">注册
-      </MenuItem>
+      <Dropdown @on-click="handleLanguageItemClick" class="left-menu-item">
+        <span>
+          {{ $t('navbar.language') }}
+          <Icon type="ios-arrow-down"></Icon>
+        </span>
+        <DropdownMenu slot="list">
+          <DropdownItem
+              v-for="item in Object.keys(locales)"
+              :key="item"
+              :name="item">
+            <country-flag :country='locales[item].countryFlag'/>
+          </DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
       <template v-if="!isAuthenticated">
         <div class="right-menu-item">
-          <Button type="default" class="right-menu-item-button" @click="loginModal=true">登录</Button>
-
+          <Button type="default" class="right-menu-item-button" @click="handleRegisterClick">{{
+              $t('navbar.register')
+            }}
+          </Button>
+          <Button type="default" class="right-menu-item-button" @click="loginModal=true">{{
+              $t('navbar.login')
+            }}
+          </Button>
         </div>
       </template>
       <template v-else>
@@ -37,13 +55,16 @@
             <template slot="title">
               <Avatar :src="emailHashURL">{{ profile.username }}</Avatar>
             </template>
-            <MenuGroup title="高级">
-              <MenuItem name="/system" to="/system">系统设置</MenuItem>
+            <MenuGroup :title="$t('navbar.system_setting')">
+              <MenuItem name="/system/problem" to="/system/manage_problem">{{ $t('navbar.problem_manage') }}</MenuItem>
+              <MenuItem name="/system/permission" to="/system/manage_permission">
+                {{ $t('navbar.permission_manage') }}
+              </MenuItem>
             </MenuGroup>
-            <MenuGroup title="基本">
-              <MenuItem name="/user" :to="userUrl">个人信息</MenuItem>
-              <MenuItem name="/self" to="/self">个人设置</MenuItem>
-              <MenuItem name="logout" @click.native="clearProfile">退出登录</MenuItem>
+            <MenuGroup :title="$t('navbar.basic_setting')">
+              <MenuItem name="/user" :to="userUrl">{{ $t('navbar.self_info') }}</MenuItem>
+              <MenuItem name="/self" to="/self">{{ $t('navbar.self_setting') }}</MenuItem>
+              <MenuItem name="logout" @click.native="clearProfile">{{ $t('navbar.logout') }}</MenuItem>
             </MenuGroup>
           </Submenu>
         </div>
@@ -61,30 +82,44 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
 import Login from "./user/Login";
+import CountryFlag from 'vue-country-flag'
+import {ACCEPT_LOCALES, STORAGE_LOCALE_KEY} from '@/utils/constant'
+import storage from "@/utils/storage";
 
 export default {
   name: "NavBar",
-  components: {Login},
+  components: {Login, CountryFlag},
+  inject: ['reload'],
   data() {
     return {
       isLogin: false,
       loginModal: false,
       enabledRegister: true,
-      modalChange: null
+      modalChange: null,
+      locales: ACCEPT_LOCALES
     }
   },
   mounted() {
     this.getProfile()
   },
   methods: {
-    ...mapActions(['getProfile', 'clearProfile', 'randomCaptcha']),
+    ...mapActions(['getProfile', 'clearProfile', 'randomCaptcha', 'getWebLang']),
     visibleChange(visible) {
       if (visible) {
         this.randomCaptcha()
       }
-
+    },
+    handleRegisterClick() {
+      this.$router.push('/register')
+    },
+    handleLanguageItemClick(name) {
+      this.$Message.info(this.locales[name].updateMessage)
+      storage.set(STORAGE_LOCALE_KEY, name)
+      this.$i18n.locale = this.locales[name].lang
+      this.getWebLang()
+      this.reload()
     }
   }, computed: {
     ...mapGetters(['isAuthenticated', 'userUrl', 'isAdminRole', 'profile', 'emailHashURL', 'captcha_url', 'active_nav']),

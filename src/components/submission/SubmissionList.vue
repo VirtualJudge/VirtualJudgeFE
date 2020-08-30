@@ -41,7 +41,7 @@
 import PaginateTable from "@/components/utils/PaginateTable";
 import api from "@/utils/api";
 import moment from 'moment'
-import {DEFAULT_LOCALE, PROBLEM_SUBMIT_LANGUAGES, SUBMISSION_VERDICTS} from '@/utils/constant'
+import {ACCEPT_LOCALES, PROBLEM_SUBMIT_LANGUAGES, SUBMISSION_VERDICTS} from '@/utils/constant'
 import {mapGetters} from "vuex";
 
 export default {
@@ -142,7 +142,7 @@ export default {
           title: '提交时间',
           key: 'create_time',
           render: (h, params) => {
-            moment.locale(DEFAULT_LOCALE)
+            moment.locale(ACCEPT_LOCALES[this.web_lang].moment)
             return h('Tooltip', {
               props: {
                 transfer: true,
@@ -196,7 +196,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['profile', 'isAdminRole', 'isAuthenticated'])
+    ...mapGetters(['profile', 'isAdminRole', 'isAuthenticated', 'web_lang'])
   }
 }
 </script>

@@ -1,7 +1,6 @@
 <template>
   <div>
     <Card dis-hover>
-      <p slot="title">筛选</p>
       <Form label-position="right" :label-width="50">
         <FormItem label="编号">
           <label>
@@ -15,7 +14,7 @@
         </FormItem>
         <FormItem>
           <Button type="primary" @click="handlerFilter" class="btn">
-            提交
+            筛选
           </Button>
         </FormItem>
       </Form>

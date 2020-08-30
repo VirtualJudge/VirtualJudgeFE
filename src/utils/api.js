@@ -62,6 +62,19 @@ export default {
             }
         })
     },
+    putProblemUpdate(problem_id, title, content, source, time_limit, memory_limit, is_public, manifest) {
+            return ajax(`/api/problem/${problem_id}/`, 'put', {
+            data: {
+                'title': title,
+                'content': content,
+                'source': source,
+                'time_limit': time_limit,
+                'memory_limit': memory_limit,
+                'public': is_public,
+                'manifest': manifest
+            }
+        })
+    },
     deleteProblemDestroy(id) {
         return ajax(`/api/problem/${id}/`, 'delete')
     },

@@ -1,6 +1,6 @@
 <template>
   <div class="main-view">
-    <h2>帮助</h2>
+    <h2>{{ $t('pages.help.help') }}</h2>
   </div>
 </template>
 

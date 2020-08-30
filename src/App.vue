@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <NavBar/>
-    <router-view/>
+    <router-view v-if="toggleFlag"/>
   </div>
 </template>
 
@@ -17,6 +17,25 @@ import NavBar from "./components/NavBar";
 
 
 export default {
-  components: {NavBar}
+  components: {NavBar},
+  provide() {
+    return {
+      reload: this.reload
+    }
+  },
+  data() {
+    return {
+      toggleFlag: true
+    }
+  },
+  methods: {
+    reload() {
+      this.toggleFlag = false
+      this.$nextTick(() => {
+        this.toggleFlag = true
+      })
+    }
+
+  }
 }
 </script>
