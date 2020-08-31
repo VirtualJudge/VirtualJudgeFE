@@ -63,7 +63,7 @@ export default {
         })
     },
     putProblemUpdate(problem_id, title, content, source, time_limit, memory_limit, is_public, manifest) {
-            return ajax(`/api/problem/${problem_id}/`, 'put', {
+        return ajax(`/api/problem/${problem_id}/`, 'put', {
             data: {
                 'title': title,
                 'content': content,
@@ -96,6 +96,13 @@ export default {
     getSubmissionPersonal(submission_id) {
         return ajax(`/api/submission/${submission_id}/personal/`, 'get')
     },
+    postWebLangChange(web_lang) {
+        return ajax('/api/system/language/', 'post', {
+            data: {
+                language: web_lang
+            }
+        })
+    }
 }
 
 /**

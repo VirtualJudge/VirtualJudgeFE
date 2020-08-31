@@ -57,31 +57,17 @@ export default {
       columns: [
         {
           title: '编号',
-          key: 'id'
-        },
-        {
-          title: '题目',
-          key: 'problem',
-          render: (h, params) => {
-            return h('span', {
-              style:{
-                color: '#3399ff',
-                cursor: 'pointer'
-              },
-              on: {
-                click: () => {
-                  this.$router.push(`/problem/${params.row.problem.id}`)
-                }
-              }
-            }, params.row.problem.title)
-          }
+          key: 'id',
+          width: 100,
+          align: 'center'
         },
         {
           title: '用户',
           key: 'user',
+          align: 'center',
           render: (h, params) => {
             return h('span', {
-              style:{
+              style: {
                 color: '#3399ff',
                 cursor: 'pointer'
               },
@@ -94,8 +80,29 @@ export default {
           }
         },
         {
+          title: '题目',
+          key: 'problem',
+          align: 'center',
+          render: (h, params) => {
+            return h('span', {
+              style: {
+                color: '#3399ff',
+                cursor: 'pointer'
+              },
+              on: {
+                click: () => {
+                  this.$router.push(`/problem/${params.row.problem.id}`)
+                }
+              }
+            }, params.row.problem.title)
+          }
+        },
+
+        {
           title: '时间花费',
           key: 'time_spend',
+          width: 100,
+          align: 'center',
           render: (h, params) => {
             if (params.row.time_spend !== null) {
               return h('span', params.row.time_spend)
@@ -107,6 +114,8 @@ export default {
         {
           title: '内存花费',
           key: 'memory_spend',
+          width: 100,
+          align: 'center',
           render: (h, params) => {
             if (params.row.memory_spend !== null) {
               return h('span', params.row.memory_spend)
@@ -117,12 +126,13 @@ export default {
         }, {
           title: '提交语言',
           key: 'lang',
+          align: 'center',
           render: (h, params) => {
             if (this.profile.id !== null
                 && (params.row.user.id === this.profile.id
                     || this.isAdminRole)) {
               return h('span', {
-                style:{
+                style: {
                   color: '#3399ff',
                   cursor: 'pointer'
                 },
@@ -142,6 +152,7 @@ export default {
         {
           title: '结果',
           key: 'verdict',
+          align: 'center',
           render: (h, params) => {
             return h('Tag', {
               props: {
@@ -153,6 +164,7 @@ export default {
         {
           title: '提交时间',
           key: 'create_time',
+          align: 'center',
           render: (h, params) => {
             moment.locale(ACCEPT_LOCALES[this.web_lang].moment)
             return h('Tooltip', {

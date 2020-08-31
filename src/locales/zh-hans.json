@@ -44,7 +44,10 @@
       "ac/submit": "通过/提交"
     },
     "system": {
-      "manage_problem": "题目管理"
+      "manage_user": "用户管理",
+      "system_info": "系统信息",
+      "manage_problem": "题目管理",
+      "manage_permission": "权限管理"
     }
   }
 }

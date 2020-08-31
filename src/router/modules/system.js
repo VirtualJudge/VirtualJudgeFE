@@ -2,7 +2,8 @@ import AdvancedIndex from "@/components/system/AdvancedIndex";
 import ManageProblem from "@/components/system/problem/ManageProblem";
 import AddProblem from "@/components/system/problem/AddOrUpdateProblem";
 import UpdateProblem from "@/components/system/problem/AddOrUpdateProblem";
-
+import ManageUserIndex from "@/components/system/user/Index"
+import ManagePermissionIndex from "@/components/system/permission/Index"
 export default [
     {
         path: '/system',
@@ -12,6 +13,22 @@ export default [
             title: '系统设置'
         },
         children: [
+            {
+                path: 'manage_user',
+                name: 'manage_user',
+                component: ManageUserIndex,
+                meta: {
+                    title: 'pages.system.manage_user'
+                }
+            },
+            {
+                path: 'manage_permission',
+                name: 'manage_permission',
+                component: ManagePermissionIndex,
+                meta: {
+                    title: 'pages.system.manage_permission'
+                }
+            },
             {
                 path: 'manage_problem',
                 name: 'manage_problem',

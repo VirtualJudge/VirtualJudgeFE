@@ -43,7 +43,10 @@
       "ac/submit": "AC/Submit"
     },
     "system": {
-      "manage_problem": "Manage Problem"
+      "manage_user": "Manage User",
+      "system_info": "System Info",
+      "manage_problem": "Manage Problem",
+      "manage_permission": "Manage Permission"
     }
   }
 }

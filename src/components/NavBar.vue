@@ -56,10 +56,7 @@
               <Avatar :src="emailHashURL">{{ profile.username }}</Avatar>
             </template>
             <MenuGroup :title="$t('navbar.system_setting')">
-              <MenuItem name="/system/problem" to="/system/manage_problem">{{ $t('navbar.problem_manage') }}</MenuItem>
-              <MenuItem name="/system/permission" to="/system/manage_permission">
-                {{ $t('navbar.permission_manage') }}
-              </MenuItem>
+              <MenuItem name="/system" to="/system">{{ $t('navbar.system_setting') }}</MenuItem>
             </MenuGroup>
             <MenuGroup :title="$t('navbar.basic_setting')">
               <MenuItem name="/user" :to="userUrl">{{ $t('navbar.self_info') }}</MenuItem>
@@ -103,6 +100,7 @@ export default {
   },
   mounted() {
     this.getProfile()
+    this.getWebLang()
   },
   methods: {
     ...mapActions(['getProfile', 'clearProfile', 'randomCaptcha', 'getWebLang']),

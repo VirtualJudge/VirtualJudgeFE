@@ -1,6 +1,8 @@
 import types from '../types'
-import {DEFAULT_LOCALE, STORAGE_LOCALE_KEY} from "@/utils/constant";
+import {ACCEPT_LOCALES, DEFAULT_LOCALE, STORAGE_LOCALE_KEY} from "@/utils/constant";
 import storage from "@/utils/storage";
+import api from "@/utils/api";
+import message from "@/utils/message";
 
 const state = {
     active_nav: '/',
@@ -14,7 +16,7 @@ const getters = {
 
 const mutations = {
     [types.CHANGE_NAV_ACTIVE](state, {active_nav}) {
-        state.active_nav = '/'+active_nav.split('/')[1]
+        state.active_nav = '/' + active_nav.split('/')[1]
     },
     [types.CHANGE_WEB_LANGUAGE](state, {web_lang}) {
         state.web_lang = web_lang
@@ -24,6 +26,11 @@ const mutations = {
 const actions = {
     getWebLang({commit}) {
         let lang = storage.get(STORAGE_LOCALE_KEY, DEFAULT_LOCALE)
+        api.postWebLangChange(ACCEPT_LOCALES[lang].lang).then(res => {
+            if (res.data.err !== null) {
+                this.$Message.error('切换语言错误，' + message.err(res.data.err))
+            }
+        })
         commit(types.CHANGE_WEB_LANGUAGE, {
             web_lang: lang
         })
