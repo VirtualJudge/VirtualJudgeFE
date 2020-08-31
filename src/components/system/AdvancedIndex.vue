@@ -1,7 +1,7 @@
 <template>
   <Layout style="width: 100%">
     <Sider :style="{background: '#fff'}">
-      <Menu width="auto" theme="light" active-name="/system" style="height: 100%">
+      <Menu width="auto" theme="light" :active-name="active_name" style="height: 100%">
         <MenuItem name="/system" to="/system">
           {{ $t('pages.system.system_info') }}
         </MenuItem>
@@ -31,6 +31,14 @@ import {mapGetters} from "vuex";
 
 export default {
   name: "AdvancedIndex",
+  data(){
+    return{
+      active_name: '/system'
+    }
+  },
+  mounted() {
+    this.active_name = this.$route.fullPath
+  },
   computed: {
     ...mapGetters(['isAdminRole'])
   }

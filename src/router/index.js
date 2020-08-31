@@ -21,7 +21,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {//beforeEach是router的钩子函数，在进入路由前执行
     ViewUI.LoadingBar.start();
     if (to.meta.title) {//判断是否有标题
-        document.title = i18n.t(to.meta.title)
+        document.title = i18n.t(to.meta.title) + ' - ddl'
     }
     next()
 })

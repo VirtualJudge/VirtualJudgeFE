@@ -14,14 +14,14 @@ import PaginateTable from "@/components/utils/PaginateTable";
 export default {
   name: "ManageUserList",
   components: {PaginateTable},
-  data(){
+  data() {
     return {
       tableLoading: false,
       data: [],
       columns: [],
       page_size: 10,
       total: 0,
-
+      current: 1
     }
   }
 }
