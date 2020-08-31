@@ -13,17 +13,17 @@
           <List v-if="code" :split="false">
             <ListItem>
               <ListItemMeta title="作者">
-                <a slot="description" @click="handleUsernameClick">
+                <span style="cursor: pointer; color: #3399ff" slot="description" @click="handleUsernameClick">
                   {{ user.username }}
-                </a>
+                </span>
               </ListItemMeta>
             </ListItem>
             <ListItem>
               <ListItemMeta title="题目">
-                <a slot="description"
+                <span style="cursor: pointer; color: #3399ff" slot="description"
                    @click="handleProblemClick">
                   {{ problem.title }}
-                </a>
+                </span>
               </ListItemMeta>
             </ListItem>
             <ListItem>

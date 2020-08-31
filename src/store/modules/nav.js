@@ -14,7 +14,7 @@ const getters = {
 
 const mutations = {
     [types.CHANGE_NAV_ACTIVE](state, {active_nav}) {
-        state.active_nav = active_nav
+        state.active_nav = '/'+active_nav.split('/')[1]
     },
     [types.CHANGE_WEB_LANGUAGE](state, {web_lang}) {
         state.web_lang = web_lang

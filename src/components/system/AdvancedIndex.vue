@@ -5,7 +5,7 @@
         <MenuGroup v-if="isAdminRole" title="题目相关">
           <MenuItem name="manage-problem" to="/system/manage_problem">
             <Icon type="md-heart"/>
-            题目管理
+            {{ $t('pages.system.manage_problem')}}
           </MenuItem>
         </MenuGroup>
       </Menu>

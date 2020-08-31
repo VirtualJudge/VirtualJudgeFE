@@ -24,7 +24,6 @@ function loadLocaleMessages() {
         }
 
     })
-    console.log(messages)
     return messages
 }
 

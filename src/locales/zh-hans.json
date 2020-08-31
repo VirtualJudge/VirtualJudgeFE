@@ -42,6 +42,9 @@
       "number": "编号",
       "title": "标题",
       "ac/submit": "通过/提交"
+    },
+    "system": {
+      "manage_problem": "题目管理"
     }
   }
 }

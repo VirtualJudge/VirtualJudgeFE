@@ -63,7 +63,11 @@ export default {
           title: '题目',
           key: 'problem',
           render: (h, params) => {
-            return h('a', {
+            return h('span', {
+              style:{
+                color: '#3399ff',
+                cursor: 'pointer'
+              },
               on: {
                 click: () => {
                   this.$router.push(`/problem/${params.row.problem.id}`)
@@ -76,7 +80,11 @@ export default {
           title: '用户',
           key: 'user',
           render: (h, params) => {
-            return h('a', {
+            return h('span', {
+              style:{
+                color: '#3399ff',
+                cursor: 'pointer'
+              },
               on: {
                 click: () => {
                   this.$router.push(`/user/${params.row.user.id}`)
@@ -113,7 +121,11 @@ export default {
             if (this.profile.id !== null
                 && (params.row.user.id === this.profile.id
                     || this.isAdminRole)) {
-              return h('a', {
+              return h('span', {
+                style:{
+                  color: '#3399ff',
+                  cursor: 'pointer'
+                },
                 on: {
                   click: () => {
                     this.$router.push(`/submission/${params.row.id}`)

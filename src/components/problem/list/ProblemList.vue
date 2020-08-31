@@ -44,7 +44,11 @@ export default {
         {
         title: this.$t('pages.problem.title'),
         render: (h, params) => {
-          return h('a', {
+          return h('span', {
+            style:{
+              color: '#3399ff',
+              cursor: 'pointer'
+            },
             on: {
               click: () => {
                 this.$router.push(`/problem/${params.row.id}`)

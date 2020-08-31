@@ -41,6 +41,9 @@
       "number": "No.",
       "title": "Title",
       "ac/submit": "AC/Submit"
+    },
+    "system": {
+      "manage_problem": "Manage Problem"
     }
   }
 }

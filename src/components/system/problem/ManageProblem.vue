@@ -41,7 +41,11 @@ export default {
         title: '标题',
         key: 'title',
         render: (h, params) => {
-          return h('a', {
+          return h('span', {
+            style:{
+              color: '#3399ff',
+              cursor: 'pointer'
+            },
             on: {
               click: () => {
                 window.open(`/problem/${params.row.id}`)

@@ -17,7 +17,7 @@ export default [
                 name: 'manage_problem',
                 component: ManageProblem,
                 meta: {
-                    title: '题目管理'
+                    title: 'pages.system.manage_problem'
                 }
             },
             {
