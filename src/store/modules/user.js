@@ -3,12 +3,14 @@ import api from '../../utils/api'
 import md5 from 'js-md5'
 
 const state = {
+    userId: null,
     profile: {},
     emailHashURL: '',
     permissions: []
 }
 
 const getters = {
+    userId: state => state.userId,
     permissions: state => state.permissions,
     emailHashURL: state => state.emailHashURL,
     profile: state => state.profile,
@@ -26,6 +28,7 @@ const mutations = {
         state.profile = profile
         state.permissions = profile.user_permissions || []
         state.emailHashURL = emailHashURL
+        state.userId = profile.id
     }
 }
 

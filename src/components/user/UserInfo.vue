@@ -18,8 +18,10 @@
           </Row>
         </Card>
       </Col>
-      <Col span="18">
-
+      <Col span="18" style="padding-left: 10px">
+        <Card dis-hover v-if="activities.length">
+          <span slot="title">近期活动</span>
+        </Card>
       </Col>
     </Row>
 
@@ -29,7 +31,7 @@
 
 <script>
 
-
+import {mapGetters} from 'vuex'
 import api from "@/utils/api";
 import message from "@/utils/message";
 import md5 from "js-md5";
@@ -43,10 +45,12 @@ export default {
       total_submitted: '-',
       total_passed: '-',
       total_accepted: '-',
+      activities: []
     }
   },
   mounted() {
     this.init(this.$route.params.id)
+    this.loadActivities()
   },
   methods: {
     init(user_id) {
@@ -56,15 +60,25 @@ export default {
           this.total_submitted = res.data.data.total_submitted
           this.total_passed = res.data.data.total_passed
           this.total_accepted = res.data.data.total_accepted
-          this.emailHashURL =  'https://cn.gravatar.com/avatar/' + (res.data.data.email ? md5(res.data.data.email) + '?s=200' : '')
+          this.emailHashURL = 'https://cn.gravatar.com/avatar/' + (res.data.data.email ? md5(res.data.data.email) + '?s=200' : '')
         } else {
           this.profile = {}
           this.$Message.error(message.err(res.data.err))
         }
 
       })
+    },
+    loadActivities() {
+      api.getSelfActivities().then(res => {
+        if (res.data.err === null) {
+          this.activities = res.data.data
+        }
+      })
     }
   },
+  computed: {
+    ...mapGetters(['isAuthenticated', 'profile', 'userId'])
+  }
 }
 </script>
 

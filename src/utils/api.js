@@ -10,6 +10,9 @@ export default {
     deleteSelfInformation() {
         return ajax('/api/user/logout/', 'delete')
     },
+    getSelfActivities() {
+        return ajax('/api/user/activities/', 'get')
+    },
     getUserInformation(user_id) {
         return ajax(`/api/user/${user_id}/`, 'get')
     },
@@ -101,6 +104,17 @@ export default {
             data: {
                 language: web_lang
             }
+        })
+    },
+    getAdvancedUserList(params) {
+        let url_params = params || {}
+        return ajax('/api/user/advanced/', 'get', {
+            params: url_params
+        })
+    },
+    patchAdvancedUserUpdate(user_id, request_data) {
+        return ajax(`/api/user/advanced/${user_id}/`, 'patch', {
+            data: request_data || {}
         })
     }
 }

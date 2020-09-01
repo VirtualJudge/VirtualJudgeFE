@@ -61,7 +61,7 @@
             <MenuGroup :title="$t('navbar.basic_setting')">
               <MenuItem name="/user" :to="userUrl">{{ $t('navbar.self_info') }}</MenuItem>
               <MenuItem name="/self" to="/self">{{ $t('navbar.self_setting') }}</MenuItem>
-              <MenuItem name="logout" @click.native="clearProfile">{{ $t('navbar.logout') }}</MenuItem>
+              <MenuItem name="logout" @click.native="handleLogout">{{ $t('navbar.logout') }}</MenuItem>
             </MenuGroup>
           </Submenu>
         </div>
@@ -99,7 +99,6 @@ export default {
     }
   },
   mounted() {
-    this.getProfile()
     this.getWebLang()
   },
   methods: {
@@ -118,6 +117,9 @@ export default {
       this.$i18n.locale = this.locales[name].lang
       this.getWebLang()
       this.reload()
+    },
+    handleLogout() {
+      this.clearProfile()
     }
   }, computed: {
     ...mapGetters(['isAuthenticated', 'userUrl', 'isAdminRole', 'profile', 'emailHashURL', 'captcha_url', 'active_nav']),
