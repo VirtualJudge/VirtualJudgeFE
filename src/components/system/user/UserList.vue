@@ -28,7 +28,20 @@ export default {
         },
         {
           key: 'username',
-          title: '用户名'
+          title: '用户名',
+          render: (h, params) => {
+            return h('span', {
+              style: {
+                color: '#3399ff',
+                cursor: 'pointer'
+              },
+              on: {
+                click: () => {
+                  this.$router.push(`/user/${params.row.id}`)
+                }
+              }
+            }, params.row.username)
+          }
         },
         {
           key: 'email',
@@ -38,48 +51,139 @@ export default {
           title: '激活',
           width: 100,
           render: (h, params) => {
-            return h('Select', {
-              props: {
-                transfer: true,
-                value: params.row.activated ? 'true' : 'false'
-              },
-
-              on: {
-                'on-change': (value) => {
-                  console.log(value)
-                  this.$Message.success(value)
-                  params.row.activated = value
-                  this.handleItemUpdate(params.row.id, {
-                    activated: value === 'true'
-                  })
-                }
-              }
-            }, [
-              h('Option', {
+            if (this.data[params.index].activated) {
+              return h('Icon', {
                 props: {
-                  value: 'true'
+                  type: 'md-checkmark-circle',
+                  color: '#19be6b',
+                  size: 'large'
+                },
+                on: {
+                  click: () => {
+                    this.handleItemUpdate(params.index, {
+                      activated: !this.data[params.index].activated
+                    })
+                  }
                 }
-              }, '是'),
-              h('Option', {
+              })
+            } else {
+              return h('Icon', {
                 props: {
-                  value: 'false'
+                  type: 'md-close-circle',
+                  color: '#ed4014',
+                  size: 'large'
+                },
+                on: {
+                  click: () => {
+                    this.handleItemUpdate(params.index, {
+                      activated: !this.data[params.index].activated
+                    })
+                  }
                 }
-              }, '否'),
-            ])
+              })
+            }
           }
         },
         {
           title: '禁用',
           width: 100,
           render: (h, params) => {
-            return h('span', params.row.ban ? '是' : '否')
+            if (this.data[params.index].ban) {
+              return h('Icon', {
+                props: {
+                  type: 'md-checkmark-circle',
+                  color: '#ed4014',
+                  size: 'large'
+                },
+                on: {
+                  click: () => {
+                    this.handleItemUpdate(params.index, {
+                      ban: !this.data[params.index].ban
+                    })
+                  }
+                }
+              })
+            } else {
+              return h('Icon', {
+                props: {
+                  type: 'md-close-circle',
+                  color: '#19be6b',
+                  size: 'large'
+                },
+                on: {
+                  click: () => {
+                    this.handleItemUpdate(params.index, {
+                      ban: !this.data[params.index].ban
+                    })
+                  }
+                }
+              })
+            }
           }
         },
         {
           title: '管理员',
           width: 100,
           render: (h, params) => {
-            return h('span', params.row.is_superuser ? '是' : '否')
+            if (this.data[params.index].is_superuser) {
+              return h('Icon', {
+                props: {
+                  type: 'md-checkmark-circle',
+                  color: '#19be6b',
+                  size: 'large'
+                },
+                on: {
+                  click: () => {
+                    this.handleItemUpdate(params.index, {
+                      is_superuser: !this.data[params.index].is_superuser
+                    })
+                  }
+                }
+              })
+            } else {
+              return h('Icon', {
+                props: {
+                  type: 'md-close-circle',
+                  color: '#ed4014',
+                  size: 'large'
+                },
+                on: {
+                  click: () => {
+                    this.handleItemUpdate(params.index, {
+                      is_superuser: !this.data[params.index].is_superuser
+                    })
+                  }
+                }
+              })
+            }
+          }
+        },
+        {
+          title: '操作',
+          render: (h, params) => {
+            return h('Poptip', {
+              props: {
+                transfer: true,
+                confirm: true,
+                title: '提醒',
+                content: '确认删除？',
+              },
+              on: {
+                'on-ok': () => {
+                  api.postAdvancedUserPasswordUpdate(params.row.id).then(res => {
+                    if (res.data.err === null) {
+                      this.$Message.success('提交成功')
+                    } else {
+                      this.$Message.error('提交失败')
+                    }
+                  })
+                }
+              }
+            }, [h('Button', {
+              props: {
+                type: 'info'
+              }
+            }, '重置密码')])
           }
         }
       ],
@@ -91,15 +195,20 @@ export default {
   mounted() {
     api.getAdvancedUserList().then(res => {
       if (res.data.err === null) {
-        this.data = res.data.data.results
+        this.data = res.data.data.results || []
       }
     })
   },
   methods: {
-    handleItemUpdate(user_id, request_data) {
-      api.patchAdvancedUserUpdate(user_id, request_data).then(res => {
+    handleItemUpdate(index, request_data) {
+      api.patchAdvancedUserUpdate(this.data[index].id, request_data).then(res => {
         if (res.data.err === null) {
           this.$Message.success('修改成功')
+          for (let item in request_data) {
+            if (Object.prototype.hasOwnProperty.call(request_data, item)) {
+              this.data[index][item] = request_data[item]
+            }
+          }
         } else {
           this.$Message.error(message.err(res.data.err))
         }

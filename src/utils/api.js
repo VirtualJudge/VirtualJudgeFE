@@ -116,6 +116,9 @@ export default {
         return ajax(`/api/user/advanced/${user_id}/`, 'patch', {
             data: request_data || {}
         })
+    },
+    postAdvancedUserPasswordUpdate(user_id){
+        return ajax(`/api/user/advanced/${user_id}/reset_password/`, 'post')
     }
 }
 
