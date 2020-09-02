@@ -1,14 +1,18 @@
 import types from '../types'
 import api from '../../utils/api'
 import md5 from 'js-md5'
+import storage from "@/utils/storage";
+import {STORAGE_PROFILE_KEY} from "@/utils/constant";
 
 const state = {
+    userId: null,
     profile: {},
     emailHashURL: '',
     permissions: []
 }
 
 const getters = {
+    userId: state => state.userId,
     permissions: state => state.permissions,
     emailHashURL: state => state.emailHashURL,
     profile: state => state.profile,
@@ -26,6 +30,7 @@ const mutations = {
         state.profile = profile
         state.permissions = profile.user_permissions || []
         state.emailHashURL = emailHashURL
+        state.userId = profile.id
     }
 }
 
@@ -35,7 +40,9 @@ const actions = {
             let email = ''
             if (res.data.data) {
                 email = res.data.data.email ? res.data.data.email : ''
+                storage.set(STORAGE_PROFILE_KEY, JSON.stringify(res.data.data))
             }
+
             commit(types.CHANGE_PROFILE, {
                 profile: res.data.data || {},
                 emailHashURL: 'https://cn.gravatar.com/avatar/' + (email ? md5(email) + '?s=200' : '')
@@ -48,6 +55,7 @@ const actions = {
                 profile: {}, emailHashURL: ''
             })
         })
+        storage.del(STORAGE_PROFILE_KEY)
     }
 }
 

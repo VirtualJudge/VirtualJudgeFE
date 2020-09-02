@@ -3,7 +3,7 @@ import {ACCEPT_LOCALES, DEFAULT_LOCALE, STORAGE_LOCALE_KEY} from "@/utils/consta
 import storage from "@/utils/storage";
 import api from "@/utils/api";
 import message from "@/utils/message";
-
+import moment from "moment";
 const state = {
     active_nav: '/',
     web_lang: DEFAULT_LOCALE
@@ -26,6 +26,7 @@ const mutations = {
 const actions = {
     getWebLang({commit}) {
         let lang = storage.get(STORAGE_LOCALE_KEY, DEFAULT_LOCALE)
+        moment.locale(ACCEPT_LOCALES[lang].moment)
         api.postWebLangChange(ACCEPT_LOCALES[lang].lang).then(res => {
             if (res.data.err !== null) {
                 this.$Message.error('切换语言错误，' + message.err(res.data.err))

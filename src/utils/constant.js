@@ -120,3 +120,8 @@ export const ACCEPT_LOCALES = {
 }
 export const DEFAULT_LOCALE = 'UK'
 export const STORAGE_LOCALE_KEY = '_locale'
+export const STORAGE_PROFILE_KEY = '_profile'
+export const PERMISSIONS = {
+    MANAGE_PROBLEM: 'problem.manage_problem',
+    MANAGE_USER: 'problem.manage_user'
+}

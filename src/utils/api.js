@@ -10,8 +10,17 @@ export default {
     deleteSelfInformation() {
         return ajax('/api/user/logout/', 'delete')
     },
+    getSelfActivities(user_id) {
+        return ajax(`/api/user/${user_id}/activities/`, 'get')
+    },
     getUserInformation(user_id) {
         return ajax(`/api/user/${user_id}/`, 'get')
+    },
+    getUserRank(params) {
+        let url_params = params || {}
+        return ajax('/api/user/', 'get', {
+            params: url_params
+        })
     },
     postUserLogin(username, password, captcha) {
         return ajax('/api/user/login/', 'post', {
@@ -102,6 +111,20 @@ export default {
                 language: web_lang
             }
         })
+    },
+    getAdvancedUserList(params) {
+        let url_params = params || {}
+        return ajax('/api/user/advanced/', 'get', {
+            params: url_params
+        })
+    },
+    patchAdvancedUserUpdate(user_id, request_data) {
+        return ajax(`/api/user/advanced/${user_id}/`, 'patch', {
+            data: request_data || {}
+        })
+    },
+    postAdvancedUserPasswordUpdate(user_id) {
+        return ajax(`/api/user/advanced/${user_id}/reset_password/`, 'post')
     }
 }
 

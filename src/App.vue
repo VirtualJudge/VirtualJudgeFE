@@ -14,7 +14,7 @@
 
 <script>
 import NavBar from "./components/NavBar";
-
+import {mapActions} from 'vuex'
 
 export default {
   components: {NavBar},
@@ -28,7 +28,12 @@ export default {
       toggleFlag: true
     }
   },
+  mounted() {
+
+    this.getProfile()
+  },
   methods: {
+    ...mapActions(['getProfile']),
     reload() {
       this.toggleFlag = false
       this.$nextTick(() => {

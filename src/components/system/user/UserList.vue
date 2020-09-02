@@ -10,6 +10,8 @@
 
 <script>
 import PaginateTable from "@/components/utils/PaginateTable";
+import api from "@/utils/api";
+import message from "@/utils/message";
 
 export default {
   name: "ManageUserList",
@@ -18,10 +20,204 @@ export default {
     return {
       tableLoading: false,
       data: [],
-      columns: [],
+      columns: [
+        {
+          key: 'id',
+          title: '编号',
+          width: 100
+        },
+        {
+          key: 'username',
+          title: '用户名',
+          render: (h, params) => {
+            return h('span', {
+              style: {
+                color: '#3399ff',
+                cursor: 'pointer'
+              },
+              on: {
+                click: () => {
+                  this.$router.push(`/user/${params.row.id}`)
+                }
+              }
+            }, params.row.username)
+          }
+        },
+        {
+          key: 'email',
+          title: '邮箱'
+        },
+        {
+          title: '激活',
+          width: 100,
+          render: (h, params) => {
+            if (this.data[params.index].activated) {
+              return h('Icon', {
+                props: {
+                  type: 'md-checkmark-circle',
+                  color: '#19be6b',
+                  size: 'large'
+                },
+                on: {
+                  click: () => {
+                    this.handleItemUpdate(params.index, {
+                      activated: !this.data[params.index].activated
+                    })
+                  }
+                }
+              })
+            } else {
+              return h('Icon', {
+                props: {
+                  type: 'md-close-circle',
+                  color: '#ed4014',
+                  size: 'large'
+                },
+                on: {
+                  click: () => {
+                    this.handleItemUpdate(params.index, {
+                      activated: !this.data[params.index].activated
+                    })
+                  }
+                }
+              })
+            }
+          }
+        },
+        {
+          title: '禁用',
+          width: 100,
+          render: (h, params) => {
+            if (this.data[params.index].ban) {
+              return h('Icon', {
+                props: {
+                  type: 'md-checkmark-circle',
+                  color: '#ed4014',
+                  size: 'large'
+                },
+                on: {
+                  click: () => {
+                    this.handleItemUpdate(params.index, {
+                      ban: !this.data[params.index].ban
+                    })
+                  }
+                }
+              })
+            } else {
+              return h('Icon', {
+                props: {
+                  type: 'md-close-circle',
+                  color: '#19be6b',
+                  size: 'large'
+                },
+                on: {
+                  click: () => {
+                    this.handleItemUpdate(params.index, {
+                      ban: !this.data[params.index].ban
+                    })
+                  }
+                }
+              })
+            }
+          }
+        },
+        {
+          title: '管理员',
+          width: 100,
+          render: (h, params) => {
+            if (this.data[params.index].is_superuser) {
+              return h('Icon', {
+                props: {
+                  type: 'md-checkmark-circle',
+                  color: '#19be6b',
+                  size: 'large'
+                },
+                on: {
+                  click: () => {
+                    this.handleItemUpdate(params.index, {
+                      is_superuser: !this.data[params.index].is_superuser
+                    })
+                  }
+                }
+              })
+            } else {
+              return h('Icon', {
+                props: {
+                  type: 'md-close-circle',
+                  color: '#ed4014',
+                  size: 'large'
+                },
+                on: {
+                  click: () => {
+                    this.handleItemUpdate(params.index, {
+                      is_superuser: !this.data[params.index].is_superuser
+                    })
+                  }
+                }
+              })
+            }
+          }
+        },
+        {
+          title: '操作',
+          render: (h, params) => {
+            return h('Poptip', {
+              props: {
+                transfer: true,
+                confirm: true,
+                title: '提醒',
+                content: '确认删除？',
+              },
+              on: {
+                'on-ok': () => {
+                  api.postAdvancedUserPasswordUpdate(params.row.id).then(res => {
+                    if (res.data.err === null && res.data.data.new_password !== null) {
+                      this.$copyText(res.data.data.new_password).then(() => {
+                        this.$Message.success({
+                          duration: 3,
+                          content: `新密码 ${res.data.data.new_password} 已复制到剪切板`,
+                        })
+                      })
+                    } else {
+                      this.$Message.error('提交失败')
+                    }
+                  })
+                }
+              }
+            }, [h('Button', {
+              props: {
+                type: 'info'
+              }
+            }, '重置密码')])
+          }
+        }
+      ],
       page_size: 10,
       total: 0,
       current: 1
+    }
+  },
+  mounted() {
+    api.getAdvancedUserList().then(res => {
+      if (res.data.err === null) {
+        this.data = res.data.data.results || []
+      }
+    })
+  },
+  methods: {
+    handleItemUpdate(index, request_data) {
+      api.patchAdvancedUserUpdate(this.data[index].id, request_data).then(res => {
+        if (res.data.err === null) {
+          this.$Message.success('修改成功')
+          for (let item in request_data) {
+            if (Object.prototype.hasOwnProperty.call(request_data, item)) {
+              this.data[index][item] = request_data[item]
+            }
+          }
+        } else {
+          this.$Message.error(message.err(res.data.err))
+        }
+      })
     }
   }
 }

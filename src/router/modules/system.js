@@ -4,13 +4,15 @@ import AddProblem from "@/components/system/problem/AddOrUpdateProblem";
 import UpdateProblem from "@/components/system/problem/AddOrUpdateProblem";
 import ManageUserIndex from "@/components/system/user/Index"
 import ManagePermissionIndex from "@/components/system/permission/Index"
+
 export default [
     {
         path: '/system',
         name: 'system',
         component: AdvancedIndex,
         meta: {
-            title: '系统设置'
+            title: '系统设置',
+            requireAdmin: true
         },
         children: [
             {
@@ -18,7 +20,8 @@ export default [
                 name: 'manage_user',
                 component: ManageUserIndex,
                 meta: {
-                    title: 'pages.system.manage_user'
+                    title: 'pages.system.manage_user',
+                    requireAdmin: true
                 }
             },
             {
@@ -26,7 +29,8 @@ export default [
                 name: 'manage_permission',
                 component: ManagePermissionIndex,
                 meta: {
-                    title: 'pages.system.manage_permission'
+                    title: 'pages.system.manage_permission',
+                    requireAdmin: true
                 }
             },
             {
@@ -34,7 +38,8 @@ export default [
                 name: 'manage_problem',
                 component: ManageProblem,
                 meta: {
-                    title: 'pages.system.manage_problem'
+                    title: 'pages.system.manage_problem',
+                    requireAdmin: true
                 }
             },
             {
@@ -42,7 +47,8 @@ export default [
                 name: 'add_problem',
                 component: AddProblem,
                 meta: {
-                    title: '新增题目'
+                    title: '新增题目',
+                    requireAdmin: true
                 }
             },
             {
@@ -50,7 +56,8 @@ export default [
                 name: 'update_problem',
                 component: UpdateProblem,
                 meta: {
-                    title: '更新题目'
+                    title: '更新题目',
+                    requireAdmin: true
                 }
             }
         ]
