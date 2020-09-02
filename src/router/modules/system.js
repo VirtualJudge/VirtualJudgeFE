@@ -11,7 +11,8 @@ export default [
         name: 'system',
         component: AdvancedIndex,
         meta: {
-            title: '系统设置'
+            title: '系统设置',
+            requireAdmin: true
         },
         children: [
             {

@@ -6,6 +6,7 @@ import store from '../store'
 import i18n from "@/i18n";
 import storage from "@/utils/storage";
 import {STORAGE_PROFILE_KEY} from "@/utils/constant";
+import {Message} from 'view-design'
 
 Vue.use(ViewUI);
 Vue.use(VueRouter)
@@ -32,14 +33,36 @@ router.beforeEach((to, from, next) => {//beforeEach是router的钩子函数，�
         if (profile.is_superuser) {
             next();
         } else {
+            Message.error('权限不足')
             next({
                 path: '/'
             })
+        }
+    } else if (to.meta.requirePermission) {
+        if (profile.is_superuser) {
+            next()
+        } else {
+            let perms = profile.user_permissions || []
+            let exist = false
+            for (let item in perms) {
+                if (item === to.meta.requirePermission) {
+                    exist = true
+                }
+            }
+            if (exist) {
+                next();
+            } else {
+                Message.error('权限不足')
+                next({
+                    path: '/'
+                })
+            }
         }
     } else if (to.meta.requireAuth) {
         if (profile.username) {
             next();
         } else {
+            Message.error('需要登录')
             next({
                 path: '/'
             })
