@@ -9,7 +9,9 @@
       </MenuItem>
       <MenuItem class="left-menu-item" name="/submission" to="/submission">
         {{ $t('navbar.submission') }}
-
+      </MenuItem>
+      <MenuItem class="left-menu-item" name="/rank" to="/rank">
+        {{ $t('navbar.rank') }}
       </MenuItem>
       <Submenu name="/help">
         <template slot="title">

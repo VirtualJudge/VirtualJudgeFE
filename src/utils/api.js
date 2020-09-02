@@ -10,11 +10,17 @@ export default {
     deleteSelfInformation() {
         return ajax('/api/user/logout/', 'delete')
     },
-    getSelfActivities() {
-        return ajax('/api/user/activities/', 'get')
+    getSelfActivities(user_id) {
+        return ajax(`/api/user/${user_id}/activities/`, 'get')
     },
     getUserInformation(user_id) {
         return ajax(`/api/user/${user_id}/`, 'get')
+    },
+    getUserRank(params) {
+        let url_params = params || {}
+        return ajax('/api/user/', 'get', {
+            params: url_params
+        })
     },
     postUserLogin(username, password, captcha) {
         return ajax('/api/user/login/', 'post', {
@@ -117,7 +123,7 @@ export default {
             data: request_data || {}
         })
     },
-    postAdvancedUserPasswordUpdate(user_id){
+    postAdvancedUserPasswordUpdate(user_id) {
         return ajax(`/api/user/advanced/${user_id}/reset_password/`, 'post')
     }
 }

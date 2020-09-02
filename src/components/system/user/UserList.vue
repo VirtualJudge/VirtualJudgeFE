@@ -171,8 +171,13 @@ export default {
               on: {
                 'on-ok': () => {
                   api.postAdvancedUserPasswordUpdate(params.row.id).then(res => {
-                    if (res.data.err === null) {
-                      this.$Message.success('提交成功')
+                    if (res.data.err === null && res.data.data.new_password !== null) {
+                      this.$copyText(res.data.data.new_password).then(() => {
+                        this.$Message.success({
+                          duration: 3,
+                          content: `新密码 ${res.data.data.new_password} 已复制到剪切板`,
+                        })
+                      })
                     } else {
                       this.$Message.error('提交失败')
                     }

@@ -11,7 +11,8 @@
     "cannot_login": "无法登录？",
     "register": "注册",
     "self_setting": "个人设置",
-    "self_info": "个人信息"
+    "self_info": "个人信息",
+    "rank": "排行"
   },
   "navbar": {
     "index": "首页",
@@ -28,7 +29,8 @@
     "basic_setting": "基础设置",
     "self_info": "个人信息",
     "self_setting": "个人设置",
-    "logout": "退出登录"
+    "logout": "退出登录",
+    "rank": "排行"
   },
   "pages": {
     "index": {

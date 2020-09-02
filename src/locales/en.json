@@ -10,7 +10,8 @@
     "submission_detail": "Submission Detail",
     "cannot_login": "Can't Login?",
     "self_setting": "Self Settings",
-    "self_info": "Self Information"
+    "self_info": "Self Information",
+    "rank": "Rank"
   },
   "navbar": {
     "index": "Index",
@@ -27,7 +28,8 @@
     "basic_setting": "Basic Settings",
     "self_info": "Self Information",
     "self_setting": "Self Settings",
-    "logout": "Logout"
+    "logout": "Logout",
+    "rank": "Rank"
   },
   "pages": {
     "index": {

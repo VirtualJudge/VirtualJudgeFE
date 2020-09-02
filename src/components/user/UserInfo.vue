@@ -18,9 +18,17 @@
           </Row>
         </Card>
       </Col>
-      <Col span="18" style="padding-left: 10px">
+      <Col span="18" style="padding-left: 10px;margin-bottom: 20px">
         <Card dis-hover v-if="activities.length">
           <span slot="title">近期活动</span>
+          <Timeline>
+            <TimelineItem v-for="item in activities" :key="item.id">
+              <p class="timeline-time">{{ item.formatted_create_time }}</p>
+              <p class="timeline-content">{{ item.info }}</p>
+            </TimelineItem>
+
+          </Timeline>
+
         </Card>
       </Col>
     </Row>
@@ -49,8 +57,9 @@ export default {
     }
   },
   mounted() {
-    this.init(this.$route.params.id)
-    this.loadActivities()
+    let user_id = this.$route.params.id
+    this.init(user_id)
+    this.loadActivities(user_id)
   },
   methods: {
     init(user_id) {
@@ -68,10 +77,17 @@ export default {
 
       })
     },
-    loadActivities() {
-      api.getSelfActivities().then(res => {
+    loadActivities(user_id) {
+      api.getSelfActivities(user_id).then(res => {
         if (res.data.err === null) {
-          this.activities = res.data.data
+          this.activities = []
+          for (let item in res.data.data) {
+            if (Object.prototype.hasOwnProperty.call(res.data.data, item)) {
+              this.activities.push(Object.assign(res.data.data[item], {
+                formatted_create_time: this.$moment(res.data.data[item].create_time).format('lll')
+              }))
+            }
+          }
         }
       })
     }
@@ -98,5 +114,14 @@ export default {
 .info-div {
   padding-top: 0.2em;
   padding-bottom: 0.2em;
+}
+
+.timeline-time {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.timeline-content {
+  padding-left: 5px;
 }
 </style>

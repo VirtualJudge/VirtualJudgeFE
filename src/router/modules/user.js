@@ -5,8 +5,17 @@ import UserInfo from "@/components/user/UserInfo";
 import UpdateInfo from "@/components/user/self/UpdateInfo";
 import ChangePassword from "@/components/user/self/ChangePassword";
 import ChangeEmail from "@/components/user/self/ChangeEmail";
+import RankIndex from "@/components/rank/RankIndex";
 
 export default [
+    {
+        path: '/rank',
+        name: 'rank',
+        component: RankIndex,
+        meta: {
+            title: 'title.rank'
+        }
+    },
     {
         path: '/cannot_login',
         name: 'cannot_login',
@@ -47,7 +56,8 @@ export default [
                 component: ChangeEmail
             }
         ]
-    }, {
+    },
+    {
         path: '/user/:id',
         name: 'user',
         component: UserInfo,
