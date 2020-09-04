@@ -81,7 +81,7 @@ export default {
         return ajax(`/api/submission/${submission_id}/personal/`, 'get')
     },
     changeUserPassword(oldPassword, newPassword) {
-        return ajax('/api/user/password', 'put', {
+        return ajax('/api/user/password/', 'put', {
             data: {
                 'old_password': oldPassword,
                 'new_password': newPassword
