@@ -1,48 +1,49 @@
 <template>
   <div style="height: 100%; display: flex; align-items: center; ">
     <div style="width: 80%; max-width: 480px; margin: 0 auto;">
-      <Form ref="formdata" :label-width="120" :rules="pwdrule" :model="formdata">
-        <FormItem label="旧密码" prop="oldpassword">
-          <Input id="oldpassword" type="password" placeholder="旧密码" v-model="formdata.oldpassword">
+      <Form ref="formData" :label-width="120" :rules="pwdRule" :model="formData">
+        <FormItem label="旧密码" prop="oldPassword">
+          <Input type="password" placeholder="旧密码" v-model="formData.oldPassword">
               <Icon type="md-lock" slot="prepend"></Icon>
           </Input>
         </FormItem>
-        <FormItem label="新密码" prop="password">
-          <Input id="newpassword" type="password" placeholder="新密码" v-model="formdata.password">
+        <FormItem label="新密码" prop="newPassword">
+          <Input type="password" placeholder="新密码" v-model="formData.newPassword">
               <Icon type="md-lock" slot="prepend"></Icon>
           </Input>
         </FormItem>
-        <FormItem label="确认新密码" prop="check_newpassword">
-          <Input id="check_newpassword" type="password" placeholder="再输入一遍新密码" v-model="formdata.check_newpassword"> 
+        <FormItem label="确认新密码" prop="checkNewPassword">
+          <Input type="password" placeholder="再输入一遍新密码" v-model="formData.checkNewPassword"> 
               <Icon type="md-unlock" slot="prepend"></Icon>
           </Input>
         </FormItem>
         <FormItem>
-          <Button type="primary" @click="changePassword('formdata')">确认修改</Button>
+          <Button type="primary" @click="changePassword('formData')">确认修改</Button>
         </FormItem>
       </Form>
     </div>
   </div>
 </template>
 <script>
+import api from "@/utils/api";
 export default {
   name: "ChangePassword",
   data() {
     const validatePassCheck = (rule, value, callback) => {
-      if (value !== this.formdata.password) {
+      if (value !== this.formData.newPassword) {
         callback(new Error('两次输入的密码不匹配'));
       } else {
         callback();
       }
     };
     return {
-      formdata: {
-        password: '',
-        oldpassword: '',
-        check_newpassword: ''
+      formData: {
+        newPassword: '',
+        oldPassword: '',
+        checkNewPassword: ''
       },
-      pwdrule: {
-        password: [
+      pwdRule: {
+        newPassword: [
           {
             required: true, 
             message: '新密码不能为空', 
@@ -54,7 +55,7 @@ export default {
             trigger: 'blur'
           }
         ],
-        check_newpassword: [
+        checkNewPassword: [
           {
             required: true,
             message: '请再次键入新密码', 
@@ -65,7 +66,7 @@ export default {
             trigger: 'blur'
           }
         ],
-        oldpassword: [
+        oldPassword: [
           {
             required: true, 
             message: '旧密码不能为空', 
@@ -86,7 +87,13 @@ export default {
     changePassword(name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
-          // TODO 检查旧密码, 然后提交数据
+          let oldPassword = this.formData.oldPassword;        // 表单数据中的旧密码和新密码
+          let newPassword = this.formData.newPassword;
+
+          let res = api.changeUserPassword(oldPassword, newPassword);
+
+
+          console.log(res);
         } else {
           this.$Message.error('表单中部分字段不满足条件');
         }
