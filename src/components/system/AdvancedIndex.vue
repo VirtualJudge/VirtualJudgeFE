@@ -8,7 +8,7 @@
         <MenuItem name="/system/manage_problem" to="/system/manage_problem">
           {{ $t('pages.system.manage_problem') }}
         </MenuItem>
-        <MenuItem name="/system/manage_permission" to="/system/manage_permission">
+        <MenuItem v-if="hiddenItem" name="/system/manage_permission" to="/system/manage_permission">
           {{ $t('pages.system.manage_permission') }}
         </MenuItem>
         <MenuItem name="/system/manage_user" to="/system/manage_user">
@@ -31,9 +31,10 @@ import {mapGetters} from "vuex";
 
 export default {
   name: "AdvancedIndex",
-  data(){
-    return{
-      active_name: '/system'
+  data() {
+    return {
+      active_name: '/system',
+      hiddenItem: false
     }
   },
   mounted() {

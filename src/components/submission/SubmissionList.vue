@@ -208,14 +208,16 @@ export default {
       this.requestTableData()
     },
     onPageSizeChange(page_size) {
+      this.current = 1
       this.page_size = page_size
       this.requestTableData()
     },
     handleSwitchChange() {
+      this.current = 1
       this.requestTableData()
     },
-    handleSelectedChange(val) {
-      console.log('val', val)
+    handleSelectedChange() {
+      this.current = 1
       this.requestTableData()
     }
   },

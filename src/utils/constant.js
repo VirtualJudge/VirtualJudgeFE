@@ -125,3 +125,7 @@ export const PERMISSIONS = {
     MANAGE_PROBLEM: 'problem.manage_problem',
     MANAGE_USER: 'problem.manage_user'
 }
+export const VALID_SCHOOLS = {
+    'WUST': '武汉科技大学',
+    'OTHER': '其他'
+}

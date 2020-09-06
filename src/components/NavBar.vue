@@ -57,7 +57,7 @@
             <template slot="title">
               <Avatar :src="emailHashURL">{{ profile.username }}</Avatar>
             </template>
-            <MenuGroup :title="$t('navbar.system_setting')">
+            <MenuGroup v-if="isAdminRole" :title="$t('navbar.system_setting')">
               <MenuItem name="/system" to="/system">{{ $t('navbar.system_setting') }}</MenuItem>
             </MenuGroup>
             <MenuGroup :title="$t('navbar.basic_setting')">
