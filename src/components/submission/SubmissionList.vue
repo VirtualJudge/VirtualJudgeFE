@@ -23,6 +23,8 @@
           </Option>
         </Select>
       </label>
+
+      <Button style=" margin-left: 10px" type="info" @click="requestTableData" :loading="tableLoading">刷新</Button>
     </div>
 
     <PaginateTable style="margin-top: 10px"
@@ -101,11 +103,11 @@ export default {
         {
           title: '时间花费',
           key: 'time_spend',
-          width: 100,
+          width: 150,
           align: 'center',
           render: (h, params) => {
             if (params.row.time_spend !== null) {
-              return h('span', params.row.time_spend)
+              return h('span', params.row.time_spend + ' MS')
             } else {
               return h('span', '-')
             }
@@ -118,7 +120,7 @@ export default {
           align: 'center',
           render: (h, params) => {
             if (params.row.memory_spend !== null) {
-              return h('span', params.row.memory_spend)
+              return h('span', params.row.memory_spend + ' MB')
             } else {
               return h('span', '-')
             }
@@ -154,11 +156,15 @@ export default {
           key: 'verdict',
           align: 'center',
           render: (h, params) => {
-            return h('Tag', {
-              props: {
-                color: SUBMISSION_VERDICTS[params.row.verdict].color
-              }
-            }, SUBMISSION_VERDICTS[params.row.verdict].info)
+            if (SUBMISSION_VERDICTS[params.row.verdict]) {
+              return h('Tag', {
+                props: {
+                  color: SUBMISSION_VERDICTS[params.row.verdict].color
+                }
+              }, SUBMISSION_VERDICTS[params.row.verdict].info)
+            } else {
+              return h('span', '-')
+            }
           },
         },
         {

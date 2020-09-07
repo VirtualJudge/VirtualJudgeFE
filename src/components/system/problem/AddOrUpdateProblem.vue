@@ -217,7 +217,7 @@ export default {
   },
   methods: {
     updateProblemInit() {
-      api.getProblemDetail(this.problem_id).then(res => {
+      api.getAdvancedProblemDetail(this.problem_id).then(res => {
         if (res.data.err === null) {
           this.formData.manifest = res.data.data.manifest || {spj: false, spj_code: '', test_cases: []}
           this.formData.editor_text = res.data.data.content || {markdown: '', pdf: ''}

@@ -75,6 +75,9 @@ export default {
     getProblemDetail(id) {
         return ajax(`/api/problem/${id}/`, 'get')
     },
+    getAdvancedProblemDetail(id) {
+        return ajax(`/api/problem/${id}/system_retrieve/`, 'get')
+    },
     postProblemCreate(title, content, source, time_limit, memory_limit, is_public, manifest) {
         return ajax('/api/problem/', 'post', {
             data: {
