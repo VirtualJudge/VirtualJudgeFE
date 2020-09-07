@@ -22,6 +22,23 @@ export default {
             params: url_params
         })
     },
+    getUserFollowingRank(params) {
+        let url_params = params || {}
+        return ajax('/api/user/following/', 'get', {
+            params: url_params
+        })
+    },
+    getUserIsFollowed(user_id) {
+        return ajax(`/api/user/${user_id}/followed/`, 'get')
+    },
+    postChangeFollowing(user_id, follow) {
+        return ajax('/api/user/following/', 'post', {
+            data: {
+                'user_id': user_id,
+                'follow': follow
+            }
+        })
+    },
     postUserLogin(username, password, captcha) {
         return ajax('/api/user/login/', 'post', {
             data: {

@@ -1,5 +1,7 @@
 <template>
   <PaginateTable
+      @on-page-change="onPageChange"
+      @on-page-size-change="onPageSizeChange"
       v-bind:total="total"
       v-bind:page_size="page_size"
       v-bind:data="data"
@@ -198,13 +200,30 @@ export default {
     }
   },
   mounted() {
-    api.getAdvancedUserList().then(res => {
-      if (res.data.err === null) {
-        this.data = res.data.data.results || []
-      }
-    })
+    this.requestTableData()
   },
   methods: {
+    requestTableData() {
+      this.tableLoading = true
+      api.getAdvancedUserList({
+        page_size: this.page_size,
+        page: this.current
+      }).then(res => {
+        if (res.data.err === null) {
+          this.data = res.data.data.results || []
+          this.total = res.data.data.count || 0
+        }
+        this.tableLoading = false
+      })
+    },
+    onPageChange(page_number) {
+      this.current = page_number
+      this.requestTableData()
+    },
+    onPageSizeChange(page_size) {
+      this.page_size = page_size
+      this.requestTableData()
+    },
     handleItemUpdate(index, request_data) {
       api.patchAdvancedUserUpdate(this.data[index].id, request_data).then(res => {
         if (res.data.err === null) {
