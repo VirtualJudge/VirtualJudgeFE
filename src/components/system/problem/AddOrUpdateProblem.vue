@@ -189,7 +189,7 @@ export default {
         source: '',
         title: '',
         is_public: 0,
-        manifest: {spj: false, spj_code: '', test_cases: []}
+        manifest: {spj: false, spj_code: '', test_cases: [], hash: ''}
       },
       source_choice: PROBLEM_PUBLIC_TYPE,
       uploadConfig: {
@@ -304,13 +304,13 @@ export default {
     onSuccess(res) {
       if (res.err !== null) {
         this.$Message.error('上传失败，' + message.err(res.err))
-
       } else {
         if (Object.hasOwnProperty.call(res.data, 'test_cases')) {
           this.formData.manifest.test_cases = res.data['test_cases'] || []
         }
-        this.formData.manifest.test_cases = []
-        this.$Message.success('上传成功')
+        if (Object.hasOwnProperty.call(res.data, 'hash')) {
+          this.formData.manifest.hash = res.data['hash'] || ''
+        }
       }
     },
     onPDFSuccess(res) {
