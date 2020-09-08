@@ -38,7 +38,7 @@
       </div>
       <Divider/>
       <h3 style="text-align: center;margin-bottom: 10px">题目内容</h3>
-      <Tabs value="Markdown">
+      <Tabs type="card" value="Markdown" @on-tab-remove="handleTabRemove">
         <TabPane label="Markdown" name="Markdown">
           <mavon-editor
               ref=md
@@ -94,6 +94,7 @@
 
 
         </TabPane>
+        <TabPane label="Legacy" name="Legacy" closable v-if="formData.editor_text.legacy.description"></TabPane>
       </Tabs>
 
 
@@ -182,7 +183,8 @@ export default {
       formData: {
         editor_text: {
           markdown: '',
-          pdf: ''
+          pdf: '',
+          legacy: {}
         },
         memory_limit: 128,
         time_limit: 1000,
@@ -220,7 +222,7 @@ export default {
       api.getAdvancedProblemDetail(this.problem_id).then(res => {
         if (res.data.err === null) {
           this.formData.manifest = res.data.data.manifest || {spj: false, spj_code: '', test_cases: []}
-          this.formData.editor_text = res.data.data.content || {markdown: '', pdf: ''}
+          this.formData.editor_text = res.data.data.content || {markdown: '', pdf: '', legacy: {}}
           this.formData.time_limit = res.data.data.time_limit || 1000
           this.formData.memory_limit = res.data.data.memory_limit || 128
           this.formData.title = res.data.data.title || ''
@@ -231,6 +233,9 @@ export default {
           this.$Message.error(message.err(res.data.err))
         }
       })
+    },
+    handleTabRemove() {
+      this.formData.editor_text.legacy = {}
     },
     handleSubmit() {
       if (this.problem_id === null) {
