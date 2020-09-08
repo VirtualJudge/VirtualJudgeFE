@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Lint
+name: lint
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
@@ -24,6 +24,6 @@ jobs:
 
     - name: Project setup
       run: yarn install
-      
+
     - name: Lints and fixes files
       run: yarn lint
