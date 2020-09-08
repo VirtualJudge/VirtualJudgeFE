@@ -19,8 +19,6 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     - uses: actions/checkout@v2
-    - name: Install Requires
-      run: apt-get -y install zip
     - name: Setup Node.js environment
       uses: actions/setup-node@v2.1.1
       with:
