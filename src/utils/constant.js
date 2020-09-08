@@ -129,3 +129,6 @@ export const VALID_SCHOOLS = {
     'WUST': '武汉科技大学',
     'OTHER': '其他'
 }
+export const STORAGE = {
+    PROBLEM_LANGUAGE_KEY: '_problem_language_key'
+}

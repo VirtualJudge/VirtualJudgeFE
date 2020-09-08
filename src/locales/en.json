@@ -42,7 +42,8 @@
     "problem": {
       "number": "No.",
       "title": "Title",
-      "ac/submit": "AC/Submit"
+      "ac/submit": "AC/Submit",
+      "source": "Source"
     },
     "system": {
       "manage_user": "Manage User",

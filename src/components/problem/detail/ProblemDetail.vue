@@ -90,7 +90,7 @@
           <Form>
             <FormItem>
               <label>
-                <Select class="mono-text" v-model="lang">
+                <Select class="mono-text" v-model="lang" @on-change="handleProblemLanguageChange">
                   <Option
                       class="mono-text"
                       :key="item"
@@ -137,8 +137,9 @@
 <script>
 import api from "@/utils/api";
 import message from "@/utils/message";
-import {PROBLEM_SUBMIT_LANGUAGES} from "@/utils/constant";
+import {PROBLEM_SUBMIT_LANGUAGES, STORAGE} from "@/utils/constant";
 import {mapGetters} from 'vuex'
+import storage from "@/utils/storage";
 
 export default {
   name: "ProblemDetail",
@@ -154,7 +155,7 @@ export default {
       legacy_value: {},
       problem: {},
       code: '',
-      lang: 'c',
+      lang: '',
       submitButtonLoading: false,
       judge_result: {
         short: '',
@@ -164,6 +165,7 @@ export default {
     }
   },
   mounted() {
+    this.lang = storage.get(STORAGE.PROBLEM_LANGUAGE_KEY, 'c')
     let problem_id = this.$route.params.id
     if (problem_id === null) {
       this.$router.push('/problem')
@@ -203,6 +205,9 @@ export default {
       if (event.key === 'Tab') {
         event.preventDefault()
       }
+    },
+    handleProblemLanguageChange(value) {
+      storage.set(STORAGE.PROBLEM_LANGUAGE_KEY, value)
     }
   }, computed: {
     ...mapGetters(['isAuthenticated'])

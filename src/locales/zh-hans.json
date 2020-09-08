@@ -43,7 +43,8 @@
     "problem": {
       "number": "编号",
       "title": "标题",
-      "ac/submit": "通过/提交"
+      "ac/submit": "通过/提交",
+      "source": "来源"
     },
     "system": {
       "manage_user": "用户管理",

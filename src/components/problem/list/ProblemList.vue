@@ -14,7 +14,7 @@
             v-bind:tableLoading="tableLoading"/>
       </Col>
       <Col span="8" style="padding-left: 20px">
-        <ProblemFilter v-bind:tableFilters="table_filters" @handlerFilter="handlerFilter"/>
+        <ProblemFilter v-bind:tableFilters="table_filters" v-bind:buttonLoading="tableLoading" @handlerFilter="handlerFilter"/>
       </Col>
     </Row>
 
@@ -36,27 +36,31 @@ export default {
       total: 0,
       page_size: 10,
       columns: [
-          {
-        title: this.$t('pages.problem.number'),
-        key: 'id',
-        width: 100
-      },
         {
-        title: this.$t('pages.problem.title'),
-        render: (h, params) => {
-          return h('span', {
-            style:{
-              color: '#3399ff',
-              cursor: 'pointer'
-            },
-            on: {
-              click: () => {
-                this.$router.push(`/problem/${params.row.id}`)
+          title: this.$t('pages.problem.number'),
+          key: 'id',
+          width: 100
+        },
+        {
+          title: this.$t('pages.problem.title'),
+          render: (h, params) => {
+            return h('span', {
+              style: {
+                color: '#3399ff',
+                cursor: 'pointer'
+              },
+              on: {
+                click: () => {
+                  this.$router.push(`/problem/${params.row.id}`)
+                }
               }
-            }
-          }, params.row.title)
-        }
-      },
+            }, params.row.title)
+          }
+        },
+        {
+          title: this.$t('pages.problem.source'),
+          key: 'source'
+        },
         {
           width: 150,
           title: this.$t('pages.problem.ac/submit'),
@@ -68,7 +72,8 @@ export default {
       current: 1,
       table_filters: {
         id: '',
-        title: ''
+        title: '',
+        source: ''
       }
     }
   }, mounted() {
@@ -82,7 +87,8 @@ export default {
         page: this.current,
         page_size: this.page_size,
         id: this.table_filters.id,
-        title: this.table_filters.title
+        title: this.table_filters.title,
+        source: this.table_filters.source
       }).then((res) => {
         if (res.data.err == null) {
           this.data = res.data.data.results || []
