@@ -143,9 +143,9 @@ export default {
                     this.$router.push(`/submission/${params.row.id}`)
                   }
                 }
-              }, PROBLEM_SUBMIT_LANGUAGES[params.row.lang].withVersion)
+              }, PROBLEM_SUBMIT_LANGUAGES[params.row.lang].short)
             } else {
-              return h('span', PROBLEM_SUBMIT_LANGUAGES[params.row.lang].withVersion)
+              return h('span', PROBLEM_SUBMIT_LANGUAGES[params.row.lang].short)
             }
 
           },
