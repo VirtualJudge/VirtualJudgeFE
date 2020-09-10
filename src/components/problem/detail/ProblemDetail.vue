@@ -3,7 +3,7 @@
     <h2 style="text-align: center">{{ problem.title }}</h2>
     <Row>
       <Col span="16">
-        <Tabs :value="tab_val">
+        <Tabs v-model="tab_val">
           <TabPane label="Markdown" name="Markdown" :disabled="!editor_value.markdown">
             <mavon-editor
                 v-model="editor_value.markdown"
@@ -19,7 +19,7 @@
             />
           </TabPane>
           <TabPane label="PDF" name="PDF" :disabled="!editor_value.pdf">
-            <embed height="800" width="100%" :src="editor_value.pdf">
+            <embed height="800" width="100%" v-if="tab_val==='PDF'" :src="editor_value.pdf">
           </TabPane>
           <TabPane label="Legacy" name="Legacy" :disabled="!editor_value.legacy.description">
             <div>
