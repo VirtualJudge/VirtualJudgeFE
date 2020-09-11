@@ -1,4 +1,4 @@
-FROM nginx
+FROM nginx:alpine
 
 LABEL maintainer="xudian.cn@gmail.com"
 ENV TZ=Asia/Shanghai
