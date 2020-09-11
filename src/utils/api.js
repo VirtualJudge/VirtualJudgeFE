@@ -4,11 +4,40 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.xsrfCookieName = 'csrftoken';
 
 export default {
-    getUserInformation() {
+    getSelfInformation() {
         return ajax('/api/user/info/', 'get')
     },
-    deleteUserInformation() {
+    deleteSelfInformation() {
         return ajax('/api/user/logout/', 'delete')
+    },
+    getSelfActivities(user_id) {
+        return ajax(`/api/user/${user_id}/activities/`, 'get')
+    },
+    getUserInformation(user_id) {
+        return ajax(`/api/user/${user_id}/`, 'get')
+    },
+    getUserRank(params) {
+        let url_params = params || {}
+        return ajax('/api/user/', 'get', {
+            params: url_params
+        })
+    },
+    getUserFollowingRank(params) {
+        let url_params = params || {}
+        return ajax('/api/user/following/', 'get', {
+            params: url_params
+        })
+    },
+    getUserIsFollowed(user_id) {
+        return ajax(`/api/user/${user_id}/followed/`, 'get')
+    },
+    postChangeFollowing(user_id, follow) {
+        return ajax('/api/user/following/', 'post', {
+            data: {
+                'user_id': user_id,
+                'follow': follow
+            }
+        })
     },
     postUserLogin(username, password, captcha) {
         return ajax('/api/user/login/', 'post', {
@@ -46,8 +75,24 @@ export default {
     getProblemDetail(id) {
         return ajax(`/api/problem/${id}/`, 'get')
     },
+    getAdvancedProblemDetail(id) {
+        return ajax(`/api/problem/${id}/system_retrieve/`, 'get')
+    },
     postProblemCreate(title, content, source, time_limit, memory_limit, is_public, manifest) {
         return ajax('/api/problem/', 'post', {
+            data: {
+                'title': title,
+                'content': content,
+                'source': source,
+                'time_limit': time_limit,
+                'memory_limit': memory_limit,
+                'public': is_public,
+                'manifest': manifest
+            }
+        })
+    },
+    putProblemUpdate(problem_id, title, content, source, time_limit, memory_limit, is_public, manifest) {
+        return ajax(`/api/problem/${problem_id}/`, 'put', {
             data: {
                 'title': title,
                 'content': content,
@@ -87,6 +132,26 @@ export default {
                 'new_password': newPassword
             }
         });
+    postWebLangChange(web_lang) {
+        return ajax('/api/system/language/', 'post', {
+            data: {
+                language: web_lang
+            }
+        })
+    },
+    getAdvancedUserList(params) {
+        let url_params = params || {}
+        return ajax('/api/user/advanced/', 'get', {
+            params: url_params
+        })
+    },
+    patchAdvancedUserUpdate(user_id, request_data) {
+        return ajax(`/api/user/advanced/${user_id}/`, 'patch', {
+            data: request_data || {}
+        })
+    },
+    postAdvancedUserPasswordUpdate(user_id) {
+        return ajax(`/api/user/advanced/${user_id}/reset_password/`, 'post')
     }
 }
 

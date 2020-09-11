@@ -6,7 +6,6 @@
         <PaginateTable
             @on-page-change="onPageChange"
             @on-page-size-change="onPageSizeChange"
-            @on-row-click="onRowClick"
             v-bind:total="total"
             v-bind:page_size="page_size"
             v-bind:data="data"
@@ -15,7 +14,7 @@
             v-bind:tableLoading="tableLoading"/>
       </Col>
       <Col span="8" style="padding-left: 20px">
-        <ProblemFilter v-bind:tableFilters="table_filters" @handlerFilter="handlerFilter"/>
+        <ProblemFilter v-bind:tableFilters="table_filters" v-bind:buttonLoading="tableLoading" @handlerFilter="handlerFilter"/>
       </Col>
     </Row>
 
@@ -36,26 +35,45 @@ export default {
       tableLoading: false,
       total: 0,
       page_size: 10,
-      columns: [{
-        title: '编号',
-        key: 'id',
-        width: 100
-      }, {
-        title: '标题',
-        key: 'title'
-      },
+      columns: [
         {
-          width: 100,
-          title: '提交',
+          title: this.$t('pages.problem.number'),
+          key: 'id',
+          width: 100
+        },
+        {
+          title: this.$t('pages.problem.title'),
           render: (h, params) => {
-            return h('span', `${params.row.total_accepted}(${params.row.total_submitted})`)
+            return h('span', {
+              style: {
+                color: '#3399ff',
+                cursor: 'pointer'
+              },
+              on: {
+                click: () => {
+                  this.$router.push(`/problem/${params.row.id}`)
+                }
+              }
+            }, params.row.title)
+          }
+        },
+        {
+          title: this.$t('pages.problem.source'),
+          key: 'source'
+        },
+        {
+          width: 150,
+          title: this.$t('pages.problem.ac/submit'),
+          render: (h, params) => {
+            return h('span', `${params.row.total_accepted}/${params.row.total_submitted}`)
           }
         }],
       data: [],
       current: 1,
       table_filters: {
         id: '',
-        title: ''
+        title: '',
+        source: ''
       }
     }
   }, mounted() {
@@ -69,7 +87,8 @@ export default {
         page: this.current,
         page_size: this.page_size,
         id: this.table_filters.id,
-        title: this.table_filters.title
+        title: this.table_filters.title,
+        source: this.table_filters.source
       }).then((res) => {
         if (res.data.err == null) {
           this.data = res.data.data.results || []
@@ -88,9 +107,6 @@ export default {
     onPageSizeChange(page_size) {
       this.page_size = page_size
       this.requestTableData()
-    },
-    onRowClick(params) {
-      this.$router.push(`/problem/${params.id}`)
     },
     handlerFilter() {
       this.requestTableData()

@@ -1,0 +1,55 @@
+{
+  "title": {
+    "index": "Index",
+    "page_not_found": "Page Not Found",
+    "help": "Help",
+    "compiler": "Compiler",
+    "problem_list": "Problem List",
+    "problem_detail": "Problem Detail",
+    "submission_list": "Submission List",
+    "submission_detail": "Submission Detail",
+    "cannot_login": "Can't Login?",
+    "self_setting": "Self Settings",
+    "self_info": "Self Information",
+    "rank": "Rank"
+  },
+  "navbar": {
+    "index": "Index",
+    "problem": "Problems",
+    "submission": "Submissions",
+    "help": "Help",
+    "compiler": "Compiler",
+    "language": "Language",
+    "register": "Register",
+    "login": "Login",
+    "system_setting": "System Settings",
+    "problem_manage": "Problem Manage",
+    "permission_manage": "Permission Manage",
+    "basic_setting": "Basic Settings",
+    "self_info": "Self Information",
+    "self_setting": "Self Settings",
+    "logout": "Logout",
+    "rank": "Rank"
+  },
+  "pages": {
+    "index": {
+      "index": "Main"
+    },
+    "help": {
+      "help": "Help",
+      "compiler_info": "Compiler Information"
+    },
+    "problem": {
+      "number": "No.",
+      "title": "Title",
+      "ac/submit": "AC/Submit",
+      "source": "Source"
+    },
+    "system": {
+      "manage_user": "Manage User",
+      "system_info": "System Info",
+      "manage_problem": "Manage Problem",
+      "manage_permission": "Manage Permission"
+    }
+  }
+}

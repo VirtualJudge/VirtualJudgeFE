@@ -1,21 +1,27 @@
 import CannotLogin from "../../components/user/CannotLogin";
 import Register from "../../components/user/Register";
 import SelfIndex from "../../components/user/self/SelfIndex";
-import AdvancedIndex from "@/components/user/advanced/AdvancedIndex";
-import UserInfo from "@/components/user/self/UserInfo";
+import UserInfo from "@/components/user/UserInfo";
 import UpdateInfo from "@/components/user/self/UpdateInfo";
 import ChangePassword from "@/components/user/self/ChangePassword";
 import ChangeEmail from "@/components/user/self/ChangeEmail";
-import ManageProblem from "@/components/user/advanced/problem/ManageProblem";
-import AddProblem from "@/components/user/advanced/problem/AddProblem";
+import RankIndex from "@/components/rank/RankIndex";
 
 export default [
+    {
+        path: '/rank',
+        name: 'rank',
+        component: RankIndex,
+        meta: {
+            title: 'title.rank'
+        }
+    },
     {
         path: '/cannot_login',
         name: 'cannot_login',
         component: CannotLogin,
         meta: {
-            title: '无法登陆？'
+            title: 'title.cannot_login'
         }
     },
     {
@@ -23,7 +29,7 @@ export default [
         name: 'register',
         component: Register,
         meta: {
-            title: '注册'
+            title: 'title.register'
         }
     },
     {
@@ -31,7 +37,7 @@ export default [
         name: 'self',
         component: SelfIndex,
         meta: {
-            title: '个人设置'
+            title: 'title.self_setting'
         },
         children: [
             {
@@ -50,31 +56,13 @@ export default [
                 component: ChangeEmail
             }
         ]
-    }, {
-        path: '/system',
-        name: 'system',
-        component: AdvancedIndex,
-        meta: {
-            title: '系统设置'
-        },
-        children: [
-            {
-                path: 'manage_problem',
-                name: 'manage_problem',
-                component: ManageProblem
-            },
-            {
-                path: 'add_problem',
-                name: 'add_problem',
-                component: AddProblem
-            }
-        ]
-    }, {
+    },
+    {
         path: '/user/:id',
         name: 'user',
         component: UserInfo,
         meta: {
-            title: '个人信息'
+            title: 'title.self_info'
         }
     }
 ]

@@ -1,0 +1,56 @@
+{
+  "title": {
+    "index": "首页",
+    "page_not_found": "页面不存在",
+    "help": "帮助",
+    "compiler": "编译器",
+    "problem_list": "题目列表",
+    "problem_detail": "题目详情",
+    "submission_list": "提交列表",
+    "submission_detail": "提交详情",
+    "cannot_login": "无法登录？",
+    "register": "注册",
+    "self_setting": "个人设置",
+    "self_info": "个人信息",
+    "rank": "排行"
+  },
+  "navbar": {
+    "index": "首页",
+    "problem": "题目",
+    "submission": "提交",
+    "help": "帮助",
+    "compiler": "编译器",
+    "language": "语言",
+    "register": "注册",
+    "login": "登录",
+    "system_setting": "系统设置",
+    "problem_manage": "题目管理",
+    "permission_manage": "权限管理",
+    "basic_setting": "基础设置",
+    "self_info": "个人信息",
+    "self_setting": "个人设置",
+    "logout": "退出登录",
+    "rank": "排行"
+  },
+  "pages": {
+    "index": {
+      "index": "首页"
+    },
+    "help": {
+      "help": "帮助",
+      "compiler_info": "编译器信息"
+    },
+    "problem": {
+      "number": "编号",
+      "title": "标题",
+      "ac/submit": "通过/提交",
+      "source": "来源"
+    },
+    "system": {
+      "manage_user": "用户管理",
+      "system_info": "系统信息",
+      "manage_problem": "题目管理",
+      "manage_permission": "权限管理"
+    }
+  }
+}

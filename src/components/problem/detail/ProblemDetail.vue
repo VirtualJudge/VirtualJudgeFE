@@ -3,8 +3,8 @@
     <h2 style="text-align: center">{{ problem.title }}</h2>
     <Row>
       <Col span="16">
-        <Tabs :value="tab_val">
-          <TabPane label="Markdown" name="Markdown" v-if="editor_value.markdown">
+        <Tabs v-model="tab_val">
+          <TabPane label="Markdown" name="Markdown" :disabled="!editor_value.markdown">
             <mavon-editor
                 v-model="editor_value.markdown"
                 defaultOpen="preview"
@@ -18,8 +18,53 @@
                 fontSize="16px"
             />
           </TabPane>
-          <TabPane label="PDF" name="PDF" v-if="editor_value.pdf">
-            <embed height="800" width="100%" :src="editor_value.pdf">
+          <TabPane label="PDF" name="PDF" :disabled="!editor_value.pdf">
+            <embed height="800" width="100%" v-if="tab_val==='PDF'" :src="editor_value.pdf">
+          </TabPane>
+          <TabPane label="Legacy" name="Legacy" :disabled="!editor_value.legacy.description">
+            <div>
+              <Card class="legacy-item" dis-hover>
+                <p slot="title">题目描述</p>
+                <div>
+                  <content v-html="editor_value.legacy.description"></content>
+                </div>
+              </Card>
+
+              <Card class="legacy-item" dis-hover>
+                <p slot="title">输入描述</p>
+                <div>
+                  <content v-html="editor_value.legacy.input"></content>
+                </div>
+              </Card>
+              <Card class="legacy-item" dis-hover>
+                <p slot="title">输出描述</p>
+                <div>
+                  <content v-html="editor_value.legacy.output"></content>
+                </div>
+              </Card>
+              <Card class="legacy-item" dis-hover>
+                <p slot="title">输入样例</p>
+                <div>
+                  <pre style="background: #fafafa;padding: 5px;"><code>{{
+                      editor_value.legacy.sample_input
+                    }}</code></pre>
+                </div>
+              </Card>
+              <Card class="legacy-item" dis-hover>
+                <p slot="title">输出样例</p>
+                <div>
+                  <pre style="background: #fafafa;padding: 5px;"><code>{{
+                      editor_value.legacy.sample_output
+                    }}</code></pre>
+                </div>
+              </Card>
+              <Card class="legacy-item" dis-hover>
+                <p slot="title">提示</p>
+                <div>
+                  <content v-html="editor_value.legacy.hint"></content>
+                </div>
+              </Card>
+            </div>
           </TabPane>
         </Tabs>
 
@@ -45,7 +90,7 @@
           <Form>
             <FormItem>
               <label>
-                <Select class="mono-text" v-model="lang">
+                <Select class="mono-text" v-model="lang" @on-change="handleProblemLanguageChange">
                   <Option
                       class="mono-text"
                       :key="item"
@@ -92,8 +137,9 @@
 <script>
 import api from "@/utils/api";
 import message from "@/utils/message";
-import {PROBLEM_SUBMIT_LANGUAGES} from "@/utils/constant";
+import {PROBLEM_SUBMIT_LANGUAGES, STORAGE} from "@/utils/constant";
 import {mapGetters} from 'vuex'
+import storage from "@/utils/storage";
 
 export default {
   name: "ProblemDetail",
@@ -101,10 +147,15 @@ export default {
   data() {
     return {
       tab_val: 'Markdown',
-      editor_value: {},
+      editor_value: {
+        legacy: {},
+        pdf: '',
+        markdown: ''
+      },
+      legacy_value: {},
       problem: {},
       code: '',
-      lang: 'c',
+      lang: '',
       submitButtonLoading: false,
       judge_result: {
         short: '',
@@ -114,6 +165,7 @@ export default {
     }
   },
   mounted() {
+    this.lang = storage.get(STORAGE.PROBLEM_LANGUAGE_KEY, 'c')
     let problem_id = this.$route.params.id
     if (problem_id === null) {
       this.$router.push('/problem')
@@ -123,11 +175,15 @@ export default {
         this.$Message.error(message.err(res.data.err))
       } else {
         this.problem = res.data.data || {}
-        this.editor_value = res.data.data.content || {}
+        this.editor_value.legacy = res.data.data.content.legacy || {}
+        this.editor_value.markdown = res.data.data.content.markdown || ''
+        this.editor_value.pdf = res.data.data.content.pdf || ''
         if (this.editor_value.markdown) {
           this.tab_val = 'Markdown'
         } else if (this.editor_value.pdf) {
           this.tab_val = 'PDF'
+        } else if (this.editor_value.legacy) {
+          this.tab_val = 'Legacy'
         } else {
           this.tab_val = 'Markdown'
         }
@@ -149,6 +205,9 @@ export default {
       if (event.key === 'Tab') {
         event.preventDefault()
       }
+    },
+    handleProblemLanguageChange(value) {
+      storage.set(STORAGE.PROBLEM_LANGUAGE_KEY, value)
     }
   }, computed: {
     ...mapGetters(['isAuthenticated'])
@@ -166,5 +225,10 @@ export default {
 
 .mono-text {
   font-family: "Ubuntu Mono", "JetBrains Mono", Consolas, Menlo, Courier, monospace;
+}
+
+.legacy-item {
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
 </style>

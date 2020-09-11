@@ -6,6 +6,16 @@
           <p slot="title">代码</p>
           <pre v-if="code" v-highlightjs="code"><code :class="code_type"></code></pre>
         </Card>
+        <Collapse style="margin-top: 10px" v-model="collapse_val">
+          <Panel v-if="additional_info['error']" name="1">
+            错误信息
+            <pre slot="content" v-highlightjs="additional_info['error']"><code class="shell"></code></pre>
+          </Panel>
+          <Panel v-if="additional_info['result']" name="2">
+            运行结果
+            <pre slot="content" v-highlightjs="additional_info['result']"><code class="text"></code></pre>
+          </Panel>
+        </Collapse>
       </Col>
       <Col span="6" style="padding-left: 10px">
         <Card dis-hover>
@@ -13,17 +23,17 @@
           <List v-if="code" :split="false">
             <ListItem>
               <ListItemMeta title="作者">
-                <span slot="description">
+                <span style="cursor: pointer; color: #3399ff" slot="description" @click="handleUsernameClick">
                   {{ user.username }}
                 </span>
               </ListItemMeta>
             </ListItem>
             <ListItem>
               <ListItemMeta title="题目">
-                <a slot="description"
-                   @click="handleProblemClick">
-                  {{ problem.id }} - {{ problem.title }}
-                </a>
+                <span style="cursor: pointer; color: #3399ff" slot="description"
+                      @click="handleProblemClick">
+                  {{ problem.title }}
+                </span>
               </ListItemMeta>
             </ListItem>
             <ListItem>
@@ -67,7 +77,10 @@ export default {
       time_spend: '-',
       memory_spend: '-',
       problem: {},
-      user: {}
+      user: {},
+      additional_info: {'error': null, 'result': null},
+      collapse_val: '0',
+
     }
   }, mounted() {
     api.getSubmissionPersonal(this.$route.params.id).then(res => {
@@ -80,6 +93,10 @@ export default {
         this.verdict = SUBMISSION_VERDICTS[response.verdict] || {}
         this.time_spend = response.time_spend || '-'
         this.memory_spend = response.memory_spend || '-'
+        this.additional_info = response.additional_info || {'error': null, 'result': null}
+        if (this.additional_info['result']) {
+          this.additional_info['result'] = JSON.stringify(this.additional_info['result'], null, 2)
+        }
       } else {
         this.$Message.error(message.err(res.data.err))
       }
@@ -92,7 +109,10 @@ export default {
       })
     },
     handleProblemClick() {
-      this.$router.push(`/problem/${this.data.problem.id}`)
+      this.$router.push(`/problem/${this.problem.id}`)
+    },
+    handleUsernameClick() {
+      this.$router.push(`/user/${this.user.id}`)
     }
   }
 }

@@ -1,7 +1,6 @@
 <template>
   <div>
     <Card dis-hover>
-      <p slot="title">筛选</p>
       <Form label-position="right" :label-width="50">
         <FormItem label="编号">
           <label>
@@ -13,9 +12,14 @@
             <Input v-model="tableFilters.title"/>
           </label>
         </FormItem>
+        <FormItem label="来源">
+          <label>
+            <Input v-model="tableFilters.source"/>
+          </label>
+        </FormItem>
         <FormItem>
-          <Button type="primary" @click="handlerFilter" class="btn">
-            提交
+          <Button type="primary" :loading="buttonLoading" @click="handlerFilter" class="btn">
+            筛选
           </Button>
         </FormItem>
       </Form>
@@ -28,12 +32,20 @@
 export default {
   name: "ProblemFilter",
   props: {
+    buttonLoading: {
+      type: Boolean,
+      default: false
+    },
     tableFilters: {
       id: {
         type: String,
         default: ''
       },
       title: {
+        type: String,
+        default: ''
+      },
+      source: {
         type: String,
         default: ''
       }

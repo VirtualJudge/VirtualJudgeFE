@@ -23,6 +23,8 @@
           </Option>
         </Select>
       </label>
+
+      <Button style=" margin-left: 10px" type="info" @click="requestTableData" :loading="tableLoading">刷新</Button>
     </div>
 
     <PaginateTable style="margin-top: 10px"
@@ -41,7 +43,7 @@
 import PaginateTable from "@/components/utils/PaginateTable";
 import api from "@/utils/api";
 import moment from 'moment'
-import {DEFAULT_LOCALE, PROBLEM_SUBMIT_LANGUAGES, SUBMISSION_VERDICTS} from '@/utils/constant'
+import {ACCEPT_LOCALES, PROBLEM_SUBMIT_LANGUAGES, SUBMISSION_VERDICTS} from '@/utils/constant'
 import {mapGetters} from "vuex";
 
 export default {
@@ -57,13 +59,38 @@ export default {
       columns: [
         {
           title: '编号',
-          key: 'id'
+          key: 'id',
+          width: 100,
+          align: 'center'
+        },
+        {
+          title: '用户',
+          key: 'user',
+          align: 'center',
+          render: (h, params) => {
+            return h('span', {
+              style: {
+                color: '#3399ff',
+                cursor: 'pointer'
+              },
+              on: {
+                click: () => {
+                  this.$router.push(`/user/${params.row.user.id}`)
+                }
+              }
+            }, params.row.user.username)
+          }
         },
         {
           title: '题目',
           key: 'problem',
+          align: 'center',
           render: (h, params) => {
-            return h('a', {
+            return h('span', {
+              style: {
+                color: '#3399ff',
+                cursor: 'pointer'
+              },
               on: {
                 click: () => {
                   this.$router.push(`/problem/${params.row.problem.id}`)
@@ -72,19 +99,15 @@ export default {
             }, params.row.problem.title)
           }
         },
-        {
-          title: '用户',
-          key: 'user',
-          render: (h, params) => {
-            return h('span', params.row.user.username)
-          }
-        },
+
         {
           title: '时间花费',
           key: 'time_spend',
+          width: 150,
+          align: 'center',
           render: (h, params) => {
             if (params.row.time_spend !== null) {
-              return h('span', params.row.time_spend)
+              return h('span', params.row.time_spend + ' MS')
             } else {
               return h('span', '-')
             }
@@ -93,9 +116,11 @@ export default {
         {
           title: '内存花费',
           key: 'memory_spend',
+          width: 100,
+          align: 'center',
           render: (h, params) => {
             if (params.row.memory_spend !== null) {
-              return h('span', params.row.memory_spend)
+              return h('span', params.row.memory_spend + ' MB')
             } else {
               return h('span', '-')
             }
@@ -103,19 +128,24 @@ export default {
         }, {
           title: '提交语言',
           key: 'lang',
+          align: 'center',
           render: (h, params) => {
             if (this.profile.id !== null
                 && (params.row.user.id === this.profile.id
                     || this.isAdminRole)) {
-              return h('a', {
+              return h('span', {
+                style: {
+                  color: '#3399ff',
+                  cursor: 'pointer'
+                },
                 on: {
                   click: () => {
                     this.$router.push(`/submission/${params.row.id}`)
                   }
                 }
-              }, PROBLEM_SUBMIT_LANGUAGES[params.row.lang].withVersion)
+              }, PROBLEM_SUBMIT_LANGUAGES[params.row.lang].short)
             } else {
-              return h('span', PROBLEM_SUBMIT_LANGUAGES[params.row.lang].withVersion)
+              return h('span', PROBLEM_SUBMIT_LANGUAGES[params.row.lang].short)
             }
 
           },
@@ -124,19 +154,25 @@ export default {
         {
           title: '结果',
           key: 'verdict',
+          align: 'center',
           render: (h, params) => {
-            return h('Tag', {
-              props: {
-                color: SUBMISSION_VERDICTS[params.row.verdict].color
-              }
-            }, SUBMISSION_VERDICTS[params.row.verdict].info)
+            if (SUBMISSION_VERDICTS[params.row.verdict]) {
+              return h('Tag', {
+                props: {
+                  color: SUBMISSION_VERDICTS[params.row.verdict].color
+                }
+              }, SUBMISSION_VERDICTS[params.row.verdict].info)
+            } else {
+              return h('span', '-')
+            }
           },
         },
         {
           title: '提交时间',
           key: 'create_time',
+          align: 'center',
           render: (h, params) => {
-            moment.locale(DEFAULT_LOCALE)
+            moment.locale(ACCEPT_LOCALES[this.web_lang].moment)
             return h('Tooltip', {
               props: {
                 transfer: true,
@@ -178,19 +214,21 @@ export default {
       this.requestTableData()
     },
     onPageSizeChange(page_size) {
+      this.current = 1
       this.page_size = page_size
       this.requestTableData()
     },
     handleSwitchChange() {
+      this.current = 1
       this.requestTableData()
     },
-    handleSelectedChange(val) {
-      console.log('val', val)
+    handleSelectedChange() {
+      this.current = 1
       this.requestTableData()
     }
   },
   computed: {
-    ...mapGetters(['profile', 'isAdminRole', 'isAuthenticated'])
+    ...mapGetters(['profile', 'isAdminRole', 'isAuthenticated', 'web_lang'])
   }
 }
 </script>

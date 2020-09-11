@@ -1,10 +1,10 @@
 <template>
-  <p>Public Information per user.</p>
+  <p>权限管理</p>
 </template>
 
 <script>
 export default {
-name: "PublicInfo"
+name: "ManagePermissionIndex"
 }
 </script>
 

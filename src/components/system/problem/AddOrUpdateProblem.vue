@@ -1,7 +1,8 @@
 <template>
   <div>
     <div>
-      <h2 style="text-align: center">添加题目</h2>
+      <h2 v-if="problem_id" style="text-align: center">更新题目</h2>
+      <h2 v-else style="text-align: center">添加题目</h2>
       <Divider/>
       <h3 style="text-align: center;margin-bottom: 10px">基础信息</h3>
       <div style="width: 500px;margin: auto">
@@ -37,7 +38,7 @@
       </div>
       <Divider/>
       <h3 style="text-align: center;margin-bottom: 10px">题目内容</h3>
-      <Tabs value="Markdown">
+      <Tabs type="card" value="Markdown" @on-tab-remove="handleTabRemove">
         <TabPane label="Markdown" name="Markdown">
           <mavon-editor
               ref=md
@@ -93,6 +94,7 @@
 
 
         </TabPane>
+        <TabPane label="Legacy" name="Legacy" closable v-if="formData.editor_text.legacy.description"></TabPane>
       </Tabs>
 
 
@@ -169,25 +171,27 @@ import message from "@/utils/message";
 import axios from "axios";
 import FileSaver from 'file-saver'
 import moment from 'moment'
-import HelpSPJ from "@/components/user/advanced/problem/HelpSPJ";
+import HelpSPJ from "@/components/system/problem/HelpSPJ";
 
 export default {
-  name: "AddProblem",
+  name: "AddOrUpdateProblem",
   components: {HelpSPJ},
   data() {
     return {
+      problem_id: null,
       spj_help_modal: false,
       formData: {
         editor_text: {
           markdown: '',
-          pdf: ''
+          pdf: '',
+          legacy: {}
         },
         memory_limit: 128,
         time_limit: 1000,
         source: '',
         title: '',
         is_public: 0,
-        manifest: {spj: false, spj_code: '', test_cases: []}
+        manifest: {spj: false, spj_code: '', test_cases: [], hash: ''}
       },
       source_choice: PROBLEM_PUBLIC_TYPE,
       uploadConfig: {
@@ -203,31 +207,71 @@ export default {
           title: '输出数据',
           key: 'out'
         }
-      ],
-      test_cases_data: []
+      ]
     }
   },
   mounted() {
+    this.problem_id = this.$route.params.id || null
+    if (this.problem_id) {
+      this.updateProblemInit()
+    }
     this.uploadHeaders['X-CSRFToken'] = this.getCookie('csrftoken')
   },
   methods: {
-    handleSubmit() {
-      api.postProblemCreate(
-          this.formData.title,
-          this.formData.editor_text,
-          this.formData.source,
-          this.formData.time_limit,
-          this.formData.memory_limit,
-          this.formData.is_public,
-          this.formData.manifest
-      ).then(res => {
+    updateProblemInit() {
+      api.getAdvancedProblemDetail(this.problem_id).then(res => {
         if (res.data.err === null) {
-          this.$Message.success('提交成功')
-          this.$router.push('/system/manage_problem')
+          this.formData.manifest = res.data.data.manifest || {spj: false, spj_code: '', test_cases: []}
+          this.formData.editor_text = res.data.data.content || {markdown: '', pdf: '', legacy: {}}
+          this.formData.time_limit = res.data.data.time_limit || 1000
+          this.formData.memory_limit = res.data.data.memory_limit || 128
+          this.formData.title = res.data.data.title || ''
+          this.formData.public = res.data.data.public || 0
+          this.formData.source = res.data.data.source || ''
+
         } else {
-          this.$Message.error('提交失败' + message.err(res.data.err))
+          this.$Message.error(message.err(res.data.err))
         }
       })
+    },
+    handleTabRemove() {
+      this.formData.editor_text.legacy = {}
+    },
+    handleSubmit() {
+      if (this.problem_id === null) {
+        api.postProblemCreate(
+            this.formData.title,
+            this.formData.editor_text,
+            this.formData.source,
+            this.formData.time_limit,
+            this.formData.memory_limit,
+            this.formData.is_public,
+            this.formData.manifest
+        ).then(res => {
+          if (res.data.err === null) {
+            this.$Message.success('提交成功')
+            this.$router.push('/system/manage_problem')
+          } else {
+            this.$Message.error('提交失败' + message.err(res.data.err))
+          }
+        })
+      } else {
+        api.putProblemUpdate(this.problem_id, this.formData.title,
+            this.formData.editor_text,
+            this.formData.source,
+            this.formData.time_limit,
+            this.formData.memory_limit,
+            this.formData.is_public,
+            this.formData.manifest).then(res => {
+          if (res.data.err === null) {
+            this.$Message.success('修改成功')
+            this.$router.push('/system/manage_problem')
+          } else {
+            this.$Message.error('修改失败' + message.err(res.data.err))
+          }
+        })
+      }
+
     },
     onMavonSave(value) {
       let blob = new Blob([value], {type: "text/plain;charset=utf-8"})
@@ -265,13 +309,13 @@ export default {
     onSuccess(res) {
       if (res.err !== null) {
         this.$Message.error('上传失败，' + message.err(res.err))
-
       } else {
         if (Object.hasOwnProperty.call(res.data, 'test_cases')) {
           this.formData.manifest.test_cases = res.data['test_cases'] || []
         }
-        this.formData.manifest.test_cases = []
-        this.$Message.success('上传成功')
+        if (Object.hasOwnProperty.call(res.data, 'hash')) {
+          this.formData.manifest.hash = res.data['hash'] || ''
+        }
       }
     },
     onPDFSuccess(res) {
@@ -310,7 +354,6 @@ export default {
       }
       return cookieValue;
     },
-
     handleClearPDF() {
       this.formData.editor_text.pdf = ''
     },
