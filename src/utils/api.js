@@ -132,6 +132,7 @@ export default {
                 'new_password': newPassword
             }
         });
+    },
     postWebLangChange(web_lang) {
         return ajax('/api/system/language/', 'post', {
             data: {
