@@ -58,18 +58,18 @@ jobs:
         asset_content_type: application/zip
     - name: Build Docker Image
       run: |
-        docker build . file Dockerfile --tag {{ ALIYUN_IMAGE_DDLF }}:latest
+        docker build . file Dockerfile --tag {{ secrets.ALIYUN_IMAGE_DDLF }}:latest
     - name: Log into Aliyun Container Registry
       run: |
-        echo "${{ ALIYUN_IMAGE_PASS }}" | docker login registry.cn-hangzhou.aliyuncs.com -u {{ ALIYUN_IMAGE_USER }} --password-stdin
-        docker push {{ ALIYUN_IMAGE_DDLF }}:latest
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
+        echo "${{ secrets.ALIYUN_IMAGE_PASS }}" | docker login registry.cn-hangzhou.aliyuncs.com -u {{ secrets.ALIYUN_IMAGE_USER }} --password-stdin
+        docker push {{ secrets.ALIYUN_IMAGE_DDLF }}:latest
+
+
+
+
+
+
+
+
+
+
