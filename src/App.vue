@@ -29,8 +29,8 @@ export default {
     }
   },
   mounted() {
-
     this.getProfile()
+
   },
   methods: {
     ...mapActions(['getProfile']),
