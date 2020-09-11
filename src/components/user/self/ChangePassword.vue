@@ -90,10 +90,24 @@ export default {
           let oldPassword = this.formData.oldPassword;        // 表单数据中的旧密码和新密码
           let newPassword = this.formData.newPassword;
 
-          let res = api.changeUserPassword(oldPassword, newPassword);
-
-
-          console.log(res);
+          api.changeUserPassword(oldPassword, newPassword).then(
+            (res) => {
+              let err = res.data.err;
+              console.log(err);
+              if (err == null)
+              {
+                this.$Message.success('修改成功, 请重新登录');
+                setInterval(function()
+                {
+                  window.location.reload();                   // 刷新页面
+                }, 2000);
+              }
+              else {
+                // TODO 或许需要更详细的错误信息
+                this.$Message.error('修改失败, 请检查旧密码正确否');
+              }
+            }
+          );
         } else {
           this.$Message.error('表单中部分字段不满足条件');
         }
