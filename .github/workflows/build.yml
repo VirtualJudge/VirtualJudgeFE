@@ -8,7 +8,6 @@ on:
   push:
     tags:
       - v*
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
   build:
@@ -56,13 +55,15 @@ jobs:
         asset_path: ./dist.zip
         asset_name: dist.zip
         asset_content_type: application/zip
-    - name: Build Docker Image
+    - name: Build Docker image
       run: |
-        docker build . file Dockerfile --tag {{ secrets.ALIYUN_IMAGE_DDLF }}:latest
+        docker build . file Dockerfile --tag ${{ secrets.ALIYUN_IMAGE_DDLF }}:latest
     - name: Log into Aliyun Container Registry
       run: |
-        echo "${{ secrets.ALIYUN_IMAGE_PASS }}" | docker login registry.cn-hangzhou.aliyuncs.com -u {{ secrets.ALIYUN_IMAGE_USER }} --password-stdin
-        docker push {{ secrets.ALIYUN_IMAGE_DDLF }}:latest
+        echo "${{ secrets.ALIYUN_IMAGE_PASS }}" | docker login registry.cn-hangzhou.aliyuncs.com -u ${{ secrets.ALIYUN_IMAGE_USER }} --password-stdin
+    - name: Publish Image to Aliyun
+      run: |
+        docker push ${{ secrets.ALIYUN_IMAGE_DDLF }}:latest
 
 
 
