@@ -21,28 +21,28 @@
           <TabPane label="PDF" name="PDF" :disabled="!editor_value.pdf">
             <embed height="800" width="100%" v-if="tab_val==='PDF'" :src="editor_value.pdf">
           </TabPane>
-          <TabPane label="Legacy" name="Legacy" :disabled="!editor_value.legacy.description">
+          <TabPane label="Legacy" name="Legacy" :disabled="!editor_value.legacy">
             <div>
-              <Card class="legacy-item" dis-hover>
+              <Card class="legacy-item" dis-hover v-if="editor_value.legacy">
                 <p slot="title">题目描述</p>
                 <div>
                   <content v-html="editor_value.legacy.description"></content>
                 </div>
               </Card>
 
-              <Card class="legacy-item" dis-hover>
+              <Card class="legacy-item" dis-hover v-if="editor_value.legacy">
                 <p slot="title">输入描述</p>
                 <div>
                   <content v-html="editor_value.legacy.input"></content>
                 </div>
               </Card>
-              <Card class="legacy-item" dis-hover>
+              <Card class="legacy-item" dis-hover v-if="editor_value.legacy">
                 <p slot="title">输出描述</p>
                 <div>
                   <content v-html="editor_value.legacy.output"></content>
                 </div>
               </Card>
-              <Card class="legacy-item" dis-hover>
+              <Card class="legacy-item" dis-hover v-if="editor_value.legacy">
                 <p slot="title">输入样例</p>
                 <div>
                   <pre style="background: #fafafa;padding: 5px;"><code>{{
@@ -50,7 +50,7 @@
                     }}</code></pre>
                 </div>
               </Card>
-              <Card class="legacy-item" dis-hover>
+              <Card class="legacy-item" dis-hover v-if="editor_value.legacy">
                 <p slot="title">输出样例</p>
                 <div>
                   <pre style="background: #fafafa;padding: 5px;"><code>{{
@@ -58,7 +58,7 @@
                     }}</code></pre>
                 </div>
               </Card>
-              <Card class="legacy-item" dis-hover>
+              <Card class="legacy-item" dis-hover v-if="editor_value.legacy">
                 <p slot="title">提示</p>
                 <div>
                   <content v-html="editor_value.legacy.hint"></content>
@@ -85,7 +85,7 @@
             </ListItem>
           </List>
         </Card>
-        <Card style="margin-top: 10px" v-if="isAuthenticated">
+        <Card style="margin-top: 10px" dis-hover v-if="isAuthenticated">
           <p slot="title">提交</p>
           <Form>
             <FormItem>
@@ -107,7 +107,6 @@
               <label>
                 <Input v-model="code"
                        type="textarea"
-                       autofocus
                        @on-keydown="handleKeyDown"
                        ref="textarea"
                        class="mono-text"
@@ -146,13 +145,12 @@ export default {
 
   data() {
     return {
-      tab_val: 'Markdown',
+      tab_val: '',
       editor_value: {
-        legacy: {},
+        legacy: null,
         pdf: '',
         markdown: ''
       },
-      legacy_value: {},
       problem: {},
       code: '',
       lang: '',
@@ -175,7 +173,7 @@ export default {
         this.$Message.error(message.err(res.data.err))
       } else {
         this.problem = res.data.data || {}
-        this.editor_value.legacy = res.data.data.content.legacy || {}
+        this.editor_value.legacy = res.data.data.content.legacy || null
         this.editor_value.markdown = res.data.data.content.markdown || ''
         this.editor_value.pdf = res.data.data.content.pdf || ''
         if (this.editor_value.markdown) {
@@ -184,8 +182,6 @@ export default {
           this.tab_val = 'PDF'
         } else if (this.editor_value.legacy) {
           this.tab_val = 'Legacy'
-        } else {
-          this.tab_val = 'Markdown'
         }
       }
     })
