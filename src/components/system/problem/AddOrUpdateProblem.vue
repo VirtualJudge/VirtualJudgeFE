@@ -94,7 +94,7 @@
 
 
         </TabPane>
-        <TabPane label="Legacy" name="Legacy" closable v-if="formData.editor_text.legacy.description"></TabPane>
+        <TabPane label="Legacy" name="Legacy" closable v-if="formData.editor_text.legacy"></TabPane>
       </Tabs>
 
 
@@ -184,7 +184,7 @@ export default {
         editor_text: {
           markdown: '',
           pdf: '',
-          legacy: {}
+          legacy: null
         },
         memory_limit: 128,
         time_limit: 1000,
@@ -222,7 +222,7 @@ export default {
       api.getAdvancedProblemDetail(this.problem_id).then(res => {
         if (res.data.err === null) {
           this.formData.manifest = res.data.data.manifest || {spj: false, spj_code: '', test_cases: []}
-          this.formData.editor_text = res.data.data.content || {markdown: '', pdf: '', legacy: {}}
+          this.formData.editor_text = res.data.data.content || {markdown: '', pdf: '', legacy: null}
           this.formData.time_limit = res.data.data.time_limit || 1000
           this.formData.memory_limit = res.data.data.memory_limit || 128
           this.formData.title = res.data.data.title || ''
