@@ -57,13 +57,13 @@ jobs:
         asset_content_type: application/zip
     - name: Build Docker image
       run: |
-        docker build . --tag ${{ secrets.ALIYUN_IMAGE_DDLF }}:latest
+        docker build . --tag ${{ secrets.ALIYUN_IMAGE_DDLF }}:`echo $GITHUB_REF | cut -d '/' -f 3`
     - name: Log into Aliyun Container Registry
       run: |
         echo "${{ secrets.ALIYUN_IMAGE_PASS }}" | docker login registry.cn-hangzhou.aliyuncs.com -u ${{ secrets.ALIYUN_IMAGE_USER }} --password-stdin
     - name: Publish Image to Aliyun
       run: |
-        docker push ${{ secrets.ALIYUN_IMAGE_DDLF }}:latest
+        docker push ${{ secrets.ALIYUN_IMAGE_DDLF }}:`echo $GITHUB_REF | cut -d '/' -f 3`
 
 
 
