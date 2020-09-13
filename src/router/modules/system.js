@@ -4,6 +4,7 @@ import AddProblem from "@/components/system/problem/AddOrUpdateProblem";
 import UpdateProblem from "@/components/system/problem/AddOrUpdateProblem";
 import ManageUserIndex from "@/components/system/user/Index"
 import ManagePermissionIndex from "@/components/system/permission/Index"
+import SystemInfo from "@/components/system/SystemInfo";
 
 export default [
     {
@@ -15,6 +16,15 @@ export default [
             requireAdmin: true
         },
         children: [
+            {
+                path: '',
+                name: 'system_info',
+                component: SystemInfo,
+                meta: {
+                    title: "系统信息",
+                    requireAdmin: true
+                }
+            },
             {
                 path: 'manage_user',
                 name: 'manage_user',

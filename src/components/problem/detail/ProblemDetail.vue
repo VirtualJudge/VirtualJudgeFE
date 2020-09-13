@@ -23,26 +23,26 @@
           </TabPane>
           <TabPane label="Legacy" name="Legacy" :disabled="!editor_value.legacy">
             <div>
-              <Card class="legacy-item" dis-hover v-if="editor_value.legacy">
+              <Card class="legacy-item" dis-hover v-if="editor_value.legacy  && editor_value.legacy.description">
                 <p slot="title">题目描述</p>
                 <div>
                   <content v-html="editor_value.legacy.description"></content>
                 </div>
               </Card>
 
-              <Card class="legacy-item" dis-hover v-if="editor_value.legacy">
+              <Card class="legacy-item" dis-hover v-if="editor_value.legacy  && editor_value.legacy.input">
                 <p slot="title">输入描述</p>
                 <div>
                   <content v-html="editor_value.legacy.input"></content>
                 </div>
               </Card>
-              <Card class="legacy-item" dis-hover v-if="editor_value.legacy">
+              <Card class="legacy-item" dis-hover v-if="editor_value.legacy  && editor_value.legacy.output">
                 <p slot="title">输出描述</p>
                 <div>
                   <content v-html="editor_value.legacy.output"></content>
                 </div>
               </Card>
-              <Card class="legacy-item" dis-hover v-if="editor_value.legacy">
+              <Card class="legacy-item" dis-hover v-if="editor_value.legacy  && editor_value.legacy.sample_input">
                 <p slot="title">输入样例</p>
                 <div>
                   <pre style="background: #fafafa;padding: 5px;"><code>{{
@@ -50,7 +50,7 @@
                     }}</code></pre>
                 </div>
               </Card>
-              <Card class="legacy-item" dis-hover v-if="editor_value.legacy">
+              <Card class="legacy-item" dis-hover v-if="editor_value.legacy && editor_value.legacy.sample_output">
                 <p slot="title">输出样例</p>
                 <div>
                   <pre style="background: #fafafa;padding: 5px;"><code>{{
@@ -58,7 +58,7 @@
                     }}</code></pre>
                 </div>
               </Card>
-              <Card class="legacy-item" dis-hover v-if="editor_value.legacy">
+              <Card class="legacy-item" dis-hover v-if="editor_value.legacy && editor_value.legacy.hint">
                 <p slot="title">提示</p>
                 <div>
                   <content v-html="editor_value.legacy.hint"></content>
@@ -94,6 +94,7 @@
                   <Option
                       class="mono-text"
                       :key="item"
+                      :disabled="languages[item].disabled"
                       :label="languages[item].short"
                       v-for="item in Object.keys(languages)"
                       :value="item">
