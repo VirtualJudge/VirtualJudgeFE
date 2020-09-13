@@ -60,7 +60,6 @@ export default {
         {
           title: '编号',
           key: 'id',
-          width: 100,
           align: 'center'
         },
         {
@@ -103,7 +102,6 @@ export default {
         {
           title: '时间花费',
           key: 'time_spend',
-          width: 150,
           align: 'center',
           render: (h, params) => {
             if (params.row.time_spend !== null) {
@@ -116,7 +114,6 @@ export default {
         {
           title: '内存花费',
           key: 'memory_spend',
-          width: 100,
           align: 'center',
           render: (h, params) => {
             if (params.row.memory_spend !== null) {
