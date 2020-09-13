@@ -32,7 +32,7 @@ jobs:
         docker build . --tag 4ddl/ddlf:latest
     - name: Log into Docker Hub Container Registry
       run: |
-        echo "${{ secrets.DOCKER_HUB_PASS }}" | docker login registry.cn-hangzhou.aliyuncs.com -u ${{ secrets.DOCKER_HUB_USER }} --password-stdin
+        echo "${{ secrets.DOCKER_HUB_PASS }}" | docker login -u ${{ secrets.DOCKER_HUB_USER }} --password-stdin
     - name: Publish Image to Docker Hub
       run: |
         docker push 4ddl/ddlf:latest
