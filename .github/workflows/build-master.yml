@@ -1,14 +1,13 @@
 # This is a basic workflow to help you get started with Actions
 
-name: lint
+name: build master branch
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
 on:
-  schedule:
-    - cron: "0 20 * * *"
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+  push:
+    branches:
+      - master
 jobs:
   # This workflow contains a single job called "build"
   build:
@@ -18,15 +17,32 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     - uses: actions/checkout@v2
-
     - name: Setup Node.js environment
       uses: actions/setup-node@v2.1.1
       with:
         node-version: 14.x
-    - name: Clear exist lock
-      run: rm yarn.lock
     - name: Project setup
       run: yarn install
-
     - name: Lints and fixes files
       run: yarn lint
+    - name: Build sources
+      run: yarn build
+    - name: Build Docker image
+      run: |
+        docker build . --tag 4ddl/ddlf:latest
+    - name: Log into Docker Hub Container Registry
+      run: |
+        echo "${{ secrets.DOCKER_HUB_PASS }}" | docker login -u ${{ secrets.DOCKER_HUB_USER }} --password-stdin
+    - name: Publish Image to Docker Hub
+      run: |
+        docker push 4ddl/ddlf:latest
+
+
+
+
+
+
+
+
+
+
