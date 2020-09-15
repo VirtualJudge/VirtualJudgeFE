@@ -18,32 +18,38 @@ export const PROBLEM_SUBMIT_LANGUAGES = {
     'c': {
         info: 'C (GCC 9.3.0)',
         short: 'C',
-        withVersion: 'GCC 9.3.0'
+        withVersion: 'GCC 9.3.0',
+        disabled: false
     },
     'cpp': {
         info: 'C++ (G++ 9.3.0)',
         short: 'C++',
-        withVersion: 'G++ 9.3.0'
+        withVersion: 'G++ 9.3.0',
+        disabled: false
     },
     'java': {
         info: 'Java (OpenJDK 14.0.1)',
         short: 'Java',
-        withVersion: 'OpenJDK 14.0.1'
+        withVersion: 'OpenJDK 14.0.1',
+        disabled: false
     },
     'python': {
         info: 'Python (Python 3.8.2)',
         short: 'Python',
-        withVersion: 'Python 3.8.2'
+        withVersion: 'Python 3.8.2',
+        disabled: false
     },
     'go': {
         info: 'Go (Go 1.13.8)',
         short: 'Go',
-        withVersion: 'Go 1.13.8'
+        withVersion: 'Go 1.13.8',
+        disabled: false
     },
     'kotlin': {
         info: 'Kotlin (Kotlin 1.4.10)',
         short: 'Kotlin',
-        withVersion: 'Kotlin 1.4.10'
+        withVersion: 'Kotlin 1.4.10',
+        disabled: false
     }
 }
 export const SUBMISSION_VERDICTS = {
@@ -58,7 +64,9 @@ export const SUBMISSION_VERDICTS = {
     'RE': {info: 'Runtime Error', color: 'error'},
     'OLE': {info: 'Output Limit Exceeded', color: 'error'},
     'CE': {info: 'Compile Error', color: 'warning'},
-    'SE': {info: 'System Error', color: 'error'}
+    'SE': {info: 'System Error', color: 'error'},
+    // 判题机正在同步测试数据的标志
+    'SYNC': {info: 'Syncing Data', color: 'info'}
 }
 export const ACCEPT_LOCALES = {
     'CN': {

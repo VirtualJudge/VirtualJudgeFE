@@ -235,7 +235,7 @@ export default {
       })
     },
     handleTabRemove() {
-      this.formData.editor_text.legacy = {}
+      this.formData.editor_text.legacy = null
     },
     handleSubmit() {
       if (this.problem_id === null) {

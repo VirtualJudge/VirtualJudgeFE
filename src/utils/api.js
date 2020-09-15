@@ -153,6 +153,9 @@ export default {
     },
     postAdvancedUserPasswordUpdate(user_id) {
         return ajax(`/api/user/advanced/${user_id}/reset_password/`, 'post')
+    },
+    getSystemInfo() {
+        return ajax('/api/system/info/', 'get')
     }
 }
 
