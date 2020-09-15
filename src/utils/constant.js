@@ -49,7 +49,7 @@ export const PROBLEM_SUBMIT_LANGUAGES = {
         info: 'Kotlin (Kotlin 1.4.10)',
         short: 'Kotlin',
         withVersion: 'Kotlin 1.4.10',
-        disabled: true
+        disabled: false
     }
 }
 export const SUBMISSION_VERDICTS = {
