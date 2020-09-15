@@ -4,19 +4,19 @@
       <Col class="system-info-col" span="8">
         <Card dis-hover>
           <p slot="title">注册用户</p>
-          <h1 class="system-info-card-num"><code>2</code></h1>
+          <h1 class="system-info-card-num"><code>{{ user_cnt }}</code></h1>
         </Card>
       </Col>
       <Col class="system-info-col" span="8">
         <Card dis-hover>
           <p slot="title">题目数量</p>
-          <h1 class="system-info-card-num"><code>23</code></h1>
+          <h1 class="system-info-card-num"><code>{{ problem_cnt }}</code></h1>
         </Card>
       </Col>
       <Col class="system-info-col" span="8">
         <Card dis-hover>
           <p slot="title">提交数量</p>
-          <h1 class="system-info-card-num"><code>120</code></h1>
+          <h1 class="system-info-card-num"><code>{{ submission_cnt }}</code></h1>
         </Card>
       </Col>
     </Row>
@@ -24,8 +24,31 @@
 </template>
 
 <script>
+import api from "@/utils/api";
+
 export default {
-  name: "SystemInfo"
+  name: "SystemInfo",
+  data() {
+    return {
+      user_cnt: '-',
+      problem_cnt: '-',
+      submission_cnt: '-'
+    }
+  },
+  mounted() {
+    api.getSystemInfo().then(res => {
+      if (res.data.err === null) {
+        try {
+          this.user_cnt = res.data.data.user_cnt
+          this.problem_cnt = res.data.data.problem_cnt
+          this.submission_cnt = res.data.data.submission_cnt
+          // eslint-disable-next-line no-empty
+        }catch {
+
+        }
+      }
+    })
+  }
 }
 </script>
 

@@ -42,13 +42,14 @@ export default {
         key: 'title',
         render: (h, params) => {
           return h('span', {
-            style:{
+            style: {
               color: '#3399ff',
               cursor: 'pointer'
             },
             on: {
               click: () => {
-                window.open(`/problem/${params.row.id}`)
+                this.$router.push(`/system/update_problem/${params.row.id}`)
+
               }
             }
           }, params.row.title)
@@ -80,6 +81,18 @@ export default {
         width: 250,
         render: (h, params) => {
           return h('div', {}, [
+            h('Button', {
+              props: {
+                type: 'info',
+                size: 'small'
+              }, style: {
+                marginLeft: '5px'
+              }, on: {
+                click: () => {
+                  window.open(`/problem/${params.row.id}`)
+                }
+              }
+            }, '查看'),
             h('Button', {
               props: {
                 type: 'warning',
