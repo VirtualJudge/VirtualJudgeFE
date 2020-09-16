@@ -1,3 +1,7 @@
+upstream rabbitmq {
+    server ${RABBITMQ_MANAGEMENT_HOST}:${RABBITMQ_MANAGEMENT_PORT};
+    keepalive 32;
+}
 upstream backend {
     server ${BACKEND_HOST}:${BACKEND_PORT};
     keepalive 32;
@@ -13,6 +17,9 @@ server {
     proxy_set_header X-Request-Id $request_id;
     include mime.types;
     default_type  application/octet-stream;
+    location /rabbitmq/ {
+        proxy_pass http://rabbitmq/;
+    }
     location /api/ {
         proxy_pass http://backend;
     }
