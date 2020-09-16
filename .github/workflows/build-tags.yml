@@ -68,10 +68,10 @@ jobs:
     - name: Build Docker image
       run: |
         docker build . --tag 4ddl/ddlf:`echo $GITHUB_REF | cut -d '/' -f 3`
-    - name: Log into Aliyun Container Registry
+    - name: Log into Docker Hub
       run: |
         echo "${{ secrets.DOCKER_HUB_PASS }}" | docker login -u ${{ secrets.DOCKER_HUB_USER }} --password-stdin
-    - name: Publish Image to Aliyun
+    - name: Publish Image to Docker Hub
       run: |
         docker push 4ddl/ddlf:`echo $GITHUB_REF | cut -d '/' -f 3`
 
