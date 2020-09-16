@@ -43,12 +43,12 @@
             </ListItem>
             <ListItem>
               <ListItemMeta title="时间花费">
-                <span slot="description">{{ time_spend }} MS</span>
+                <span slot="description">{{ time_cost }} MS</span>
               </ListItemMeta>
             </ListItem>
             <ListItem>
               <ListItemMeta title="内存花费">
-                <span slot="description"> {{ memory_spend }} MB</span>
+                <span slot="description"> {{ memory_cost }} MB</span>
               </ListItemMeta>
             </ListItem>
           </List>
@@ -74,8 +74,8 @@ export default {
       code: '',
       code_type: '',
       verdict: {},
-      time_spend: '-',
-      memory_spend: '-',
+      time_cost: '-',
+      memory_cost: '-',
       problem: {},
       user: {},
       additional_info: {'error': null, 'result': null},
@@ -91,8 +91,8 @@ export default {
         this.problem = response.problem || {}
         this.user = response.user || {}
         this.verdict = SUBMISSION_VERDICTS[response.verdict] || {}
-        this.time_spend = response.time_spend || '-'
-        this.memory_spend = response.memory_spend || '-'
+        this.time_cost = response.time_cost || '-'
+        this.memory_cost = response.memory_cost || '-'
         this.additional_info = response.additional_info || {'error': null, 'result': null}
         if (this.additional_info['result']) {
           this.additional_info['result'] = JSON.stringify(this.additional_info['result'], null, 2)

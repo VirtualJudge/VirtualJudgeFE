@@ -104,8 +104,8 @@ export default {
           key: 'time_spend',
           align: 'center',
           render: (h, params) => {
-            if (params.row.time_spend !== null) {
-              return h('span', params.row.time_spend + ' MS')
+            if (params.row.time_cost !== null) {
+              return h('span', params.row.time_cost + ' MS')
             } else {
               return h('span', '-')
             }
@@ -116,8 +116,8 @@ export default {
           key: 'memory_spend',
           align: 'center',
           render: (h, params) => {
-            if (params.row.memory_spend !== null) {
-              return h('span', params.row.memory_spend + ' MB')
+            if (params.row.memory_cost !== null) {
+              return h('span', params.row.memory_cost + ' MB')
             } else {
               return h('span', '-')
             }
