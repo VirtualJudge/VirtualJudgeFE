@@ -36,13 +36,28 @@ jobs:
     - name: Publish Image to Docker Hub
       run: |
         docker push 4ddl/ddlf:latest
-
-
-
-
-
-
-
-
-
-
+  build-cdn:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.1.1
+        with:
+          node-version: 14.x
+      - name: Project setup
+        run: yarn install
+      - name: Lints and fixes files
+        run: yarn lint
+      - name: Build sources
+        run: |
+          export CDN_STATIC_URL=${{ secrets }}
+          yarn build
+      - name: Build Docker image
+        run: |
+          docker build . --tag 4ddl/ddlf:cdn
+      - name: Log into Docker Hub Container Registry
+        run: |
+          echo "${{ secrets.DOCKER_HUB_PASS }}" | docker login -u ${{ secrets.DOCKER_HUB_USER }} --password-stdin
+      - name: Publish Image to Docker Hub
+        run: |
+          docker push 4ddl/ddlf:cdn
