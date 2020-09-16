@@ -25,7 +25,7 @@
 
         </MenuItem>
       </Submenu>
-      <Dropdown @on-click="handleLanguageItemClick" class="left-menu-item">
+      <Dropdown v-if="false" @on-click="handleLanguageItemClick" class="left-menu-item">
         <span>
           {{ $t('navbar.language') }}
           <Icon type="ios-arrow-down"></Icon>
@@ -101,7 +101,7 @@ export default {
     }
   },
   mounted() {
-    this.getWebLang()
+    this.handleLanguageItemClick('CN')
   },
   methods: {
     ...mapActions(['getProfile', 'clearProfile', 'randomCaptcha', 'getWebLang']),
@@ -114,7 +114,7 @@ export default {
       this.$router.push('/register')
     },
     handleLanguageItemClick(name) {
-      this.$Message.info(this.locales[name].updateMessage)
+      //this.$Message.info(this.locales[name].updateMessage)
       storage.set(STORAGE_LOCALE_KEY, name)
       this.$i18n.locale = this.locales[name].lang
       this.getWebLang()

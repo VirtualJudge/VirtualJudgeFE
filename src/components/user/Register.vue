@@ -1,71 +1,179 @@
 <template>
   <div class="main-view">
-    <Steps :current="currentStep" class="step-list">
-      <Step title="填写信息"></Step>
-      <Step title="验证邮箱"></Step>
-      <Step title="完成注册"></Step>
-    </Steps>
+    <div class="register-view">
+      <h2 style="text-align: center;margin-bottom: 10px">注册账号</h2>
+      <Form ref="formValidate" :rules="ruleValidate" :model="formValidate" label-position="right" :label-width="100">
 
-    <RegisterStep1 class="step-view" @nextStep="nextStep" v-show="currentStep===0"/>
-    <RegisterStep2 class="step-view" @nextStep="nextStep" v-bind="step2Prop" v-show="currentStep===1"/>
-    <RegisterStep3 class="step-view" v-show="currentStep===2"/>
+        <FormItem label="邮箱" prop="email">
+          <label>
+            <Input :disabled="verify_code_sent" type="email" v-model="formValidate.email"></Input>
+          </label>
+        </FormItem>
+        <FormItem label="图形验证码" prop="captcha">
+          <Row>
+            <Col span="8">
+              <label for="captcha"></label><Input :disabled="verify_code_sent" id="captcha" type="text" v-model="formValidate.captcha">
+            </Input>
+            </Col>
+            <Col span="7" offset="1">
+              <img alt="captcha" :src="this.captcha_url" @click="randomCaptcha" style="height: 32px; margin: auto">
+            </Col>
+            <Col span="7" offset="1">
+              <Button :disabled="verify_code_sent" @click="handleSendEmailVerifyCode" type="info">发送邮箱验证码</Button>
+            </Col>
+          </Row>
+        </FormItem>
+        <FormItem label="邮箱验证码" prop="verify_code">
+          <label>
+            <Input :disabled="!verify_code_sent" type="text" v-model="formValidate.verify_code"></Input>
+          </label>
+        </FormItem>
+        <FormItem label="账号" prop="username">
+          <label>
+            <Input :disabled="!verify_code_sent" v-model="formValidate.username"></Input>
+          </label>
+        </FormItem>
+        <FormItem label="密码" prop="password">
+          <label>
+            <Input :disabled="!verify_code_sent" type="password" v-model="formValidate.password"></Input>
+          </label>
+        </FormItem>
+        <FormItem label="再输入密码" prop="password2">
+          <label>
+            <Input :disabled="!verify_code_sent" type="password" v-model="formValidate.password2"></Input>
+          </label>
+        </FormItem>
+
+        <FormItem>
+          <Button :disabled="!verify_code_sent" type="primary" @click="handleSubmit('formValidate')">提交</Button>
+          <Button :disabled="!verify_code_sent" @click="handleReset('formValidate')" style="margin-left: 8px">清空
+          </Button>
+        </FormItem>
+      </Form>
+
+    </div>
   </div>
 </template>
 
 <script>
 
-import RegisterStep1 from "@/components/user/RegisterStep1";
-import RegisterStep2 from "@/components/user/RegisterStep2";
-import RegisterStep3 from "@/components/user/RegisterStep3";
+
 import {mapGetters, mapActions} from 'vuex'
+import api from "@/utils/api";
+import message from "@/utils/message";
 
 export default {
   name: "Register",
-  components: {RegisterStep3, RegisterStep2, RegisterStep1},
-  data() {
-    return {
-      currentStep: 0,
-      step2Prop: {},
-      step3Prop: {}
-    }
-  },
   mounted() {
-    if (this.$route.params !== null) {
-      this.currentStep = this.$route.params.step || 0
-      this.step2Prop = this.$route.params.info || {}
+    this.randomCaptcha()
+  },
+  data() {
+    const validatePassCheck = (rule, value, callback) => {
+      if (value !== this.formValidate.password) {
+        callback(new Error('两次输入的密码不匹配'));
+      } else {
+        callback();
+      }
+    };
+    return {
+      verify_code_sent: false,
+      formValidate: {
+        username: '',
+        email: '',
+        password: '',
+        password2: '',
+        captcha: '',
+        verify_code: ''
+      },
+      ruleValidate: {
+        username: [
+          {required: true, message: '用户名不能为空', trigger: 'blur'},
+          {
+            pattern: /^[a-zA-Z][a-zA-Z0-9\-_]{5,19}$/,
+            message: '用户名以字母开头，6-20位之内，可以使用字母,数字,-,_',
+            trigger: 'blur'
+          }
+        ],
+        verify_code: [
+          {required: true, message: '邮箱验证码不能为空', trigger: 'blur'},
+        ],
+        email: [
+          {required: true, message: '邮箱不能为空', trigger: 'blur'},
+          {type: 'email', message: '邮箱格式不正确', trigger: 'blur'}
+        ],
+        password: [
+          {required: true, message: '密码不能为空', trigger: 'blur'},
+          {
+            pattern: /^[a-zA-Z0-9\-_.]{8,20}$/,
+            message: '密码8-20位之内，可以使用字母,数字,-,_,.',
+            trigger: 'blur'
+          }
+        ],
+        password2: [
+          {required: true, message: '密码不能为空', trigger: 'blur'},
+          {
+            pattern: /^[a-zA-Z0-9\-_.]{8,20}$/,
+            message: '密码8-20位之内，可以使用字母,数字,-,_,.',
+            trigger: 'blur'
+          }, {
+            validator: validatePassCheck, trigger: 'blur'
+          }
+        ]
+      }
     }
 
-  }, methods: {
-    ...mapActions(['getProfile']),
-    nextStep(data) {
-      if (this.currentStep === 0 || this.currentStep === 1) {
-        this.currentStep += 1
-      }
+  },
+  methods: {
+    ...mapActions(['randomCaptcha']),
+    handleSendEmailVerifyCode() {
+      api.postEmailValidate(this.formValidate.email, this.formValidate.captcha).then(res => {
+        if (res.data.err == null) {
+          this.$Message.success(res.data.data);
+          this.verify_code_sent = true
+        } else {
+          this.$Message.error(message.err(res.data.err));
+        }
+      }).finally(() => {
+        this.randomCaptcha()
+      })
+    },
+    handleSubmit(name) {
+      this.$refs[name].validate((valid) => {
+        if (valid) {
+          api.putUserRegister(this.formValidate.username, this.formValidate.password, this.formValidate.email, this.formValidate.verify_code).then(res => {
+            if (res.data.err === null) {
+              this.$Message.success('注册成功')
+            } else {
+              this.$Message.error({
+                content: '注册失败' + message.err(res.data.err),
+                duration: 3
+              });
+            }
+          }).finally(()=>{
+            this.randomCaptcha()
+          })
 
-      this.step2Prop = data['step2'] || {}
-      this.step3Prop = data['step3'] || {}
+        } else {
+          this.$Message.error('表单中部分字段不满足条件');
+        }
+      })
+    },
+    handleReset(name) {
+      this.$refs[name].resetFields();
     }
   }, computed: {
-    ...mapGetters(['isAuthenticated'])
+    ...mapGetters(['captcha_url'])
   }
 }
 </script>
 
 <style scoped>
-.step-view {
-  margin-left: auto;
-  margin-right: auto;
-  width: 600px;
-  margin-bottom: 10px;
-  height: 400px;
+.register-view {
+  max-width: 600px;
+  margin: auto;
 }
 
-.step-list {
-  width: 90%;
-  max-width: 1200px;
-  margin: 20px auto 20px auto;
-}
-.main-view{
+.main-view {
   width: 95%;
   margin-left: auto;
   margin-right: auto;

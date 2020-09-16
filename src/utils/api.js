@@ -48,21 +48,21 @@ export default {
             }
         })
     },
-    putUserRegister(username, password, email, captcha) {
+    postEmailValidate(email, captcha) {
+        return ajax('/api/user/check_email/', 'post', {
+            data: {
+                'email': email,
+                'captcha': captcha
+            }
+        })
+    },
+    putUserRegister(username, password, email, verify_code) {
         return ajax('/api/user/register/', 'put', {
             data: {
                 'username': username,
                 'password': password,
-                'captcha': captcha,
+                'verify_code': verify_code,
                 'email': email
-            }
-        })
-    },
-    postAccountActivate(id, code) {
-        return ajax('/api/user/activate/', 'post', {
-            data: {
-                'id': id,
-                'code': code
             }
         })
     },
