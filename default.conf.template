@@ -15,11 +15,14 @@ server {
     location /api/ {
         proxy_pass http://backend;
     }
-    location ^/favicon\.ico$ {
-            rewrite ^(.*)  http://cdn.wustacm.top/&1 permanent;
+    location ^~ /favicon\.ico {
+        rewrite ^(.*)  http://cdn.wustacm.top/$1 permanent;
     }
-    location ^/(js|css)/ {
-        rewrite ^(.*)  http://cdn.wustacm.top/&1 permanent;
+    location ^~ /js/ {
+        rewrite ^(.*)  http://cdn.wustacm.top/$1 permanent;
+    }
+    location ^~ /css/ {
+        rewrite ^(.*)  http://cdn.wustacm.top/$1 permanent;
     }
     location / {
         root   /usr/share/nginx/web;
