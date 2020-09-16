@@ -19,7 +19,7 @@ manageFiles.keys().forEach(key => {
 
 const router = new VueRouter({
     mode: 'history',
-    //base: process.env.BASE_URL,
+    base: process.env.BASE_URL,
     routes: configRouters
 })
 router.beforeEach((to, from, next) => {//beforeEach是router的钩子函数，在进入路由前执行
