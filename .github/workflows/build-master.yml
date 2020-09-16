@@ -9,12 +9,8 @@ on:
     branches:
       - master
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     - uses: actions/checkout@v2
     - name: Setup Node.js environment
@@ -50,8 +46,18 @@ jobs:
         run: yarn lint
       - name: Build sources
         run: |
-          export CDN_STATIC_URL=${{ secrets }}
+          export CDN_BASE_URL=${{ secrets.CDN_BASE_URL }}
           yarn build
+      - name: Upload Qiniu
+        uses: saltbo/uptoc@master
+        with:
+          driver: qiniu
+          region: cn-east-1
+          bucket: dianhsu
+          dist: dist
+        env:
+          UPTOC_UPLOADER_AK: ${{ secrets.QINIU_ACCESS_KEY }}
+          UPTOC_UPLOADER_SK: ${{ secrets.QINIU_SECRET_KEY }}
       - name: Build Docker image
         run: |
           docker build . --tag 4ddl/ddlf:cdn
