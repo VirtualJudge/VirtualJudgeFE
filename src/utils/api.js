@@ -156,6 +156,9 @@ export default {
     },
     getSystemInfo() {
         return ajax('/api/system/info/', 'get')
+    },
+    getMessageQueueInfo() {
+        return ajax('/api/system/queue/', 'get')
     }
 }
 

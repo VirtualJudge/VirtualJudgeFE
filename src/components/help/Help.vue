@@ -13,16 +13,54 @@
         浏览器访问本网站（<strong>排名分先后</strong>）</p>
       </li>
     </ul>
-
-
+    <Divider/>
+    <h2>消息队列</h2>
+    <Table style="margin-top: 10px" :columns="columns" :data="tableData"/>
   </div>
 </template>
 
 <script>
 
+import api from "@/utils/api";
+
 export default {
   name: "Help",
+  data() {
+    return {
+      columns: [{
+        title: '主机',
+        key: 'name',
+      }, {
+        title: '队列',
+        key: 'queue',
+        render: (h, param) => {
+          let queues = []
+          for (let item in param.row.queue) {
+            if (Object.prototype.hasOwnProperty.call(param.row.queue, item)) {
+              queues.push(h('code', {
+                style: {
+                  background: '#eee',
+                  padding: '5px',
+                  borderRadius: '30%',
+                  margin: '5px'
+                }
+              }, param.row.queue[item]))
+            }
+          }
+          return h('span', {}, queues)
+        }
+      }],
+      tableData: []
+    }
+  },
   mounted() {
+    api.getMessageQueueInfo().then(res => {
+      if (res.data.err === null) {
+        this.tableData = res.data.data
+      } else {
+        console.log(res.data.err)
+      }
+    })
   }
 }
 </script>
