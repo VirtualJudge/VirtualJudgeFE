@@ -6,16 +6,16 @@
           <p slot="title">代码</p>
           <pre v-if="code" v-highlightjs="code"><code :class="code_type"></code></pre>
         </Card>
-        <Collapse style="margin-top: 10px" v-model="collapse_val">
-          <Panel v-if="additional_info['error']" name="1">
-            错误信息
-            <pre slot="content" v-highlightjs="additional_info['error']"><code class="shell"></code></pre>
-          </Panel>
-          <Panel v-if="additional_info['result']" name="2">
-            运行结果
-            <pre slot="content" v-highlightjs="additional_info['result']"><code class="text"></code></pre>
-          </Panel>
-        </Collapse>
+        <Card v-if="additional_info['error']" dis-hover>
+          <p slot="title">错误信息</p>
+          <code style="white-space:pre-line;">
+            {{ additional_info['error'] }}
+          </code>
+        </Card>
+        <Card v-if="additional_info['result']" dis-hover>
+          <p slot="title">运行结果</p>
+          <pre slot="content" v-highlightjs="additional_info['result']"><code class="shell"></code></pre>
+        </Card>
       </Col>
       <Col span="6" style="padding-left: 10px">
         <Card dis-hover>
@@ -69,7 +69,6 @@ import api from "@/utils/api";
 import message from "@/utils/message";
 import {SUBMISSION_VERDICTS} from "@/utils/constant";
 import {mapGetters} from 'vuex';
-
 export default {
   name: "SubmissionDetail",
   data() {
