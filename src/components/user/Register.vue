@@ -17,9 +17,12 @@
         <FormItem label="图形验证码" prop="captcha">
           <Row>
             <Col span="8">
-              <label for="captcha"></label><Input :disabled="verify_code_sent" id="captcha" type="text"
-                                                  v-model="formValidate.captcha">
-            </Input>
+              <label>
+                <Input :disabled="verify_code_sent" type="text"
+                       placeholder="点击图片刷新验证码"
+                       v-model="formValidate.captcha">
+                </Input>
+              </label>
             </Col>
             <Col span="7" offset="1">
               <img alt="captcha" :src="this.captcha_url" @click="randomCaptcha" style="height: 32px; margin: auto">
