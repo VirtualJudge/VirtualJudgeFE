@@ -6,6 +6,7 @@
         <Tabs v-model="tab_val">
           <TabPane label="Markdown" name="Markdown" :disabled="!editor_value.markdown">
             <mavon-editor
+                v-if="editor_value.markdown"
                 v-model="editor_value.markdown"
                 defaultOpen="preview"
                 codeStyle="atom-one-light"
