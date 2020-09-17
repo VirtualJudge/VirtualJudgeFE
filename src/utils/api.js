@@ -159,6 +159,9 @@ export default {
     },
     getMessageQueueInfo() {
         return ajax('/api/system/queue/', 'get')
+    },
+    getRejudgeRequest(submission_id) {
+        return ajax(`/api/submission/${submission_id}/rejudge/`, 'get')
     }
 }
 

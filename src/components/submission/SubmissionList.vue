@@ -23,7 +23,10 @@
           </Option>
         </Select>
       </label>
-
+      <label>
+        <Input v-model="list_filter.problem_id" type="text" placeholder="题目编号"
+               style="width: 100px;margin-left: 10px"></Input>
+      </label>
       <Button style=" margin-left: 10px" type="info" @click="requestTableData" :loading="tableLoading">刷新</Button>
     </div>
 
@@ -54,18 +57,22 @@ export default {
       list_filter: {
         myself: false,
         verdict: 'A',
-        lang: ''
+        lang: '',
+        problem_id: ''
       },
+      tableColumns: [],
       columns: [
         {
           title: '编号',
           key: 'id',
-          align: 'center'
+          align: 'center',
+          maxWidth: 100
         },
         {
           title: '用户',
           key: 'user',
           align: 'center',
+          ellipsis: true,
           render: (h, params) => {
             return h('span', {
               style: {
@@ -84,6 +91,7 @@ export default {
           title: '题目',
           key: 'problem',
           align: 'center',
+          ellipsis: true,
           render: (h, params) => {
             return h('span', {
               style: {
@@ -98,7 +106,6 @@ export default {
             }, params.row.problem.title)
           }
         },
-
         {
           title: '时间花费',
           key: 'time_spend',
@@ -122,7 +129,8 @@ export default {
               return h('span', '-')
             }
           }
-        }, {
+        },
+        {
           title: '提交语言',
           key: 'lang',
           align: 'center',
@@ -152,6 +160,7 @@ export default {
           title: '结果',
           key: 'verdict',
           align: 'center',
+          width: 180,
           render: (h, params) => {
             if (SUBMISSION_VERDICTS[params.row.verdict]) {
               return h('Tag', {
@@ -197,7 +206,8 @@ export default {
         page: this.current,
         page_size: this.page_size,
         user: (this.list_filter.myself ? this.profile.id : ''),
-        verdict: (this.list_filter.verdict === 'A' ? '' : this.list_filter.verdict)
+        verdict: (this.list_filter.verdict === 'A' ? '' : this.list_filter.verdict),
+        problem_id: this.list_filter.problem_id
       }).then(res => {
         if (res.data.err === null) {
           this.tData = res.data.data.results || []

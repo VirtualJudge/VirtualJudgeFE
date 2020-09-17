@@ -66,7 +66,7 @@ export const SUBMISSION_VERDICTS = {
     'CE': {info: 'Compile Error', color: 'warning'},
     'SE': {info: 'System Error', color: 'error'},
     // 判题机正在同步测试数据的标志
-    'SYNC': {info: 'Syncing Data', color: 'info'}
+    'SYNC': {info: 'Syncing Data', color: 'primary'}
 }
 export const ACCEPT_LOCALES = {
     'CN': {

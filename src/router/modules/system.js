@@ -9,7 +9,6 @@ import SystemInfo from "@/components/system/SystemInfo";
 export default [
     {
         path: '/system',
-        name: 'system',
         component: AdvancedIndex,
         meta: {
             title: '系统设置',

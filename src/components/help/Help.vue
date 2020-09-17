@@ -15,7 +15,7 @@
     </ul>
     <Divider/>
     <h2>消息队列</h2>
-    <Table style="margin-top: 10px" :columns="columns" :data="tableData"/>
+    <Table :loading="tableLoading" style="margin-top: 10px" :columns="columns" :data="tableData"/>
   </div>
 </template>
 
@@ -27,6 +27,7 @@ export default {
   name: "Help",
   data() {
     return {
+      tableLoading: false,
       columns: [{
         title: '主机',
         key: 'name',
@@ -54,12 +55,15 @@ export default {
     }
   },
   mounted() {
+    this.tableLoading = true
     api.getMessageQueueInfo().then(res => {
       if (res.data.err === null) {
         this.tableData = res.data.data
       } else {
         console.log(res.data.err)
       }
+    }).finally(() => {
+      this.tableLoading = false
     })
   }
 }

@@ -53,6 +53,8 @@
             </ListItem>
           </List>
           <Button type="success" v-if="code" @click="handleCopyClick">复制代码到剪切板</Button>
+          <Divider/>
+          <Button type="info" v-if="isAdminRole" @click="handleRejudge">rejudge</Button>
         </Card>
 
       </Col>
@@ -66,6 +68,7 @@
 import api from "@/utils/api";
 import message from "@/utils/message";
 import {SUBMISSION_VERDICTS} from "@/utils/constant";
+import {mapGetters} from 'vuex';
 
 export default {
   name: "SubmissionDetail",
@@ -103,6 +106,15 @@ export default {
     })
   },
   methods: {
+    handleRejudge() {
+      api.getRejudgeRequest(this.$route.params.id).then(res => {
+        if (res.data.err === null) {
+          this.$Message.success('重新判题任务提交成功')
+        } else {
+          this.$Message.error(message.err(res.data.err))
+        }
+      })
+    },
     handleCopyClick() {
       this.$copyText(this.code).then(() => {
         this.$Message.success('代码已经成功复制到剪切板')
@@ -114,6 +126,9 @@ export default {
     handleUsernameClick() {
       this.$router.push(`/user/${this.user.id}`)
     }
+  },
+  computed: {
+    ...mapGetters(['isAdminRole'])
   }
 }
 </script>

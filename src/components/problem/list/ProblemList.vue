@@ -14,7 +14,8 @@
             v-bind:tableLoading="tableLoading"/>
       </Col>
       <Col span="8" style="padding-left: 20px">
-        <ProblemFilter v-bind:tableFilters="table_filters" v-bind:buttonLoading="tableLoading" @handlerFilter="handlerFilter"/>
+        <ProblemFilter v-bind:tableFilters="table_filters" v-bind:buttonLoading="tableLoading"
+                       @handlerFilter="handlerFilter"/>
       </Col>
     </Row>
 
@@ -39,9 +40,11 @@ export default {
         {
           title: this.$t('pages.problem.number'),
           key: 'id',
-          width: 100
+          align: 'center',
+          maxWidth: 100
         },
         {
+          align: 'center',
           title: this.$t('pages.problem.title'),
           render: (h, params) => {
             return h('span', {
@@ -58,11 +61,13 @@ export default {
           }
         },
         {
+          align: 'center',
           title: this.$t('pages.problem.source'),
           key: 'source'
         },
         {
-          width: 150,
+          maxWidth: 120,
+          align: 'center',
           title: this.$t('pages.problem.ac/submit'),
           render: (h, params) => {
             return h('span', `${params.row.total_accepted}/${params.row.total_submitted}`)

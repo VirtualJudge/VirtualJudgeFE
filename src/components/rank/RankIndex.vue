@@ -42,6 +42,8 @@ export default {
       columns: [
         {
           title: '序号',
+          align: 'center',
+          maxWidth: 100,
           render: (h, params) => {
             return h('span', params.index + 1 + (this.current - 1) * this.page_size)
           }
@@ -49,6 +51,8 @@ export default {
         {
           title: '用户名',
           key: 'username',
+          align: 'center',
+          maxWidth: 200,
           render: (h, params) => {
             return h('span', {
               style: {
@@ -65,6 +69,7 @@ export default {
         },
         {
           title: '学校',
+          align: 'center',
           render: (h, params) => {
             if (params.row.student) {
               let school = params.row.student.school || 'OTHER'
@@ -76,17 +81,20 @@ export default {
         {
           title: '通过',
           key: 'total_passed',
-          width: 100
+          align: "center",
+          maxWidth: 100
         },
         {
           title: '提交',
           key: 'total_submitted',
-          width: 100
+          align: "center",
+          maxWidth: 100
         },
         {
           title: 'AC',
           key: 'total_accepted',
-          width: 100
+          align: "center",
+          maxWidth: 100
         }
       ],
       tableLoading: false,
