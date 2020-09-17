@@ -188,6 +188,7 @@ export default {
               }
             }, [h('Button', {
               props: {
+                disabled: this.data[params.index].is_superuser,
                 type: 'info'
               }
             }, '重置密码')])

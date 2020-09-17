@@ -2,8 +2,13 @@
   <div class="main-view">
     <div class="register-view">
       <h2 style="text-align: center;margin-bottom: 10px">注册账号</h2>
+      <Alert show-icon closable>
+        注册提示
+        <template slot="desc">填好邮箱和图形验证码之后，系统会向您的邮箱地址发送一封带有邮箱验证码的邮件。<br/>
+          获得邮箱验证码之后请继续完成其他的信息的补充
+        </template>
+      </Alert>
       <Form ref="formValidate" :rules="ruleValidate" :model="formValidate" label-position="right" :label-width="100">
-
         <FormItem label="邮箱" prop="email">
           <label>
             <Input :disabled="verify_code_sent" type="email" v-model="formValidate.email"></Input>
@@ -12,7 +17,8 @@
         <FormItem label="图形验证码" prop="captcha">
           <Row>
             <Col span="8">
-              <label for="captcha"></label><Input :disabled="verify_code_sent" id="captcha" type="text" v-model="formValidate.captcha">
+              <label for="captcha"></label><Input :disabled="verify_code_sent" id="captcha" type="text"
+                                                  v-model="formValidate.captcha">
             </Input>
             </Col>
             <Col span="7" offset="1">
@@ -23,6 +29,7 @@
             </Col>
           </Row>
         </FormItem>
+        <Divider/>
         <FormItem label="邮箱验证码" prop="verify_code">
           <label>
             <Input :disabled="!verify_code_sent" type="text" v-model="formValidate.verify_code"></Input>
@@ -30,7 +37,8 @@
         </FormItem>
         <FormItem label="账号" prop="username">
           <label>
-            <Input :disabled="!verify_code_sent" v-model="formValidate.username"></Input>
+            <Input placeholder="请不要使用身份证号码或者学号作为用户名" :disabled="!verify_code_sent"
+                   v-model="formValidate.username"></Input>
           </label>
         </FormItem>
         <FormItem label="密码" prop="password">
@@ -94,6 +102,9 @@ export default {
             trigger: 'blur'
           }
         ],
+        captcha: [
+          {required: true, message: '图形验证码不能为空', trigger: 'blur'},
+        ],
         verify_code: [
           {required: true, message: '邮箱验证码不能为空', trigger: 'blur'},
         ],
@@ -143,13 +154,14 @@ export default {
           api.putUserRegister(this.formValidate.username, this.formValidate.password, this.formValidate.email, this.formValidate.verify_code).then(res => {
             if (res.data.err === null) {
               this.$Message.success('注册成功')
+              this.$router.push('/')
             } else {
               this.$Message.error({
                 content: '注册失败' + message.err(res.data.err),
                 duration: 3
               });
             }
-          }).finally(()=>{
+          }).finally(() => {
             this.randomCaptcha()
           })
 

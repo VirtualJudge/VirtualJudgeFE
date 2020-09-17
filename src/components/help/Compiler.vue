@@ -24,7 +24,11 @@ $ python3 -V
 Python 3.8.2
 
 $ go version
-go version go1.13.8 linux/amd64</code>
+go version go1.13.8 linux/amd64
+
+$ kotlin -version
+Kotlin version 1.4.10-release-411 (JRE 14.0.2+13)
+      </code>
     </pre>
   </div>
 </template>

@@ -1,7 +1,7 @@
 <template>
   <div class="main-view">
     <h2>{{ $t('pages.help.help') }}</h2>
-    <ul>
+    <ul style="margin-top: 10px">
       <li><p>本网站使用<a target="_blank" href="https://cn.gravatar.com/">Gravatar</a>头像</p>
       </li>
       <li><p>推荐使用
@@ -30,7 +30,9 @@ export default {
       tableLoading: false,
       columns: [{
         title: '主机',
-        key: 'name',
+        render: (h, params) => {
+          return h('code', params.row.name)
+        }
       }, {
         title: '队列',
         key: 'queue',
