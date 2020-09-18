@@ -232,7 +232,8 @@ export default {
           render: (h, params) => {
             return h('Button', {
               props: {
-                type: 'info'
+                type: 'info',
+                icon: 'md-refresh'
               },
               on: {
                 click: () => {
