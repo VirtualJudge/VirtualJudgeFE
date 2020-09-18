@@ -67,7 +67,7 @@ export default {
     page_size_opts: {
       type: Array,
       default: function () {
-        return [10, 20, 50, 100]
+        return [10, 20, 50, 100, 200]
       }
     }
   },

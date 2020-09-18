@@ -76,12 +76,17 @@
           <List :split="false">
             <ListItem>
               <ListItemMeta title="时间限制">
-                <span slot="description">{{ problem.time_limit }} MS</span>
+                <span slot="description">{{ problem.time_limit }} ms</span>
               </ListItemMeta>
             </ListItem>
             <ListItem>
               <ListItemMeta title="内存限制">
-                <span slot="description">{{ problem.memory_limit }} MB</span>
+                <span slot="description">{{ problem.memory_limit }} MiB</span>
+              </ListItemMeta>
+            </ListItem>
+            <ListItem>
+              <ListItemMeta title="题目权限">
+                <span slot="description">{{ privilege.name }}</span>
               </ListItemMeta>
             </ListItem>
           </List>
@@ -91,7 +96,8 @@
           <Form>
             <FormItem>
               <label>
-                <Select class="mono-text" v-model="lang" @on-change="handleProblemLanguageChange">
+                <Select class="mono-text" :disabled="privilegeCode !== 0" v-model="lang"
+                        @on-change="handleProblemLanguageChange">
                   <Option
                       class="mono-text"
                       :key="item"
@@ -112,11 +118,15 @@
                        @on-keydown="handleKeyDown"
                        ref="textarea"
                        class="mono-text"
+                       :disabled="privilegeCode !== 0"
                        :autosize="{minRows: 10,maxRows: 40}"/>
               </label>
             </FormItem>
             <FormItem>
-              <Button type="primary" @click="handleSubmitClick" :loading="submitButtonLoading">提交</Button>
+              <Button type="primary" :disabled="privilegeCode !== 0"
+                      @click="handleSubmitClick"
+                      :loading="submitButtonLoading">提交
+              </Button>
               <span v-if="judge_result.short==='P'" style="margin-left: 10px;color: gold">
                 {{ judge_result.info }}
               </span>
@@ -138,7 +148,7 @@
 <script>
 import api from "@/utils/api";
 import message from "@/utils/message";
-import {PROBLEM_SUBMIT_LANGUAGES, STORAGE} from "@/utils/constant";
+import {PROBLEM_SUBMIT_LANGUAGES, STORAGE, PROBLEM_PUBLIC_TYPE} from "@/utils/constant";
 import {mapGetters} from 'vuex'
 import storage from "@/utils/storage";
 
@@ -153,6 +163,8 @@ export default {
         pdf: '',
         markdown: ''
       },
+      privilegeCode: 0,
+      privilege: PROBLEM_PUBLIC_TYPE[0],
       problem: {},
       code: '',
       lang: '',
@@ -175,6 +187,8 @@ export default {
         this.$Message.error(message.err(res.data.err))
       } else {
         this.problem = res.data.data || {}
+        this.privilegeCode = res.data.data.public || 0
+        this.privilege = PROBLEM_PUBLIC_TYPE[this.privilegeCode]
         this.editor_value.legacy = res.data.data.content.legacy || null
         this.editor_value.markdown = res.data.data.content.markdown || ''
         this.editor_value.pdf = res.data.data.content.pdf || ''

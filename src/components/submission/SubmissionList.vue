@@ -6,6 +6,7 @@
           v-if="isAuthenticated"
           @on-change="handleSwitchChange"
           v-model="list_filter.myself"
+          :disabled="tableLoading"
           size="large"
           false-color="#13ce66">
         <span slot="open">我的</span>
@@ -14,8 +15,9 @@
 
       <label>
         <Select
-            @on-change="handleSelectedChange"
+            @on-change="handleFilterChange"
             v-model="list_filter.verdict"
+            :disabled="tableLoading"
             style="width: 200px; margin-left: 10px">
           <Option :key="item" :value="item"
                   v-for="item in Object.keys(submission_verdicts)">
@@ -24,8 +26,22 @@
         </Select>
       </label>
       <label>
-        <Input v-model="list_filter.problem_id" type="text" placeholder="题目编号"
+        <Input @on-blur="handleFilterChange"
+               :disabled="tableLoading"
+               v-model="list_filter.problem_id" type="text" placeholder="题目编号"
                style="width: 100px;margin-left: 10px"></Input>
+      </label>
+      <label>
+        <Select
+            @on-change="handleFilterChange"
+            v-model="list_filter.language"
+            :disabled="tableLoading"
+            style="width: 200px; margin-left: 10px">
+          <Option :key="item" :value="item"
+                  v-for="item in Object.keys(submission_language)">
+            {{ submission_language[item].info }}
+          </Option>
+        </Select>
       </label>
       <Button style=" margin-left: 10px" type="info" @click="requestTableData" :loading="tableLoading">刷新</Button>
     </div>
@@ -57,7 +73,7 @@ export default {
       list_filter: {
         myself: false,
         verdict: 'A',
-        lang: '',
+        language: 'a',
         problem_id: ''
       },
       tableColumns: [],
@@ -112,7 +128,7 @@ export default {
           align: 'center',
           render: (h, params) => {
             if (params.row.time_cost !== null) {
-              return h('span', params.row.time_cost + ' MS')
+              return h('span', params.row.time_cost + ' ms')
             } else {
               return h('span', '-')
             }
@@ -120,11 +136,10 @@ export default {
         },
         {
           title: '内存花费',
-          key: 'memory_spend',
           align: 'center',
           render: (h, params) => {
             if (params.row.memory_cost !== null) {
-              return h('span', params.row.memory_cost + ' MB')
+              return h('span', params.row.memory_cost + ' MiB')
             } else {
               return h('span', '-')
             }
@@ -190,11 +205,12 @@ export default {
       ],
       tData: [],
       current: 1,
-      page_size: 20,
+      page_size: 50,
       total: 0,
 
       tableLoading: false,
-      submission_verdicts: SUBMISSION_VERDICTS
+      submission_verdicts: SUBMISSION_VERDICTS,
+      submission_language: PROBLEM_SUBMIT_LANGUAGES
     }
   }, mounted() {
     this.requestTableData()
@@ -207,7 +223,8 @@ export default {
         page_size: this.page_size,
         user: (this.list_filter.myself ? this.profile.id : ''),
         verdict: (this.list_filter.verdict === 'A' ? '' : this.list_filter.verdict),
-        problem_id: this.list_filter.problem_id
+        problem_id: this.list_filter.problem_id,
+        language: (this.list_filter.language === 'a' ? '' : this.list_filter.language)
       }).then(res => {
         if (res.data.err === null) {
           this.tData = res.data.data.results || []
@@ -229,7 +246,7 @@ export default {
       this.current = 1
       this.requestTableData()
     },
-    handleSelectedChange() {
+    handleFilterChange() {
       this.current = 1
       this.requestTableData()
     }

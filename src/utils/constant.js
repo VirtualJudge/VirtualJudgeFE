@@ -15,6 +15,7 @@ export const PROBLEM_PUBLIC_TYPE = [
 
 
 export const PROBLEM_SUBMIT_LANGUAGES = {
+    'a': {info: 'All'},
     'c': {
         info: 'C (GCC 9.3.0)',
         short: 'C',

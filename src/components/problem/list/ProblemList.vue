@@ -35,7 +35,7 @@ export default {
     return {
       tableLoading: false,
       total: 0,
-      page_size: 10,
+      page_size: 50,
       columns: [
         {
           title: this.$t('pages.problem.number'),
@@ -63,7 +63,8 @@ export default {
         {
           align: 'center',
           title: this.$t('pages.problem.source'),
-          key: 'source'
+          key: 'source',
+          ellipsis: true,
         },
         {
           maxWidth: 120,
@@ -111,9 +112,11 @@ export default {
     },
     onPageSizeChange(page_size) {
       this.page_size = page_size
+      this.current = 1
       this.requestTableData()
     },
     handlerFilter() {
+      this.current = 1
       this.requestTableData()
     }
   }

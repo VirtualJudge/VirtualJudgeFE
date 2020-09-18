@@ -12,14 +12,14 @@
               <Input type="text" v-model="formData.title"/>
             </label>
           </FormItem>
-          <FormItem label="时间限制(MS)">
+          <FormItem label="时间限制(ms)">
             <label>
-              <Input type="number" placeholder="单位:MS" v-model="formData.time_limit"/>
+              <Input type="number" placeholder="单位:ms" v-model="formData.time_limit"/>
             </label>
           </FormItem>
-          <FormItem label="内存限制(MB)">
+          <FormItem label="内存限制(MiB)">
             <label>
-              <Input type="number" placeholder="单位:MB" v-model="formData.memory_limit"/>
+              <Input type="number" placeholder="单位:MiB" v-model="formData.memory_limit"/>
             </label>
           </FormItem>
           <FormItem label="来源">
@@ -226,7 +226,7 @@ export default {
           this.formData.time_limit = res.data.data.time_limit || 1000
           this.formData.memory_limit = res.data.data.memory_limit || 128
           this.formData.title = res.data.data.title || ''
-          this.formData.public = res.data.data.public || 0
+          this.formData.is_public = res.data.data.public || 0
           this.formData.source = res.data.data.source || ''
 
         } else {

@@ -6,15 +6,16 @@
           <p slot="title">代码</p>
           <pre v-if="code" v-highlightjs="code"><code :class="code_type"></code></pre>
         </Card>
-        <Card v-if="additional_info['error']" dis-hover>
+        <Card style="margin-top: 10px" v-if="additional_info['error']" dis-hover>
           <p slot="title">错误信息</p>
           <code style="white-space:pre-line;">
             {{ additional_info['error'] }}
           </code>
         </Card>
-        <Card v-if="additional_info['result']" dis-hover>
+        <Card style="margin-top: 10px" v-if="result_data.length" dis-hover>
           <p slot="title">运行结果</p>
-          <pre slot="content" v-highlightjs="additional_info['result']"><code class="shell"></code></pre>
+          <Table :columns="result_col" :data="result_data">
+          </Table>
         </Card>
       </Col>
       <Col span="6" style="padding-left: 10px">
@@ -69,6 +70,7 @@ import api from "@/utils/api";
 import message from "@/utils/message";
 import {SUBMISSION_VERDICTS} from "@/utils/constant";
 import {mapGetters} from 'vuex';
+
 export default {
   name: "SubmissionDetail",
   data() {
@@ -82,6 +84,29 @@ export default {
       user: {},
       additional_info: {'error': null, 'result': null},
       collapse_val: '0',
+      result_col: [{
+        title: '序号',
+        maxWidth: 100,
+        render: (h, params) => {
+          return h('span', params.index + 1)
+        }
+      }, {
+        title: '内存花费',
+        render: (h, params) => {
+          return h('span', params.row.memory + ' MiB')
+        }
+      }, {
+        title: '时间花费',
+        render: (h, params) => {
+          return h('span', params.row.cpu_time + ' ms')
+        }
+      }, {
+        title: 'exit',
+        render: (h, params) => {
+          return h('span', params.row.exit_code)
+        }
+      }],
+      result_data: []
 
     }
   }, mounted() {
@@ -96,9 +121,8 @@ export default {
         this.time_cost = response.time_cost || '-'
         this.memory_cost = response.memory_cost || '-'
         this.additional_info = response.additional_info || {'error': null, 'result': null}
-        if (this.additional_info['result']) {
-          this.additional_info['result'] = JSON.stringify(this.additional_info['result'], null, 2)
-        }
+        this.result_data = this.additional_info['result'] || []
+        console.log(this.result_data)
       } else {
         this.$Message.error(message.err(res.data.err))
       }
