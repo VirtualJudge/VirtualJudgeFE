@@ -28,7 +28,7 @@
 
 
       </FormItem>
-      <Button size="small" type="text" to="/cannot_login" @click="closeModal">忘记账号或者密码？</Button>
+      <Button size="small" type="text" to="/cannot_login" @click="closeLoginModal">忘记账号或者密码？</Button>
       <div class="footer">
         <Button type="primary" @click="loginRequest('formItem')" class="btn" long>
           提交
@@ -133,7 +133,7 @@ export default {
         }
       })
     },
-    closeModal() {
+    closeLoginModal() {
       this.$emit('closeModal')
     }
   }, computed: {

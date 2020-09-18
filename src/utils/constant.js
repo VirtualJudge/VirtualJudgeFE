@@ -21,7 +21,7 @@ export const PROBLEM_PUBLIC_TYPE = [
 
 
 export const PROBLEM_SUBMIT_LANGUAGES = {
-    'a': {info: 'All'},
+    'a': {info: 'All', disabled: true},
     'c': {
         info: 'C (GCC 9.3.0)',
         short: 'C',
@@ -65,15 +65,15 @@ export const SUBMISSION_VERDICTS = {
     'R': {info: 'Running', color: 'green'},
     'AC': {info: 'Accepted', color: 'success'},
     'PE': {info: 'Presentation Error', color: 'warning'},
-    'TLE': {info: 'Time Limit Exceeded', color: 'error'},
-    'MLE': {info: 'Memory Limit Exceeded', color: 'error'},
-    'WA': {info: 'Wrong Answer', color: 'error'},
-    'RE': {info: 'Runtime Error', color: 'error'},
-    'OLE': {info: 'Output Limit Exceeded', color: 'error'},
+    'TLE': {info: 'Time Limit Exceeded', color: '#FFA2D3'},
+    'MLE': {info: 'Memory Limit Exceeded', color: '#FFA2D3'},
+    'WA': {info: 'Wrong Answer', color: '#FFA2D3'},
+    'RE': {info: 'Runtime Error', color: '#FFA2D3'},
+    'OLE': {info: 'Output Limit Exceeded', color: '#FFA2D3'},
     'CE': {info: 'Compile Error', color: 'warning'},
-    'SE': {info: 'System Error', color: 'error'},
+    'SE': {info: 'System Error', color: '#FFA2D3'},
     // 判题机正在同步测试数据的标志
-    'SYNC': {info: 'Syncing Data', color: 'primary'}
+    'SYNC': {info: 'Compiler Data Syncing', color: 'primary'}
 }
 export const ACCEPT_LOCALES = {
     'CN': {

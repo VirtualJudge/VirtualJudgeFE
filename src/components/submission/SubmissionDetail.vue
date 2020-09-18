@@ -122,7 +122,6 @@ export default {
         this.memory_cost = response.memory_cost || '-'
         this.additional_info = response.additional_info || {'error': null, 'result': null}
         this.result_data = this.additional_info['result'] || []
-        console.log(this.result_data)
       } else {
         this.$Message.error(message.err(res.data.err))
       }

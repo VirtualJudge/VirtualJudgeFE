@@ -113,13 +113,18 @@
             </FormItem>
             <FormItem>
               <label>
-                <Input v-model="code"
-                       type="textarea"
-                       @on-keydown="handleKeyDown"
-                       ref="textarea"
-                       class="mono-text"
-                       :disabled="privilegeCode !== 0"
-                       :autosize="{minRows: 10,maxRows: 40}"/>
+                <Input
+                    style="overflow: scroll"
+                    wrap="off"
+                    v-model="code"
+                    :maxlength="65536"
+                    :show-word-limit="true"
+                    type="textarea"
+                    @on-keydown="handleKeyDown"
+                    ref="textarea"
+                    class="mono-text"
+                    :disabled="privilegeCode !== 0"
+                    :autosize="{minRows: 10,maxRows: 40}"/>
               </label>
             </FormItem>
             <FormItem>
@@ -222,7 +227,7 @@ export default {
       storage.set(STORAGE.PROBLEM_LANGUAGE_KEY, value)
     }
   }, computed: {
-    ...mapGetters(['isAuthenticated'])
+    ...mapGetters(['isAuthenticated']),
   }
 }
 </script>

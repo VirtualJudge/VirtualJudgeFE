@@ -88,6 +88,7 @@ export default {
         {
           title: '用户',
           key: 'user',
+          ellipsis: true,
           align: 'center',
           render: (h, params) => {
             return h('span', {
@@ -126,6 +127,7 @@ export default {
           title: '时间花费',
           key: 'time_spend',
           align: 'center',
+          ellipsis: true,
           render: (h, params) => {
             if (params.row.time_cost !== null) {
               return h('span', params.row.time_cost + ' ms')
@@ -137,6 +139,7 @@ export default {
         {
           title: '内存花费',
           align: 'center',
+          ellipsis: true,
           render: (h, params) => {
             if (params.row.memory_cost !== null) {
               return h('span', params.row.memory_cost + ' MiB')
@@ -149,6 +152,7 @@ export default {
           title: '提交语言',
           key: 'lang',
           align: 'center',
+          ellipsis: true,
           render: (h, params) => {
             if (this.profile.id !== null
                 && (params.row.user.id === this.profile.id
@@ -191,6 +195,7 @@ export default {
           title: '提交时间',
           key: 'create_time',
           align: 'center',
+          ellipsis: true,
           render: (h, params) => {
             moment.locale(ACCEPT_LOCALES[this.web_lang].moment)
             return h('Tooltip', {

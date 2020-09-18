@@ -9,7 +9,7 @@
             v-bind:total="total"
             v-bind:page_size="page_size"
             v-bind:data="data"
-            v-bind:columns="columns"
+            v-bind:columns="tColumns"
             v-bind:current="current"
             v-bind:tableLoading="tableLoading"/>
       </Col>
@@ -28,6 +28,7 @@ import ProblemFilter from "@/components/problem/list/ProblemFilter";
 import api from "@/utils/api";
 import {PROBLEM_PUBLIC_TYPE} from "@/utils/constant";
 import message from "@/utils/message";
+import {mapGetters} from 'vuex';
 
 export default {
   name: "ProblemList",
@@ -47,6 +48,7 @@ export default {
         {
           align: 'center',
           title: this.$t('pages.problem.title'),
+          ellipsis: true,
           render: (h, params) => {
             return h('span', {
               style: {
@@ -67,16 +69,15 @@ export default {
           key: 'source',
           ellipsis: true,
         }, {
-          maxWidth: 100,
           title: '题目权限',
           align: 'center',
           render: (h, params) => {
-            return h('Icon', {
+            return h('Tooltip', {
               props: {
-                type: PROBLEM_PUBLIC_TYPE[params.row.public].iconType,
-                color: PROBLEM_PUBLIC_TYPE[params.row.public].color
+                transfer: true,
+                content: PROBLEM_PUBLIC_TYPE[params.row.public].name
               }
-            }, params.row.public)
+            }, [h('Tag',{},[h('code', PROBLEM_PUBLIC_TYPE[params.row.public].short)])])
           }
         },
         {
@@ -87,6 +88,7 @@ export default {
             return h('span', `${params.row.total_accepted}/${params.row.total_submitted}`)
           }
         }],
+      tColumns: [],
       data: [],
       current: 1,
       table_filters: {
@@ -97,9 +99,24 @@ export default {
     }
   }, mounted() {
     // TODO: 这里处理题目表格数据的初始化。
+    this.initColumns()
     this.requestTableData()
   },
   methods: {
+    initColumns() {
+      if (this.isAuthenticated) {
+        this.tColumns = [{
+          title: '状态',
+          align: 'center',
+          maxWidth: 100,
+          render: (h) => {
+            return h('span')
+          }
+        }].concat(this.columns)
+      } else {
+        this.tColumns = this.columns
+      }
+    },
     requestTableData() {
       this.tableLoading = true
       api.getProblemList({
@@ -131,6 +148,14 @@ export default {
     handlerFilter() {
       this.current = 1
       this.requestTableData()
+    }
+  },
+  computed: {
+    ...mapGetters(['isAuthenticated'])
+  },
+  watch: {
+    isAuthenticated() {
+      this.initColumns()
     }
   }
 }

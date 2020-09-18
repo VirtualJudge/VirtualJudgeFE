@@ -100,7 +100,7 @@
 
       <Divider/>
       <h2 style="text-align: center">上传测试样例</h2>
-      <div style="width: 500px;margin: auto">
+      <div style="max-width: 1000px;margin: auto">
         <Form :label-width="120">
           <FormItem>
             <p slot="label">SPJ
@@ -116,9 +116,9 @@
             <label>
               <Input v-model="formData.manifest.spj_code"
                      type="textarea"
-                     autofocus
+                     :maxlength="65536"
+                     :show-word-limit="true"
                      @on-keydown="handleKeyDown"
-                     ref="textarea"
                      class="mono-text"
                      :autosize="{minRows: 10,maxRows: 40}"/>
             </label>
@@ -145,13 +145,17 @@
             <p>选择或者拖拽zip测试样例文件</p>
           </div>
         </Upload>
-        <Table
-            style="margin-top: 10px"
-            size="small"
-            v-if="formData.manifest.test_cases.length > 0"
-            :columns="test_cases_col"
-            :data="formData.manifest.test_cases">
-        </Table>
+        <Card dis-hover>
+          <p slot="title">Hash {{ formData.manifest.hash }}</p>
+          <Table
+              style="margin-top: 10px"
+              size="small"
+              v-if="formData.manifest.test_cases.length > 0"
+              :columns="test_cases_col"
+              :data="formData.manifest.test_cases">
+          </Table>
+
+        </Card>
       </div>
       <Divider/>
       <Button type="primary" @click="handleSubmit">提交</Button>

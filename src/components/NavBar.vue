@@ -69,7 +69,7 @@
         </div>
       </template>
 
-      <Modal v-model="loginModal" @on-visible-change="visibleChange">
+      <Modal v-model="loginModal" :scrollable="true" :closable="false" @on-visible-change="visibleChange">
         <div slot="header">
           登录
         </div>
@@ -82,7 +82,7 @@
 
 <script>
 import {mapActions, mapGetters} from 'vuex'
-import Login from "./user/Login";
+import Login from "@/components/user/Login";
 import CountryFlag from 'vue-country-flag'
 import {ACCEPT_LOCALES, STORAGE_LOCALE_KEY} from '@/utils/constant'
 import storage from "@/utils/storage";
