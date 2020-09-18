@@ -54,7 +54,7 @@
                    :current="current"
                    :data="tData"
                    :total="total"
-                   :columns="columns"/>
+                   :columns="tColumns"/>
   </div>
 </template>
 
@@ -64,6 +64,7 @@ import api from "@/utils/api";
 import moment from 'moment'
 import {ACCEPT_LOCALES, PROBLEM_SUBMIT_LANGUAGES, SUBMISSION_VERDICTS} from '@/utils/constant'
 import {mapGetters} from "vuex";
+import message from "@/utils/message";
 
 export default {
   name: "SubmissionList",
@@ -76,7 +77,7 @@ export default {
         language: 'a',
         problem_id: ''
       },
-      tableColumns: [],
+      tColumns: [],
       columns: [
         {
           title: '编号',
@@ -88,7 +89,6 @@ export default {
           title: '用户',
           key: 'user',
           align: 'center',
-          ellipsis: true,
           render: (h, params) => {
             return h('span', {
               style: {
@@ -119,7 +119,7 @@ export default {
                   this.$router.push(`/problem/${params.row.problem.id}`)
                 }
               }
-            }, params.row.problem.title)
+            }, `${params.row.problem.id}`)
           }
         },
         {
@@ -175,7 +175,6 @@ export default {
           title: '结果',
           key: 'verdict',
           align: 'center',
-          width: 180,
           render: (h, params) => {
             if (SUBMISSION_VERDICTS[params.row.verdict]) {
               return h('Tag', {
@@ -197,9 +196,10 @@ export default {
             return h('Tooltip', {
               props: {
                 transfer: true,
-                content: moment(params.row.create_time).format('lll')
+                theme: 'light',
+                content: moment(params.row.create_time).format('YYYY/MM/DD hh:mm:ss')
               }
-            }, moment(params.row.create_time).fromNow())
+            }, moment(params.row.create_time).calendar())
           }
         }
       ],
@@ -213,9 +213,44 @@ export default {
       submission_language: PROBLEM_SUBMIT_LANGUAGES
     }
   }, mounted() {
+    this.initColumns()
     this.requestTableData()
   },
   methods: {
+    initColumns() {
+      if (this.isAdminRole) {
+        this.tColumns = this.columns.concat({
+          title: '操作',
+
+          align: 'center',
+          maxWidth: 120,
+          render: (h, params) => {
+            return h('Button', {
+              props: {
+                type: 'info'
+              },
+              on: {
+                click: () => {
+                  this.handleRejudge(params.row.id)
+                }
+              }
+            }, '重判')
+          }
+
+        })
+      } else {
+        this.tColumns = this.columns
+      }
+    },
+    handleRejudge(submission_id) {
+      api.getRejudgeRequest(submission_id).then(res => {
+        if (res.data.err === null) {
+          this.$Message.success('重新判题任务提交成功')
+        } else {
+          this.$Message.error(message.err(res.data.err))
+        }
+      })
+    },
     requestTableData() {
       this.tableLoading = true
       api.getSubmissionList({
@@ -253,6 +288,11 @@ export default {
   },
   computed: {
     ...mapGetters(['profile', 'isAdminRole', 'isAuthenticated', 'web_lang'])
+  },
+  watch: {
+    isAdminRole() {
+      this.initColumns()
+    }
   }
 }
 </script>

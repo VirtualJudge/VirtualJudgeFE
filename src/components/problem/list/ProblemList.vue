@@ -2,7 +2,7 @@
   <div class="main-view">
     <h2 style="text-align: center">题目列表</h2>
     <Row style="margin-top: 10px">
-      <Col span="16">
+      <Col span="18">
         <PaginateTable
             @on-page-change="onPageChange"
             @on-page-size-change="onPageSizeChange"
@@ -13,7 +13,7 @@
             v-bind:current="current"
             v-bind:tableLoading="tableLoading"/>
       </Col>
-      <Col span="8" style="padding-left: 20px">
+      <Col span="6" style="padding-left: 20px">
         <ProblemFilter v-bind:tableFilters="table_filters" v-bind:buttonLoading="tableLoading"
                        @handlerFilter="handlerFilter"/>
       </Col>
@@ -26,6 +26,7 @@
 import PaginateTable from "@/components/utils/PaginateTable";
 import ProblemFilter from "@/components/problem/list/ProblemFilter";
 import api from "@/utils/api";
+import {PROBLEM_PUBLIC_TYPE} from "@/utils/constant";
 import message from "@/utils/message";
 
 export default {
@@ -65,6 +66,18 @@ export default {
           title: this.$t('pages.problem.source'),
           key: 'source',
           ellipsis: true,
+        }, {
+          maxWidth: 100,
+          title: '题目权限',
+          align: 'center',
+          render: (h, params) => {
+            return h('Icon', {
+              props: {
+                type: PROBLEM_PUBLIC_TYPE[params.row.public].iconType,
+                color: PROBLEM_PUBLIC_TYPE[params.row.public].color
+              }
+            }, params.row.public)
+          }
         },
         {
           maxWidth: 120,

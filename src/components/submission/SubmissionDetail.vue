@@ -55,7 +55,7 @@
           </List>
           <Button type="success" v-if="code" @click="handleCopyClick">复制代码到剪切板</Button>
           <Divider/>
-          <Button type="info" v-if="isAdminRole" @click="handleRejudge">rejudge</Button>
+          <Button type="info" v-if="isAdminRole" @click="handleRejudge">重判</Button>
         </Card>
 
       </Col>

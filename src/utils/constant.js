@@ -1,15 +1,21 @@
 export const PROBLEM_PUBLIC_TYPE = [
     {
         name: '允许提交和查看',
-        short: 'r-x'
+        short: 'r-x',
+        iconType: 'md-checkmark-circle',
+        color: '#19be6b'
     },
     {
         name: '允许查看',
-        short: 'r--'
+        short: 'r--',
+        iconType: 'md-alert',
+        color: '#ff9900'
     },
     {
         name: '不允许查看和提交',
-        short: '---'
+        short: '---',
+        iconType: 'md-close-circle',
+        color: '#ed4014'
     }
 ]
 
