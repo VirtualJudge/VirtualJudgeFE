@@ -47,6 +47,7 @@ import {mapGetters} from 'vuex'
 import api from "@/utils/api";
 import message from "@/utils/message";
 import md5 from "js-md5";
+import moment from "moment";
 
 export default {
   name: "UserInfo",
@@ -63,6 +64,7 @@ export default {
     }
   },
   mounted() {
+    moment.locale('zh-cn')
     this.user_id = this.$route.params.id
     this.init(this.user_id)
     this.loadActivities(this.user_id)
@@ -114,10 +116,11 @@ export default {
       api.getSelfActivities(user_id).then(res => {
         if (res.data.err === null) {
           this.activities = []
+
           for (let item in res.data.data) {
             if (Object.prototype.hasOwnProperty.call(res.data.data, item)) {
               this.activities.push(Object.assign(res.data.data[item], {
-                formatted_create_time: this.$moment(res.data.data[item].create_time).format('lll')
+                formatted_create_time: moment(res.data.data[item].create_time).format('lll')
               }))
             }
           }

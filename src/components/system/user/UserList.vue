@@ -50,43 +50,6 @@ export default {
           title: '邮箱'
         },
         {
-          title: '激活',
-          width: 100,
-          render: (h, params) => {
-            if (this.data[params.index].activated) {
-              return h('Icon', {
-                props: {
-                  type: 'md-checkmark-circle',
-                  color: '#19be6b',
-                  size: 'large'
-                },
-                on: {
-                  click: () => {
-                    this.handleItemUpdate(params.index, {
-                      activated: !this.data[params.index].activated
-                    })
-                  }
-                }
-              })
-            } else {
-              return h('Icon', {
-                props: {
-                  type: 'md-close-circle',
-                  color: '#ed4014',
-                  size: 'large'
-                },
-                on: {
-                  click: () => {
-                    this.handleItemUpdate(params.index, {
-                      activated: !this.data[params.index].activated
-                    })
-                  }
-                }
-              })
-            }
-          }
-        },
-        {
           title: '禁用',
           width: 100,
           render: (h, params) => {
@@ -162,6 +125,7 @@ export default {
         },
         {
           title: '操作',
+          maxWidth: 200,
           render: (h, params) => {
             return h('Poptip', {
               props: {

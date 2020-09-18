@@ -48,83 +48,42 @@
               v-model="formData.editor_text.markdown"
               v-bind:boxShadow="false"
               v-bind:tabSize="4"
+              :toolbars="editor_toolbar"
               codeStyle="atom-one-light"/>
         </TabPane>
         <TabPane label="PDF" name="PDF">
-          <Row>
-            <Col span="8">
-              <div style="width: 500px;margin: auto">
-                <Button type="primary"
-                        v-if="this.formData.editor_text.pdf"
-                        @click="handleClearPDF">清除PDF
-                </Button>
-                <Upload
-                    v-else
-                    style="margin-top: 10px"
-                    :on-success="onPDFSuccess"
-                    :on-error="onError"
-                    :on-format-error="onPDFFormatError"
-                    :on-exceeded-size="onExceededSize"
-                    :with-credentials="true"
-                    :format="uploadConfig.pdf_format"
-                    accept="application/pdf"
-                    :max-size="10240"
-                    type="drag"
-                    :headers="uploadHeaders"
-                    :show-upload-list="false"
-                    action="/api/problem/pdf">
-                  <div style="padding: 20px 0">
-                    <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
-                    <p>拖拽或者选择PDF文件</p>
-                  </div>
-                </Upload>
 
-              </div>
-
-            </Col>
-            <Col span="16">
-              <div style="width: 600px;margin: auto">
-                <embed width="100%"
-                       height="800"
-                       v-if="formData.editor_text.pdf !== ''"
-                       :src="formData.editor_text.pdf"/>
-              </div>
-            </Col>
-          </Row>
-
-
+          <Upload
+              style="max-width: 1000px;margin: auto"
+              ref="pdfUpload"
+              :on-success="onPDFSuccess"
+              :on-error="onError"
+              :on-format-error="onPDFFormatError"
+              :on-exceeded-size="onExceededSize"
+              :on-preview="onPDFReview"
+              :on-remove="onPDFRemove"
+              :before-upload="beforePDFUpload"
+              :default-file-list="pdfFileList"
+              :with-credentials="true"
+              :format="uploadConfig.pdf_format"
+              accept="application/pdf"
+              :max-size="10240"
+              type="drag"
+              :headers="uploadHeaders"
+              :show-upload-list="true"
+              action="/api/problem/pdf">
+            <div style="padding: 20px 0">
+              <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
+              <p>点击这里选择PDF，或者直接将PDF拖放到这里</p>
+            </div>
+          </Upload>
         </TabPane>
         <TabPane label="Legacy" name="Legacy" closable v-if="formData.editor_text.legacy"></TabPane>
       </Tabs>
 
-
       <Divider/>
-      <h2 style="text-align: center">上传测试样例</h2>
+      <h3 style="text-align: center">上传测试数据</h3>
       <div style="max-width: 1000px;margin: auto">
-        <Form :label-width="120">
-          <FormItem>
-            <p slot="label">SPJ
-              <Icon type="md-help" @click="spj_help_modal=true"></Icon>
-            </p>
-            <i-switch v-model="formData.manifest.spj" style="margin-top: 10px">
-              <span slot="open">是</span>
-              <span slot="close">否</span>
-            </i-switch>
-            <Tag style="margin-left: 10px" color="warning" v-if="formData.manifest.spj">仅支持C语言</Tag>
-          </FormItem>
-          <FormItem v-if="formData.manifest.spj" label="SPJ Code">
-            <label>
-              <Input v-model="formData.manifest.spj_code"
-                     type="textarea"
-                     :maxlength="65536"
-                     :show-word-limit="true"
-                     @on-keydown="handleKeyDown"
-                     class="mono-text"
-                     :autosize="{minRows: 10,maxRows: 40}"/>
-            </label>
-          </FormItem>
-        </Form>
-
         <Upload
             style="margin-top: 10px"
             :on-success="onSuccess"
@@ -145,23 +104,48 @@
             <p>选择或者拖拽zip测试样例文件</p>
           </div>
         </Upload>
-        <Card dis-hover>
-          <p slot="title">Hash {{ formData.manifest.hash }}</p>
+        <Card style="margin-top: 10px" dis-hover v-if="formData.manifest.test_cases.length > 0">
+          <p slot="title"><b>{{ formData.manifest.hash }}</b></p>
           <Table
               style="margin-top: 10px"
-              size="small"
-              v-if="formData.manifest.test_cases.length > 0"
               :columns="test_cases_col"
               :data="formData.manifest.test_cases">
           </Table>
-
         </Card>
+      </div>
+      <Divider/>
+      <h3 style="text-align: center">上传SPJ代码</h3>
+      <div style="max-width: 1000px;margin: auto">
+        <Form :label-width="120">
+          <FormItem>
+            <p slot="label">SPJ
+              <Icon type="md-help" @click="spj_help_modal=true"></Icon>
+            </p>
+            <i-switch v-model="formData.manifest.spj" style="margin-top: 10px">
+              <span slot="open">是</span>
+              <span slot="close">否</span>
+            </i-switch>
+          </FormItem>
+          <FormItem label="SPJ Code">
+            <label>
+              <Input v-model="formData.manifest.spj_code"
+                     placeholder="仅支持C语言编写的SPJ"
+                     type="textarea"
+                     :maxlength="65536"
+                     :show-word-limit="true"
+                     :disabled="!formData.manifest.spj"
+                     @on-keydown="handleKeyDown"
+                     class="mono-text"
+                     :autosize="{minRows: 10,maxRows: 40}"/>
+            </label>
+          </FormItem>
+        </Form>
       </div>
       <Divider/>
       <Button type="primary" @click="handleSubmit">提交</Button>
 
     </div>
-    <Modal width="800" v-model="spj_help_modal">
+    <Modal width="800" v-model="spj_help_modal" :closable="false">
       <HelpSPJ/>
     </Modal>
   </div>
@@ -176,6 +160,7 @@ import axios from "axios";
 import FileSaver from 'file-saver'
 import moment from 'moment'
 import HelpSPJ from "@/components/system/problem/HelpSPJ";
+import {MAVON_EDITOR_TOOLBAR} from "@/utils/editor";
 
 export default {
   name: "AddOrUpdateProblem",
@@ -184,6 +169,8 @@ export default {
     return {
       problem_id: null,
       spj_help_modal: false,
+      editor_toolbar: MAVON_EDITOR_TOOLBAR,
+      pdfFileList: [],
       formData: {
         editor_text: {
           markdown: '',
@@ -232,7 +219,12 @@ export default {
           this.formData.title = res.data.data.title || ''
           this.formData.is_public = res.data.data.public || 0
           this.formData.source = res.data.data.source || ''
-
+          if (this.formData.editor_text.pdf !== '') {
+            this.pdfFileList = [{
+              name: 'default.pdf',
+              url: this.formData.editor_text.pdf
+            }]
+          }
         } else {
           this.$Message.error(message.err(res.data.err))
         }
@@ -322,6 +314,9 @@ export default {
         }
       }
     },
+    beforePDFUpload() {
+      this.$refs.pdfUpload.clearFiles()
+    },
     onPDFSuccess(res) {
       if (res.err !== null) {
         this.$Message.error('上传失败，' + message.err(res.err))
@@ -329,6 +324,9 @@ export default {
       } else {
         this.formData.editor_text.pdf = `/api/problem/pdf?title=${res.data.title}`
       }
+    },
+    onPDFReview() {
+      window.open(this.formData.editor_text.pdf)
     },
     onError(error) {
       this.$Message.error(message.err(error))
@@ -342,6 +340,9 @@ export default {
     },
     onPDFFormatError(file) {
       this.$Message.error(`文件：${file.name}，格式不正确（仅限pdf格式，且是.pdf后缀）`)
+    },
+    onPDFRemove() {
+      this.formData.editor_text.pdf = ''
     },
     getCookie(name) {
       let cookieValue = null;
@@ -358,15 +359,13 @@ export default {
       }
       return cookieValue;
     },
-    handleClearPDF() {
-      this.formData.editor_text.pdf = ''
-    },
     handleKeyDown(event) {
       if (event.key === 'Tab') {
         event.preventDefault()
       }
     }
-  }
+  },
+  watch: {}
 }
 </script>
 <style scoped>

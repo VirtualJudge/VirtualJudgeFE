@@ -114,14 +114,11 @@
             <FormItem>
               <label>
                 <Input
-                    style="overflow: scroll"
-                    wrap="off"
                     v-model="code"
                     :maxlength="65536"
                     :show-word-limit="true"
                     type="textarea"
                     @on-keydown="handleKeyDown"
-                    ref="textarea"
                     class="mono-text"
                     :disabled="privilegeCode !== 0"
                     :autosize="{minRows: 10,maxRows: 40}"/>

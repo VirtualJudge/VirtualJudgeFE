@@ -12,7 +12,7 @@ module.exports = {
     devServer: {
         proxy: {
             '/api': {
-                target: 'http://localhost:8000',
+                target: 'https://ddl.wustacm.top',
                 changeOrigin: true
             }
         }

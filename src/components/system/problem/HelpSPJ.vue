@@ -1,14 +1,13 @@
 <template>
-  <Card>
-        <pre v-highlightjs>
-      <code class="c">
+  <div>
+<pre v-highlightjs><code class="c">
 #include &lt;stdio.h&gt;
 
 #define AC 0
 #define WA 1
 #define ERROR -1
 
-int spj(FILE *input, FILE *user_output);
+int spj(FILE *input, FILE *output, FILE *user_output);
 
 void close_file(FILE *f){
     if(f != NULL){
@@ -17,14 +16,15 @@ void close_file(FILE *f){
 }
 
 int main(int argc, char *args[]){
-    FILE *input = NULL, *user_output = NULL;
+    FILE *input = NULL, *output = NULL, *user_output = NULL;
     int result;
-    if(argc != 3){
-        printf("Usage: spj x.in x.out\n");
+    if(argc != 4){
+        printf("Usage: spj x.in x.out user.out\n");
         return ERROR;
     }
     input = fopen(args[1], "r");
-    user_output = fopen(args[2], "r");
+    output = fopen(args[2], "r");
+    user_output = fopen(args[3], "r");
     if(input == NULL || user_output == NULL){
         printf("Failed to open output file\n");
         close_file(input);
@@ -32,18 +32,20 @@ int main(int argc, char *args[]){
         return ERROR;
     }
 
-    result = spj(input, user_output);
+    result = spj(input, output, user_output);
     printf("result: %d\n", result);
 
     close_file(input);
+    close_file(output);
     close_file(user_output);
     return result;
 }
 
-int spj(FILE *input, FILE *user_output){
+int spj(FILE *input, FILE *output, FILE *user_output){
     /*
       parameter:
         - input，标程输入的文件指针
+        - output，标程输出的文件指针
         - user_output，用户输出文件的指针
       return:
         - 如果用户答案正确，返回AC
@@ -60,10 +62,8 @@ int spj(FILE *input, FILE *user_output){
       return AC;
      */
 }
-      </code>
-    </pre>
-
-  </Card>
+</code></pre>
+  </div>
 </template>
 
 <script>

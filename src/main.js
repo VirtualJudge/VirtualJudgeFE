@@ -10,7 +10,6 @@ import VueHighlightJS from 'vue-highlightjs'
 import 'highlight.js/styles/atom-one-light.css'
 import VueClipboard from 'vue-clipboard2'
 import i18n from './i18n'
-import moment from 'moment'
 import * as Sentry from "@sentry/browser";
 import {Vue as VueIntegration} from "@sentry/integrations";
 import {Integrations} from '@sentry/tracing';
@@ -28,14 +27,11 @@ if (process.env.NODE_ENV !== 'development') {
         tracesSampleRate: 1
     });
 }
-
-Vue.prototype.$moment = moment;
 Vue.use(VueClipboard)
 Vue.use(VueHighlightJS)
 Vue.use(mavonEditor)
 Vue.use(ViewUI);
 Vue.config.productionTip = false
-
 new Vue({
     router,
     store,
