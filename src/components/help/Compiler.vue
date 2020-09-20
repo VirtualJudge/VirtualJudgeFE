@@ -1,7 +1,7 @@
 <template>
   <div class="main-view">
-    <h2>{{ $t('pages.help.compiler_info') }}</h2>
-    <pre v-highlightjs>
+    <h2>编译器信息</h2>
+    <pre style="margin-top: 10px" v-highlightjs>
       <code class="shell">
 $ gcc --version
 gcc (Ubuntu 9.3.0-10ubuntu2) 9.3.0

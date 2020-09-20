@@ -48,6 +48,7 @@
               v-model="formData.editor_text.markdown"
               v-bind:boxShadow="false"
               v-bind:tabSize="4"
+              :externalLink="externalLink"
               :toolbars="editor_toolbar"
               codeStyle="atom-one-light"/>
         </TabPane>
@@ -160,13 +161,14 @@ import axios from "axios";
 import FileSaver from 'file-saver'
 import moment from 'moment'
 import HelpSPJ from "@/components/system/problem/HelpSPJ";
-import {MAVON_EDITOR_TOOLBAR} from "@/utils/editor";
+import {MAVON_EDITOR_EXTERNAL_LINK, MAVON_EDITOR_TOOLBAR} from "@/utils/editor";
 
 export default {
   name: "AddOrUpdateProblem",
   components: {HelpSPJ},
   data() {
     return {
+      externalLink: process.env.NODE_ENV === 'development' ? true : MAVON_EDITOR_EXTERNAL_LINK,
       problem_id: null,
       spj_help_modal: false,
       editor_toolbar: MAVON_EDITOR_TOOLBAR,

@@ -40,14 +40,14 @@ export default {
       page_size: 50,
       columns: [
         {
-          title: this.$t('pages.problem.number'),
+          title: '编号',
           key: 'id',
           align: 'center',
           maxWidth: 100
         },
         {
           align: 'center',
-          title: this.$t('pages.problem.title'),
+          title: '标题',
           ellipsis: true,
           render: (h, params) => {
             return h('span', {
@@ -65,7 +65,7 @@ export default {
         },
         {
           align: 'center',
-          title: this.$t('pages.problem.source'),
+          title: '来源',
           key: 'source',
           ellipsis: true,
         }, {
@@ -83,7 +83,7 @@ export default {
         {
           maxWidth: 120,
           align: 'center',
-          title: this.$t('pages.problem.ac/submit'),
+          title: 'AC/提交',
           render: (h, params) => {
             return h('span', `${params.row.total_accepted}/${params.row.total_submitted}`)
           }

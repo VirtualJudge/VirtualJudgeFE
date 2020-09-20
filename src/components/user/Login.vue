@@ -45,7 +45,6 @@ import message from "@/utils/message";
 
 export default {
   name: "Login",
-  inject: ['reload'],
   data() {
     return {
       formItem: {
@@ -96,7 +95,6 @@ export default {
               if (this.$route.fullPath.startsWith('/register')) {
                 this.$router.push('/')
               }
-              this.reload()
             } else {
               if (res.data.data !== null && res.data.data.activated !== true) {
                 if (this.$route.fullPath.startsWith('/register')) {

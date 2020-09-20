@@ -1,6 +1,6 @@
 <template>
   <div class="main-view">
-    <h2>{{ $t('pages.help.help') }}</h2>
+    <h2>帮助</h2>
     <ul style="margin-top: 10px">
       <li><p>本网站使用<a target="_blank" href="https://cn.gravatar.com/">Gravatar</a>头像</p>
       </li>

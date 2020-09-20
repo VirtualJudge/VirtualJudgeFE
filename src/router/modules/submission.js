@@ -7,7 +7,7 @@ export default [
         name: 'submissionList',
         component: SubmissionList,
         meta: {
-            title: 'title.submission_list'
+            title: '提交列表'
         }
     },
     {
@@ -15,7 +15,7 @@ export default [
         name: 'submissionDetail',
         component: SubmissionDetail,
         meta: {
-            title: 'title.submission_detail'
+            title: '提交详情'
         }
     }
 ]

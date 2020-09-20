@@ -3,9 +3,8 @@ import VueRouter from 'vue-router'
 import ViewUI from 'view-design';
 import types from "@/store/types";
 import store from '../store'
-import i18n from "@/i18n";
 import storage from "@/utils/storage";
-import {STORAGE_PROFILE_KEY} from "@/utils/constant";
+import {STORAGE_PROFILE_KEY, SITE_INFO} from "@/utils/constant";
 import {Message} from 'view-design'
 
 Vue.use(ViewUI);
@@ -26,7 +25,7 @@ router.beforeEach((to, from, next) => {//beforeEach是router的钩子函数，�
     ViewUI.LoadingBar.start();
 
     if (to.meta.title) {//判断是否有标题
-        document.title = i18n.t(to.meta.title) + ' - ddl'
+        document.title = to.meta.title + ' - ' + SITE_INFO.default
     }
     let profile = JSON.parse(storage.get(STORAGE_PROFILE_KEY, "{}"))
     if (to.meta.requireAdmin) {
