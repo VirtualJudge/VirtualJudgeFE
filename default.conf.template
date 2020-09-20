@@ -12,6 +12,8 @@ server {
     proxy_set_header X-Forwarded-For  $proxy_add_x_forwarded_for;
     proxy_set_header X-Forwarded-Proto $scheme;
     proxy_set_header X-Request-Id $request_id;
+    client_max_body_size 200M;
+    keepalive_timeout 1800;
     include mime.types;
     default_type  application/octet-stream;
     location /api/ {
@@ -24,6 +26,9 @@ server {
         rewrite ^/(.*)  https://cdn.wustacm.top/$1 permanent;
     }
     location ^~ /css/ {
+        rewrite ^/(.*)  https://cdn.wustacm.top/$1 permanent;
+    }
+    location ^~ /plugins/ {
         rewrite ^/(.*)  https://cdn.wustacm.top/$1 permanent;
     }
     location / {

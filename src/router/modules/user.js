@@ -13,7 +13,7 @@ export default [
         name: 'rank',
         component: RankIndex,
         meta: {
-            title: 'title.rank'
+            title: '排行'
         }
     },
     {
@@ -21,7 +21,7 @@ export default [
         name: 'cannot_login',
         component: CannotLogin,
         meta: {
-            title: 'title.cannot_login'
+            title: '无法登录'
         }
     },
     {
@@ -29,7 +29,7 @@ export default [
         name: 'register',
         component: Register,
         meta: {
-            title: 'title.register'
+            title: '注册'
         }
     },
     {
@@ -37,7 +37,7 @@ export default [
         name: 'self',
         component: SelfIndex,
         meta: {
-            title: 'title.self_setting'
+            title: '个人设置'
         },
         children: [
             {
@@ -62,7 +62,7 @@ export default [
         name: 'user',
         component: UserInfo,
         meta: {
-            title: 'title.self_info'
+            title: '个人信息'
         }
     }
 ]

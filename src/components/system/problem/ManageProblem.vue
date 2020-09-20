@@ -22,13 +22,13 @@ import PaginateTable from "@/components/utils/PaginateTable";
 import api from "@/utils/api";
 import message from "@/utils/message";
 import moment from "moment";
-import {ACCEPT_LOCALES} from "@/utils/constant";
 import {mapGetters} from 'vuex'
 
 export default {
   name: "ManageProblem",
   components: {PaginateTable},
   data() {
+    moment.locale('zh-cn')
     return {
       tableLoading: false,
       total: 0,
@@ -57,7 +57,7 @@ export default {
       }, {
         title: '创建时间',
         render: (h, params) => {
-          moment.locale(ACCEPT_LOCALES[this.web_lang].moment)
+
           return h('Tooltip', {
             props: {
               transfer: true,
@@ -68,7 +68,6 @@ export default {
       }, {
         title: '上次修改时间',
         render: (h, params) => {
-          moment.locale(ACCEPT_LOCALES[this.web_lang].moment)
           return h('Tooltip', {
             props: {
               transfer: true,
@@ -133,10 +132,10 @@ export default {
     this.requestTableData()
   },
   methods: {
-    requestTableData() {
+    requestTableData(page_number) {
       this.tableLoading = true
       api.getProblemList({
-        page: this.current,
+        page: page_number || 1,
         page_size: this.page_size,
         id: this.table_filters.id,
         title: this.table_filters.title
@@ -145,6 +144,7 @@ export default {
           this.data = res.data.data.results || []
           this.total = res.data.data.count || 0
           this.tableLoading = false
+          this.current = page_number
         } else {
           this.$Message.error(message.err(res.data.err));
           this.tableLoading = false
@@ -152,8 +152,7 @@ export default {
       })
     },
     onPageChange(page_number) {
-      this.current = page_number
-      this.requestTableData()
+      this.requestTableData(page_number)
     },
     onPageSizeChange(page_size) {
       this.page_size = page_size

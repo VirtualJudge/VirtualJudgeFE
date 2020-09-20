@@ -7,7 +7,7 @@ export default [
         name: 'problems',
         component: ProblemList,
         meta: {
-            title: 'title.problem_list'
+            title: '题目列表'
         }
     },
     {
@@ -15,7 +15,7 @@ export default [
         name: 'problem',
         component: ProblemDetail,
         meta: {
-            title: 'title.problem_detail'
+            title: '题目详情'
         }
     }
 ]

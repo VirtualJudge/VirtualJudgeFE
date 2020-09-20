@@ -2,52 +2,38 @@
   <div>
     <Menu mode="horizontal" theme="light" :active-name="active_nav">
       <MenuItem class="left-menu-item" name="/" to="/">
-        {{ $t('navbar.index') }}
+        首页
       </MenuItem>
       <MenuItem class="left-menu-item" name="/problem" to="/problem">
-        {{ $t('navbar.problem') }}
+        题目
       </MenuItem>
       <MenuItem class="left-menu-item" name="/submission" to="/submission">
-        {{ $t('navbar.submission') }}
+        提交
       </MenuItem>
       <MenuItem class="left-menu-item" name="/rank" to="/rank">
-        {{ $t('navbar.rank') }}
+        排行
       </MenuItem>
       <Submenu name="/help">
         <template slot="title">
-          {{ $t('navbar.help') }}
+          帮助
         </template>
         <MenuItem class="left-menu-item" name="/help" to="/help">
-          {{ $t('navbar.index') }}
+          首页
         </MenuItem>
         <MenuItem class="left-menu-item" name="/compiler" to="/compiler">
-          {{ $t('navbar.compiler') }}
+          编译器
 
         </MenuItem>
       </Submenu>
-      <Dropdown v-if="false" @on-click="handleLanguageItemClick" class="left-menu-item">
-        <span>
-          {{ $t('navbar.language') }}
-          <Icon type="ios-arrow-down"></Icon>
-        </span>
-        <DropdownMenu slot="list">
-          <DropdownItem
-              v-for="item in Object.keys(locales)"
-              :key="item"
-              :name="item">
-            <country-flag :country='locales[item].countryFlag'/>
-          </DropdownItem>
-        </DropdownMenu>
-      </Dropdown>
       <template v-if="!isAuthenticated">
         <div class="right-menu-item">
-          <Button type="default" class="right-menu-item-button" @click="handleRegisterClick">{{
-              $t('navbar.register')
-            }}
+          <Button type="default" class="right-menu-item-button" @click="handleRegisterClick">
+            注册
+
           </Button>
-          <Button type="default" class="right-menu-item-button" @click="loginModal=true">{{
-              $t('navbar.login')
-            }}
+          <Button type="default" class="right-menu-item-button" @click="loginModal=true">
+            登录
+
           </Button>
         </div>
       </template>
@@ -57,13 +43,13 @@
             <template slot="title">
               <Avatar :src="emailHashURL">{{ profile.username }}</Avatar>
             </template>
-            <MenuGroup v-if="isAdminRole" :title="$t('navbar.system_setting')">
-              <MenuItem name="/system" to="/system">{{ $t('navbar.system_setting') }}</MenuItem>
+            <MenuGroup v-if="isAdminRole" title="高级">
+              <MenuItem name="/system" to="/system">系统设置</MenuItem>
             </MenuGroup>
-            <MenuGroup :title="$t('navbar.basic_setting')">
-              <MenuItem name="/user" :to="userUrl">{{ $t('navbar.self_info') }}</MenuItem>
-              <MenuItem name="/self" to="/self">{{ $t('navbar.self_setting') }}</MenuItem>
-              <MenuItem name="logout" @click.native="handleLogout">{{ $t('navbar.logout') }}</MenuItem>
+            <MenuGroup title="基础">
+              <MenuItem name="/user" :to="userUrl">个人信息</MenuItem>
+              <MenuItem name="/self" to="/self">个人设置</MenuItem>
+              <MenuItem name="logout" @click.native="handleLogout">退出登录</MenuItem>
             </MenuGroup>
           </Submenu>
         </div>
@@ -83,28 +69,22 @@
 <script>
 import {mapActions, mapGetters} from 'vuex'
 import Login from "@/components/user/Login";
-import CountryFlag from 'vue-country-flag'
-import {ACCEPT_LOCALES, STORAGE_LOCALE_KEY} from '@/utils/constant'
-import storage from "@/utils/storage";
 
 export default {
   name: "NavBar",
-  components: {Login, CountryFlag},
-  inject: ['reload'],
+  components: {Login},
   data() {
     return {
       isLogin: false,
       loginModal: false,
       enabledRegister: true,
       modalChange: null,
-      locales: ACCEPT_LOCALES
     }
   },
   mounted() {
-    this.handleLanguageItemClick('CN')
   },
   methods: {
-    ...mapActions(['getProfile', 'clearProfile', 'randomCaptcha', 'getWebLang']),
+    ...mapActions(['getProfile', 'clearProfile', 'randomCaptcha']),
     visibleChange(visible) {
       if (visible) {
         this.randomCaptcha()
@@ -113,13 +93,7 @@ export default {
     handleRegisterClick() {
       this.$router.push('/register')
     },
-    handleLanguageItemClick(name) {
-      //this.$Message.info(this.locales[name].updateMessage)
-      storage.set(STORAGE_LOCALE_KEY, name)
-      this.$i18n.locale = this.locales[name].lang
-      this.getWebLang()
-      this.reload()
-    },
+
     handleLogout() {
       this.clearProfile()
     }

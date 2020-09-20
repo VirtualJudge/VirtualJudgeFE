@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <NavBar/>
-    <router-view v-if="toggleFlag"/>
+    <router-view/>
   </div>
 </template>
 
@@ -18,29 +18,11 @@ import {mapActions} from 'vuex'
 
 export default {
   components: {NavBar},
-  provide() {
-    return {
-      reload: this.reload
-    }
-  },
-  data() {
-    return {
-      toggleFlag: true
-    }
-  },
   mounted() {
     this.getProfile()
-
   },
   methods: {
     ...mapActions(['getProfile']),
-    reload() {
-      this.toggleFlag = false
-      this.$nextTick(() => {
-        this.toggleFlag = true
-      })
-    }
-
   }
 }
 </script>

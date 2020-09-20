@@ -62,7 +62,7 @@
 import PaginateTable from "@/components/utils/PaginateTable";
 import api from "@/utils/api";
 import moment from 'moment'
-import {ACCEPT_LOCALES, PROBLEM_SUBMIT_LANGUAGES, SUBMISSION_VERDICTS} from '@/utils/constant'
+import { PROBLEM_SUBMIT_LANGUAGES, SUBMISSION_VERDICTS} from '@/utils/constant'
 import {mapGetters} from "vuex";
 import message from "@/utils/message";
 
@@ -197,7 +197,7 @@ export default {
           align: 'center',
           ellipsis: true,
           render: (h, params) => {
-            moment.locale(ACCEPT_LOCALES[this.web_lang].moment)
+            moment.locale('zh-cn')
             return h('Tooltip', {
               props: {
                 transfer: true,

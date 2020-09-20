@@ -29,7 +29,7 @@ export default [
                 name: 'manage_user',
                 component: ManageUserIndex,
                 meta: {
-                    title: 'pages.system.manage_user',
+                    title: '用户管理',
                     requireAdmin: true
                 }
             },
@@ -38,7 +38,7 @@ export default [
                 name: 'manage_permission',
                 component: ManagePermissionIndex,
                 meta: {
-                    title: 'pages.system.manage_permission',
+                    title: '权限管理',
                     requireAdmin: true
                 }
             },
@@ -47,7 +47,7 @@ export default [
                 name: 'manage_problem',
                 component: ManageProblem,
                 meta: {
-                    title: 'pages.system.manage_problem',
+                    title: '题目管理',
                     requireAdmin: true
                 }
             },

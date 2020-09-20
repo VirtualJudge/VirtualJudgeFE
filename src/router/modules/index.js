@@ -7,7 +7,7 @@ export default [
         name: 'index',
         component: Index,
         meta: {
-            title: 'title.index'
+            title: '首页'
         }
     },
     {
@@ -15,7 +15,7 @@ export default [
         name: 'default',
         component: NotFound,
         meta: {
-            title: 'title.page_not_found'
+            title: '404'
         }
     }
 ]

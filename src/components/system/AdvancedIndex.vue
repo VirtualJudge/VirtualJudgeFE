@@ -3,16 +3,16 @@
     <Sider :style="{background: '#fff'}">
       <Menu width="auto" theme="light" :active-name="active_name" style="height: 100%">
         <MenuItem name="/system" to="/system">
-          {{ $t('pages.system.system_info') }}
+          系统信息
         </MenuItem>
         <MenuItem name="/system/manage_problem" to="/system/manage_problem">
-          {{ $t('pages.system.manage_problem') }}
+          题目管理
         </MenuItem>
         <MenuItem v-if="hiddenItem" name="/system/manage_permission" to="/system/manage_permission">
-          {{ $t('pages.system.manage_permission') }}
+          权限管理
         </MenuItem>
         <MenuItem name="/system/manage_user" to="/system/manage_user">
-          {{ $t('pages.system.manage_user') }}
+          用户管理
         </MenuItem>
       </Menu>
     </Sider>

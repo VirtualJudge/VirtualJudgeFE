@@ -10,6 +10,7 @@
                 v-model="editor_value.markdown"
                 defaultOpen="preview"
                 codeStyle="atom-one-light"
+                :externalLink="externalLink"
                 previewBackground="#ffffff"
                 v-bind:boxShadow="false"
                 v-bind:tabSize="4"
@@ -150,7 +151,8 @@
 <script>
 import api from "@/utils/api";
 import message from "@/utils/message";
-import {PROBLEM_SUBMIT_LANGUAGES, STORAGE, PROBLEM_PUBLIC_TYPE} from "@/utils/constant";
+import {PROBLEM_SUBMIT_LANGUAGES, STORAGE, PROBLEM_PUBLIC_TYPE, SITE_INFO} from "@/utils/constant";
+import {MAVON_EDITOR_EXTERNAL_LINK} from "@/utils/editor";
 import {mapGetters} from 'vuex'
 import storage from "@/utils/storage";
 
@@ -160,6 +162,7 @@ export default {
   data() {
     return {
       tab_val: '',
+      externalLink: process.env.NODE_ENV === 'development' ? true : MAVON_EDITOR_EXTERNAL_LINK,
       editor_value: {
         legacy: null,
         pdf: '',
@@ -189,6 +192,8 @@ export default {
         this.$Message.error(message.err(res.data.err))
       } else {
         this.problem = res.data.data || {}
+        if (this.problem.title !== null)
+          document.title = `${this.problem.title} - ${SITE_INFO.default}`
         this.privilegeCode = res.data.data.public || 0
         this.privilege = PROBLEM_PUBLIC_TYPE[this.privilegeCode]
         this.editor_value.legacy = res.data.data.content.legacy || null

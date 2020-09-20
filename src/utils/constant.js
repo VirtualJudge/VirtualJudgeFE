@@ -75,22 +75,6 @@ export const SUBMISSION_VERDICTS = {
     // 判题机正在同步测试数据的标志
     'SYNC': {info: 'Compiler Data Syncing', color: 'primary'}
 }
-export const ACCEPT_LOCALES = {
-    'CN': {
-        moment: 'zh-cn',
-        lang: 'zh-hans',
-        countryFlag: 'chn',
-        updateMessage: '语言切换为中文'
-    },
-    'UK': {
-        moment: 'en',
-        lang: 'en',
-        countryFlag: 'gbr',
-        updateMessage: 'Language change to English'
-    }
-}
-export const DEFAULT_LOCALE = 'UK'
-export const STORAGE_LOCALE_KEY = '_locale'
 export const STORAGE_PROFILE_KEY = '_profile'
 export const PERMISSIONS = {
     MANAGE_PROBLEM: 'problem.manage_problem',
@@ -102,4 +86,8 @@ export const VALID_SCHOOLS = {
 }
 export const STORAGE = {
     PROBLEM_LANGUAGE_KEY: '_problem_language_key'
+}
+export const SITE_INFO = {
+    default: "WUSTOJ",
+    short: "OJ"
 }

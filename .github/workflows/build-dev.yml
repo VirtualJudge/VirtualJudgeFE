@@ -1,13 +1,13 @@
 # This is a basic workflow to help you get started with Actions
 
-name: build latest image
+name: build dev image
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
 on:
   push:
     branches:
-      - master
+      - dev
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -24,22 +24,12 @@ jobs:
       - name: Build sources
         run: |
           yarn build
-      - name: Upload Qiniu
-        uses: saltbo/uptoc@master
-        with:
-          driver: qiniu
-          region: cn-east-1
-          bucket: dianhsu
-          dist: dist
-        env:
-          UPTOC_UPLOADER_AK: ${{ secrets.QINIU_ACCESS_KEY }}
-          UPTOC_UPLOADER_SK: ${{ secrets.QINIU_SECRET_KEY }}
       - name: Build Docker image
         run: |
-          docker build . --tag wustacm/oj-frontend
+          docker build . --tag wustacm/oj-frontend:dev
       - name: Log into Docker Hub Container Registry
         run: |
           echo "${{ secrets.DOCKER_HUB_PASS }}" | docker login -u ${{ secrets.DOCKER_HUB_USER }} --password-stdin
       - name: Publish Image to Docker Hub
         run: |
-          docker push wustacm/oj-frontend
+          docker push wustacm/oj-frontend:dev
