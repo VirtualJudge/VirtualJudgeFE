@@ -57,6 +57,7 @@
           <Upload
               style="max-width: 1000px;margin: auto"
               ref="pdfUpload"
+              :disabled="uploadingPDF"
               :on-success="onPDFSuccess"
               :on-error="onError"
               :on-format-error="onPDFFormatError"
@@ -91,10 +92,12 @@
             :on-error="onError"
             :on-format-error="onZIPFormatError"
             :on-exceeded-size="onExceededSize"
+            :before-upload="beforeTestCaseUpload"
             :with-credentials="true"
+            :disabled="uploadingTestCases"
             :format="uploadConfig.zip_format"
             accept="application/x-zip-compressed"
-            :max-size="10240"
+            :max-size="204800"
             type="drag"
             :headers="uploadHeaders"
             :data="formData.manifest"
@@ -109,6 +112,7 @@
           <p slot="title"><b>{{ formData.manifest.hash }}</b></p>
           <Table
               style="margin-top: 10px"
+              :loading="uploadingTestCases"
               :columns="test_cases_col"
               :data="formData.manifest.test_cases">
           </Table>
@@ -168,6 +172,8 @@ export default {
   components: {HelpSPJ},
   data() {
     return {
+      uploadingTestCases: false,
+      uploadingPDF: false,
       externalLink: process.env.NODE_ENV === 'development' ? true : MAVON_EDITOR_EXTERNAL_LINK,
       problem_id: null,
       spj_help_modal: false,
@@ -211,6 +217,9 @@ export default {
     this.uploadHeaders['X-CSRFToken'] = this.getCookie('csrftoken')
   },
   methods: {
+    beforeTestCaseUpload() {
+      this.uploadingTestCases = true;
+    },
     updateProblemInit() {
       api.getAdvancedProblemDetail(this.problem_id).then(res => {
         if (res.data.err === null) {
@@ -305,9 +314,11 @@ export default {
       })
     },
     onSuccess(res) {
+      this.uploadingTestCases = false;
       if (res.err !== null) {
         this.$Message.error('上传失败，' + message.err(res.err))
       } else {
+        this.$Message.success('测试数据上传成功')
         if (Object.hasOwnProperty.call(res.data, 'test_cases')) {
           this.formData.manifest.test_cases = res.data['test_cases'] || []
         }
@@ -317,13 +328,16 @@ export default {
       }
     },
     beforePDFUpload() {
+      this.uploadingPDF = true;
       this.$refs.pdfUpload.clearFiles()
     },
     onPDFSuccess(res) {
+      this.uploadingPDF = false;
       if (res.err !== null) {
         this.$Message.error('上传失败，' + message.err(res.err))
 
       } else {
+        this.$Message.success('PDF上传成功')
         this.formData.editor_text.pdf = `/api/problem/pdf?title=${res.data.title}`
       }
     },
@@ -331,6 +345,7 @@ export default {
       window.open(this.formData.editor_text.pdf)
     },
     onError(error) {
+      this.uploadingPDF = false;
       this.$Message.error(message.err(error))
     },
     onZIPFormatError(file) {
