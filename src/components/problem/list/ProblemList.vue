@@ -120,7 +120,7 @@ export default {
             } else if (params.row.user_stat === 1) {
               return h('Icon',{
                 props:{
-                  type: 'md-alert',
+                  type: 'md-code-working',
                   color: '#ff9900'
                 }
               })

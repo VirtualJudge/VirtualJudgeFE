@@ -17,7 +17,7 @@ const mutations = {
 const actions = {
     randomCaptcha({commit}) {
         commit(types.CHANGE_CAPTCHA, {
-            captcha_random: '/api/captcha?id='+Math.random()
+            captcha_random: '/api/captcha/?id='+Math.random()
         })
     }
 }
