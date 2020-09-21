@@ -118,12 +118,10 @@ export default {
     changePassword(name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
-          let oldPassword = this.formData.oldPassword;        // 表单数据中的旧密码和新密码
-          let newPassword = this.formData.newPassword;
-
           api.changeUserPassword(
-              oldPassword,
-              newPassword).then(res => {
+              this.formData.oldPassword,
+              this.formData.newPassword,
+              this.formData.captcha).then(res => {
                 if (res.data.err == null) {
                   this.$Message.success('修改成功, 请重新登录');
                   this.$router.push('/')

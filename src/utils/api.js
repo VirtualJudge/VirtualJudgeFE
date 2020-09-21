@@ -125,11 +125,12 @@ export default {
     getSubmissionPersonal(submission_id) {
         return ajax(`/api/submission/${submission_id}/personal/`, 'get')
     },
-    changeUserPassword(oldPassword, newPassword) {
+    changeUserPassword(oldPassword, newPassword, captcha) {
         return ajax('/api/user/password/', 'put', {
             data: {
                 'old_password': oldPassword,
-                'new_password': newPassword
+                'new_password': newPassword,
+                'captcha': captcha
             }
         });
     },
