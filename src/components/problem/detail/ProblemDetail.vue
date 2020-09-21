@@ -130,15 +130,6 @@
                       @click="handleSubmitClick"
                       :loading="submitButtonLoading">提交
               </Button>
-              <span v-if="judge_result.short==='P'" style="margin-left: 10px;color: gold">
-                {{ judge_result.info }}
-              </span>
-              <span v-if="judge_result.short==='R'" style="margin-left: 10px;color: #2b85e4">
-                {{ judge_result.info }}
-              </span>
-              <span v-if="judge_result.short==='AC'" style="margin-left: 10px;color: #18b566">
-                {{ judge_result.info }}
-              </span>
             </FormItem>
           </Form>
         </Card>
@@ -174,10 +165,6 @@ export default {
       code: '',
       lang: '',
       submitButtonLoading: false,
-      judge_result: {
-        short: '',
-        info: ''
-      },
       languages: PROBLEM_SUBMIT_LANGUAGES
     }
   },
@@ -214,9 +201,13 @@ export default {
       api.postSubmissionCreate(this.problem.id, this.code, this.lang).then(res => {
         if (res.data.err === null) {
           this.$Message.success('提交成功')
+          setTimeout(() => {
+            this.$router.push('/submission')
+          }, 1000)
         } else {
           this.$Message.error(message.err(res.data.err))
         }
+      }).finally(() => {
         this.submitButtonLoading = false
       })
     },
