@@ -5,7 +5,7 @@
       <Form style="margin-top: 10px" ref="formData" :label-width="120" :rules="pwdRule" :model="formData">
         <FormItem label="原密码" prop="oldPassword">
           <label>
-            <Input type="password" placeholder="旧密码" v-model="formData.oldPassword">
+            <Input type="password" placeholder="原密码" v-model="formData.oldPassword">
             </Input>
           </label>
         </FormItem>
