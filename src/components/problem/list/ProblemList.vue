@@ -77,7 +77,7 @@ export default {
                 transfer: true,
                 content: PROBLEM_PUBLIC_TYPE[params.row.public].name
               }
-            }, [h('Tag',{},[h('code', PROBLEM_PUBLIC_TYPE[params.row.public].short)])])
+            }, [h('Tag', {}, [h('code', PROBLEM_PUBLIC_TYPE[params.row.public].short)])])
           }
         },
         {
@@ -108,9 +108,26 @@ export default {
         this.tColumns = [{
           title: '状态',
           align: 'center',
-          maxWidth: 100,
-          render: (h) => {
-            return h('span')
+          maxWidth: 80,
+          render: (h, params) => {
+            if (params.row.user_stat === 2) {
+              return h('Icon',{
+                props:{
+                  type: 'md-checkmark-circle-outline',
+                  color: '#19be6b'
+                }
+              })
+            } else if (params.row.user_stat === 1) {
+              return h('Icon',{
+                props:{
+                  type: 'md-alert',
+                  color: '#ff9900'
+                }
+              })
+            } else {
+              return h('span')
+            }
+
           }
         }].concat(this.columns)
       } else {
