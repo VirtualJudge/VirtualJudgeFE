@@ -203,7 +203,7 @@ export default {
           this.$Message.success('提交成功')
           setTimeout(() => {
             this.$router.push('/submission')
-          }, 1000)
+          }, 200)
         } else {
           this.$Message.error(message.err(res.data.err))
         }
