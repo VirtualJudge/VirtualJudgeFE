@@ -44,12 +44,12 @@
             </ListItem>
             <ListItem>
               <ListItemMeta title="时间花费">
-                <span slot="description">{{ time_cost }} MS</span>
+                <span slot="description">{{ time_cost }} ms</span>
               </ListItemMeta>
             </ListItem>
             <ListItem>
               <ListItemMeta title="内存花费">
-                <span slot="description"> {{ memory_cost }} MB</span>
+                <span slot="description"> {{ memory_cost }} MiB</span>
               </ListItemMeta>
             </ListItem>
           </List>
