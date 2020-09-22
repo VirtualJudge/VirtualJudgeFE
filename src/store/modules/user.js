@@ -27,7 +27,7 @@ const getters = {
 
 const mutations = {
     [types.CHANGE_PROFILE](state, {profile, emailHashURL}) {
-        state.profile = profile
+        state.profile = profile || {}
         state.permissions = profile.user_permissions || []
         state.emailHashURL = emailHashURL
         state.userId = profile.id

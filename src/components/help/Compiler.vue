@@ -30,6 +30,7 @@ $ kotlin -version
 Kotlin version 1.4.10-release-411 (JRE 14.0.2+13)
       </code>
     </pre>
+    <p>编译器的编译参数和运行环境，请参考源码中的各语言配置文件<a target="_blank" href="https://github.com/wustacm/oj-consumer/tree/master/core/languages">https://github.com/wustacm/oj-consumer/tree/master/core/languages</a></p>
   </div>
 </template>
 

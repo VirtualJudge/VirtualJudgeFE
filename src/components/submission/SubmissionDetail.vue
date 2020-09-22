@@ -44,18 +44,26 @@
             </ListItem>
             <ListItem>
               <ListItemMeta title="时间花费">
-                <span slot="description">{{ time_cost }} MS</span>
+                <span slot="description">{{ time_cost }} ms</span>
               </ListItemMeta>
             </ListItem>
             <ListItem>
               <ListItemMeta title="内存花费">
-                <span slot="description"> {{ memory_cost }} MB</span>
+                <span slot="description"> {{ memory_cost }} MiB</span>
               </ListItemMeta>
             </ListItem>
           </List>
           <Button type="success" v-if="code" @click="handleCopyClick">复制代码到剪切板</Button>
-          <Divider/>
-          <Button type="info" v-if="isAdminRole" @click="handleRejudge">重判</Button>
+          <Divider v-if="changePublicStatus"/>
+          <div v-if="changePublicStatus">
+            代码是否公开：
+            <i-switch v-model="is_public" size="large" @on-change="handlePublicStatusChange">
+              <span slot="open">公开</span>
+              <span slot="close">私密</span>
+            </i-switch>
+          </div>
+          <Divider v-if="isAdminRole"/>
+          <Button v-if="isAdminRole" type="info" @click="handleRejudge">重判</Button>
         </Card>
 
       </Col>
@@ -83,7 +91,7 @@ export default {
       problem: {},
       user: {},
       additional_info: {'error': null, 'result': null},
-      collapse_val: '0',
+      is_public: false,
       result_col: [{
         title: '序号',
         maxWidth: 100,
@@ -115,6 +123,7 @@ export default {
         let response = res.data.data || {}
         this.code = response.code || ''
         this.code_type = response.lang
+        this.is_public = response.is_public || false
         this.problem = response.problem || {}
         this.user = response.user || {}
         this.verdict = SUBMISSION_VERDICTS[response.verdict] || {}
@@ -147,10 +156,23 @@ export default {
     },
     handleUsernameClick() {
       this.$router.push(`/user/${this.user.id}`)
+    },
+    handlePublicStatusChange() {
+      api.putSubmissionPublicChange(this.$route.params.id, this.is_public).then(res => {
+        if (res.data.err === null) {
+          this.$Message.success('修改成功')
+        } else {
+          this.$Message.error(message.err(res.data.err))
+        }
+      })
     }
+
   },
   computed: {
-    ...mapGetters(['isAdminRole'])
+    ...mapGetters(['isAdminRole', 'userId', 'isAuthenticated']),
+    changePublicStatus: function () {
+      return !!(this.isAdminRole || (this.isAuthenticated && this.userId === this.user.id));
+    }
   }
 }
 </script>

@@ -62,7 +62,7 @@
 import PaginateTable from "@/components/utils/PaginateTable";
 import api from "@/utils/api";
 import moment from 'moment'
-import { PROBLEM_SUBMIT_LANGUAGES, SUBMISSION_VERDICTS} from '@/utils/constant'
+import {PROBLEM_SUBMIT_LANGUAGES, SUBMISSION_VERDICTS} from '@/utils/constant'
 import {mapGetters} from "vuex";
 import message from "@/utils/message";
 
@@ -154,13 +154,27 @@ export default {
           align: 'center',
           ellipsis: true,
           render: (h, params) => {
-            if (this.profile.id !== null
+            if (params.row.is_public === true) {
+              return h('span', {
+                style: {
+                  color: '#19be6b',
+                  cursor: 'pointer',
+                  'font-weight': 'bold'
+                },
+                on: {
+                  click: () => {
+                    this.$router.push(`/submission/${params.row.id}`)
+                  }
+                }
+              }, [h('code', PROBLEM_SUBMIT_LANGUAGES[params.row.lang].short)])
+            } else if (this.profile.id !== null
                 && (params.row.user.id === this.profile.id
                     || this.isAdminRole)) {
               return h('span', {
                 style: {
                   color: '#3399ff',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  'font-weight': 'bold'
                 },
                 on: {
                   click: () => {

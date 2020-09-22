@@ -125,6 +125,13 @@ export default {
     getSubmissionPersonal(submission_id) {
         return ajax(`/api/submission/${submission_id}/personal/`, 'get')
     },
+    putSubmissionPublicChange(submission_id, is_public) {
+        return ajax(`/api/submission/${submission_id}/`, 'put', {
+            data: {
+                is_public: is_public
+            }
+        })
+    },
     changeUserPassword(oldPassword, newPassword, captcha) {
         return ajax('/api/user/password/', 'put', {
             data: {

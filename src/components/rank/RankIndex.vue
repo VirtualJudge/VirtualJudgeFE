@@ -35,7 +35,7 @@ export default {
   components: {PaginateTable},
   data() {
     return {
-      page_size: 10,
+      page_size: 50,
       current: 1,
       tData: [],
       total: 0,
