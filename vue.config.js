@@ -1,6 +1,7 @@
 let path = require('path')
 let CopyWebpackPlugin = require('copy-webpack-plugin');
 module.exports = {
+    productionSourceMap: false,
     css: {
         loaderOptions: {
             less: {
@@ -14,7 +15,7 @@ module.exports = {
     devServer: {
         proxy: {
             '/api': {
-                target: 'https://ddl.wustacm.top',
+                target: 'http://127.0.0.1:8000',
                 changeOrigin: true
             }
         }
