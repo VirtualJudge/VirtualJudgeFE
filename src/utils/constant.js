@@ -21,7 +21,7 @@ export const PROBLEM_PUBLIC_TYPE = [
 
 
 export const PROBLEM_SUBMIT_LANGUAGES = {
-    'a': {info: 'All', disabled: true},
+    'a': {info: '选择语言，默认全部', disabled: true},
     'c': {
         info: 'C (GCC 9.3.0)',
         short: 'C',
@@ -60,7 +60,7 @@ export const PROBLEM_SUBMIT_LANGUAGES = {
     }
 }
 export const SUBMISSION_VERDICTS = {
-    'A': {info: 'All'},
+    'A': {info: '选择状态，默认全部'},
     'P': {info: 'Pending', color: 'default'},
     'R': {info: 'Running', color: 'green'},
     'AC': {info: 'Accepted', color: 'success'},
