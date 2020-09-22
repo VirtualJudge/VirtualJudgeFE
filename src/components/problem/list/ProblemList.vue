@@ -48,7 +48,6 @@ export default {
         {
           align: 'center',
           title: '标题',
-          ellipsis: true,
           render: (h, params) => {
             return h('span', {
               style: {
