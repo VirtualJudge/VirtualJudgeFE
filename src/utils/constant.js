@@ -88,6 +88,6 @@ export const STORAGE = {
     PROBLEM_LANGUAGE_KEY: '_problem_language_key'
 }
 export const SITE_INFO = {
-    default: "WUSTOJ",
+    default: "OJ",
     short: "OJ"
 }
