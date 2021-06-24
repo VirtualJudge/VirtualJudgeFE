@@ -10,21 +10,17 @@ import VueHighlightJS from 'vue-highlightjs'
 import 'highlight.js/styles/atom-one-light.css'
 import VueClipboard from 'vue-clipboard2'
 
-import * as Sentry from "@sentry/browser";
-import {Vue as VueIntegration} from "@sentry/integrations";
-import {Integrations} from '@sentry/tracing';
+
+import * as Sentry from "@sentry/vue";
+import {Integrations} from "@sentry/tracing";
 
 if (process.env.NODE_ENV !== 'development') {
     Sentry.init({
-        dsn: "https://c7abc7b0bd624adbac03e35318b20142@o428533.ingest.sentry.io/5426345",
+        dsn: "https://26173e38ab6c4c4a9f032a50a1ba5c6d@o879407.ingest.sentry.io/5832107",
         integrations: [
-            new VueIntegration({
-                Vue,
-                tracing: true
-            }),
             new Integrations.BrowserTracing()
         ],
-        tracesSampleRate: 1
+        tracesSampleRate: 1.0
     });
 }
 Vue.use(VueClipboard)
