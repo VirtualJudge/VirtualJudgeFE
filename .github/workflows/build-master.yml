@@ -24,16 +24,6 @@ jobs:
       - name: Build sources
         run: |
           yarn build
-      - name: Upload Qiniu
-        uses: saltbo/uptoc@master
-        with:
-          driver: qiniu
-          region: cn-east-1
-          bucket: dianhsu
-          dist: dist
-        env:
-          UPTOC_UPLOADER_AK: ${{ secrets.QINIU_ACCESS_KEY }}
-          UPTOC_UPLOADER_SK: ${{ secrets.QINIU_SECRET_KEY }}
       - name: Build Docker image
         run: |
           docker build . --tag wustacm/oj-frontend
