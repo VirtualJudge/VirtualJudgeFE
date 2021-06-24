@@ -19,18 +19,6 @@ server {
     location /api/ {
         proxy_pass http://backend;
     }
-    location = /favicon.ico {
-        rewrite ^/(.*)  https://cdn.wustacm.top/$1 permanent;
-    }
-    location ^~ /js/ {
-        rewrite ^/(.*)  https://cdn.wustacm.top/$1 permanent;
-    }
-    location ^~ /css/ {
-        rewrite ^/(.*)  https://cdn.wustacm.top/$1 permanent;
-    }
-    location ^~ /plugins/ {
-        rewrite ^/(.*)  https://cdn.wustacm.top/$1 permanent;
-    }
     location / {
         root   /usr/share/nginx/web;
         try_files $uri $uri/ /index.html;
