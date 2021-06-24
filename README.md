@@ -8,7 +8,7 @@
 - docker-compose
 
 ## 推荐IDE
-JetBains Webstorm 最新版本
+JetBrains Webstorm 最新版本
 
 ## 启动后端教程
 - clone 后端代码到本地 `git clone https://github.com/wustacm/oj-frontend.git`
