@@ -91,3 +91,4 @@ export const SITE_INFO = {
     default: "OJ",
     short: "OJ"
 }
+export const WS_BASE_URL = `ws://${location.host}/ws/`

@@ -69,6 +69,7 @@
 <script>
 import {mapActions, mapGetters} from 'vuex'
 import Login from "@/components/user/Login";
+import {WS_BASE_URL} from "../utils/constant";
 
 export default {
   name: "NavBar",
@@ -82,6 +83,17 @@ export default {
     }
   },
   mounted() {
+    const client = new WebSocket(WS_BASE_URL + 'ws')
+    client.onmessage = function (e) {
+      const data = JSON.parse(e.data);
+      console.log(data)
+    }
+    client.onclose = function () {
+      console.error('Chat socket closed unexpectedly');
+    };
+    // client.send(JSON.stringify({
+    //   'message': "123"
+    // }))
   },
   methods: {
     ...mapActions(['getProfile', 'clearProfile', 'randomCaptcha']),
