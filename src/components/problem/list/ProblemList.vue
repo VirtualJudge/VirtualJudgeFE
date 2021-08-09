@@ -26,7 +26,6 @@
 import PaginateTable from "@/components/utils/PaginateTable";
 import ProblemFilter from "@/components/problem/list/ProblemFilter";
 import api from "@/utils/api";
-import {PROBLEM_PUBLIC_TYPE} from "@/utils/constant";
 import message from "@/utils/message";
 import {mapGetters} from 'vuex';
 
@@ -47,6 +46,20 @@ export default {
         },
         {
           align: 'center',
+          title: '平台',
+          key: 'remote_oj',
+          maxWidth: 150,
+          ellipsis: true,
+        },
+        {
+          align: 'center',
+          title: '题号',
+          key: 'remote_id',
+          maxWidth: 100,
+          ellipsis: true,
+        },
+        {
+          align: 'center',
           title: '标题',
           render: (h, params) => {
             return h('span', {
@@ -62,23 +75,7 @@ export default {
             }, params.row.title)
           }
         },
-        {
-          align: 'center',
-          title: '来源',
-          key: 'source',
-          ellipsis: true,
-        }, {
-          title: '题目权限',
-          align: 'center',
-          render: (h, params) => {
-            return h('Tooltip', {
-              props: {
-                transfer: true,
-                content: PROBLEM_PUBLIC_TYPE[params.row.public].name
-              }
-            }, [h('Tag', {}, [h('code', PROBLEM_PUBLIC_TYPE[params.row.public].short)])])
-          }
-        },
+
         {
           maxWidth: 120,
           align: 'center',
@@ -110,15 +107,15 @@ export default {
           maxWidth: 80,
           render: (h, params) => {
             if (params.row.user_stat === 2) {
-              return h('Icon',{
-                props:{
+              return h('Icon', {
+                props: {
                   type: 'md-checkmark-circle-outline',
                   color: '#19be6b'
                 }
               })
             } else if (params.row.user_stat === 1) {
-              return h('Icon',{
-                props:{
+              return h('Icon', {
+                props: {
                   type: 'md-code-working',
                   color: '#ff9900'
                 }

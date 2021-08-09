@@ -4,7 +4,12 @@
     <Row>
       <Col span="16">
         <Tabs v-model="tab_val">
-          <TabPane label="Markdown" name="Markdown" :disabled="!editor_value.markdown">
+          <TabPane label="Html" name="Html" v-if="!!editor_value.html">
+            <iframe :src="frame_url" width="100%" height="1000px" style="border: 0;">
+
+            </iframe>
+          </TabPane>
+          <TabPane label="Markdown" name="Markdown" :disabled="!editor_value.markdown" v-if="!!editor_value.markdown">
             <mavon-editor
                 v-if="editor_value.markdown"
                 v-model="editor_value.markdown"
@@ -20,54 +25,10 @@
                 fontSize="16px"
             />
           </TabPane>
-          <TabPane label="PDF" name="PDF" :disabled="!editor_value.pdf">
-            <embed height="800" width="100%" v-if="tab_val==='PDF'" :src="editor_value.pdf">
+          <TabPane label="PDF" name="PDF" :disabled="!editor_value.pdf" v-if="!!editor_value.pdf">
+<!--            <embed height="800" width="100%" v-if="tab_val==='PDF'" :src="editor_value.pdf">-->
           </TabPane>
-          <TabPane label="Legacy" name="Legacy" :disabled="!editor_value.legacy">
-            <div>
-              <Card class="legacy-item" dis-hover v-if="editor_value.legacy  && editor_value.legacy.description">
-                <p slot="title">题目描述</p>
-                <div>
-                  <content v-html="editor_value.legacy.description"></content>
-                </div>
-              </Card>
 
-              <Card class="legacy-item" dis-hover v-if="editor_value.legacy  && editor_value.legacy.input">
-                <p slot="title">输入描述</p>
-                <div>
-                  <content v-html="editor_value.legacy.input"></content>
-                </div>
-              </Card>
-              <Card class="legacy-item" dis-hover v-if="editor_value.legacy  && editor_value.legacy.output">
-                <p slot="title">输出描述</p>
-                <div>
-                  <content v-html="editor_value.legacy.output"></content>
-                </div>
-              </Card>
-              <Card class="legacy-item" dis-hover v-if="editor_value.legacy  && editor_value.legacy.sample_input">
-                <p slot="title">输入样例</p>
-                <div>
-                  <pre style="background: #fafafa;padding: 5px;"><code>{{
-                      editor_value.legacy.sample_input
-                    }}</code></pre>
-                </div>
-              </Card>
-              <Card class="legacy-item" dis-hover v-if="editor_value.legacy && editor_value.legacy.sample_output">
-                <p slot="title">输出样例</p>
-                <div>
-                  <pre style="background: #fafafa;padding: 5px;"><code>{{
-                      editor_value.legacy.sample_output
-                    }}</code></pre>
-                </div>
-              </Card>
-              <Card class="legacy-item" dis-hover v-if="editor_value.legacy && editor_value.legacy.hint">
-                <p slot="title">提示</p>
-                <div>
-                  <content v-html="editor_value.legacy.hint"></content>
-                </div>
-              </Card>
-            </div>
-          </TabPane>
         </Tabs>
 
       </Col>
@@ -76,20 +37,33 @@
           <p slot="title">信息</p>
           <List :split="false">
             <ListItem>
+              <ListItemMeta title="题目来源">
+                <span slot="description"><a :href="problem.remote_url">{{ problem.remote_oj }}-{{
+                    problem.remote_id
+                  }}</a></span>
+              </ListItemMeta>
+            </ListItem>
+            <ListItem>
               <ListItemMeta title="时间限制">
-                <span slot="description">{{ problem.time_limit }} ms</span>
+                <span slot="description">{{ problem.time_limit }}</span>
               </ListItemMeta>
             </ListItem>
             <ListItem>
               <ListItemMeta title="内存限制">
-                <span slot="description">{{ problem.memory_limit }} MiB</span>
+                <span slot="description">{{ problem.memory_limit }}</span>
               </ListItemMeta>
             </ListItem>
             <ListItem>
-              <ListItemMeta title="题目权限">
-                <span slot="description">{{ privilege.name }}</span>
+              <ListItemMeta title="Special Judge">
+                <span slot="description">{{ problem.spj }}</span>
               </ListItemMeta>
             </ListItem>
+            <ListItem>
+              <ListItemMeta title="更新时间">
+                <span slot="description">{{ problem.last_update }}</span>
+              </ListItemMeta>
+            </ListItem>
+
           </List>
         </Card>
         <Card style="margin-top: 10px" dis-hover v-if="isAuthenticated">
@@ -142,10 +116,10 @@
 <script>
 import api from "@/utils/api";
 import message from "@/utils/message";
-import {PROBLEM_SUBMIT_LANGUAGES, STORAGE, PROBLEM_PUBLIC_TYPE, SITE_INFO} from "@/utils/constant";
-import {MAVON_EDITOR_EXTERNAL_LINK} from "@/utils/editor";
+import {PROBLEM_SUBMIT_LANGUAGES, SITE_INFO, STORAGE} from "@/utils/constant";
 import {mapGetters} from 'vuex'
 import storage from "@/utils/storage";
+import moment from "moment";
 
 export default {
   name: "ProblemDetail",
@@ -153,14 +127,13 @@ export default {
   data() {
     return {
       tab_val: '',
-      externalLink: process.env.NODE_ENV === 'development' ? true : MAVON_EDITOR_EXTERNAL_LINK,
+      externalLink: true,
       editor_value: {
-        legacy: null,
+        html: '',
         pdf: '',
         markdown: ''
       },
-      privilegeCode: 0,
-      privilege: PROBLEM_PUBLIC_TYPE[0],
+      frame_url: '',
       problem: {},
       code: '',
       lang: '',
@@ -179,19 +152,21 @@ export default {
         this.$Message.error(message.err(res.data.err))
       } else {
         this.problem = res.data.data || {}
+        if (this.problem) {
+          this.problem.last_update = moment(this.problem.last_update).fromNow()
+        }
+        this.frame_url = `/api/problem/${problem_id}/html/`
         if (this.problem.title !== null)
           document.title = `${this.problem.title} - ${SITE_INFO.default}`
-        this.privilegeCode = res.data.data.public || 0
-        this.privilege = PROBLEM_PUBLIC_TYPE[this.privilegeCode]
-        this.editor_value.legacy = res.data.data.content.legacy || null
+        this.editor_value.html = res.data.data.content.html || null
         this.editor_value.markdown = res.data.data.content.markdown || ''
         this.editor_value.pdf = res.data.data.content.pdf || ''
         if (this.editor_value.markdown) {
           this.tab_val = 'Markdown'
         } else if (this.editor_value.pdf) {
           this.tab_val = 'PDF'
-        } else if (this.editor_value.legacy) {
-          this.tab_val = 'Legacy'
+        } else if (this.editor_value.html) {
+          this.tab_val = 'Html'
         }
       }
     })
@@ -237,8 +212,4 @@ export default {
   font-family: "Ubuntu Mono", "JetBrains Mono", Consolas, Menlo, Courier, monospace;
 }
 
-.legacy-item {
-  margin-bottom: 10px;
-  margin-top: 10px;
-}
 </style>

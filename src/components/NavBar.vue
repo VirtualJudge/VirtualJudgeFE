@@ -13,18 +13,9 @@
       <MenuItem class="left-menu-item" name="/rank" to="/rank">
         排行
       </MenuItem>
-      <Submenu name="/help">
-        <template slot="title">
-          帮助
-        </template>
-        <MenuItem class="left-menu-item" name="/help" to="/help">
-          首页
-        </MenuItem>
-        <MenuItem class="left-menu-item" name="/compiler" to="/compiler">
-          编译器
-
-        </MenuItem>
-      </Submenu>
+      <MenuItem class="left-menu-item" name="/help" to="/help">
+        帮助
+      </MenuItem>
       <template v-if="!isAuthenticated">
         <div class="right-menu-item">
           <Button type="default" class="right-menu-item-button" @click="handleRegisterClick">
@@ -69,7 +60,6 @@
 <script>
 import {mapActions, mapGetters} from 'vuex'
 import Login from "@/components/user/Login";
-import {WS_BASE_URL} from "../utils/constant";
 
 export default {
   name: "NavBar",
@@ -83,17 +73,14 @@ export default {
     }
   },
   mounted() {
-    const client = new WebSocket(WS_BASE_URL + 'ws')
-    client.onmessage = function (e) {
-      const data = JSON.parse(e.data);
-      console.log(data)
-    }
-    client.onclose = function () {
-      console.error('Chat socket closed unexpectedly');
-    };
-    // client.send(JSON.stringify({
-    //   'message': "123"
-    // }))
+    // const client = new WebSocket(WS_BASE_URL + 'ws')
+    // client.onmessage = function (e) {
+    //   const data = JSON.parse(e.data);
+    //   console.log(data)
+    // }
+    // client.onclose = function () {
+    //   console.error('Chat socket closed unexpectedly');
+    // };
   },
   methods: {
     ...mapActions(['getProfile', 'clearProfile', 'randomCaptcha']),

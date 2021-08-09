@@ -88,7 +88,7 @@ export const STORAGE = {
     PROBLEM_LANGUAGE_KEY: '_problem_language_key'
 }
 export const SITE_INFO = {
-    default: "OJ",
-    short: "OJ"
+    default: "VirtualJudge",
+    short: "VJ"
 }
 export const WS_BASE_URL = `ws://${location.host}/ws/`
