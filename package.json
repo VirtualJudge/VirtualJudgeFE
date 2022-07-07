@@ -19,7 +19,7 @@
     "js-md5": "^0.7.3",
     "less-loader": "^6.2.0",
     "mavon-editor": "^2.9.0",
-    "moment": "^2.27.0",
+    "moment": "^2.29.4",
     "remove": "^0.1.5",
     "view-design": "^4.3.2",
     "vue": "^2.6.11",
